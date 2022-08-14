@@ -1,0 +1,35 @@
+{
+  "app": {
+    "welcome": "Welcome"
+  },
+  "route": {
+    "home": "Home",
+    "img": "Images",
+    "setting": "Setting",
+    "about": "About"
+  },
+  "img": {
+    "title": "image processing",
+    "function": "function",
+    "compressImg": "compress image",
+    "delete_err_img": "delete err image",
+    "imgDir": "image dir",
+    "program": "program",
+    "run": "run program",
+    "clearLog": "clear log",
+    "log": "log",
+    "log_placeholder": "program log",
+    "imgDir_placeholder": "please select the image directory"
+  },
+  "about": {
+    "title": "About",
+    "checkUpdate": "check update",
+    "p01": "A collection of everyday tools for working with some everyday data;",
+    "p02": "language used: rust, js;",
+    "p03": "Technology: tauri, vue3, vue-i18n, vue-router, element-plus, @vueuse/core, etc.;",
+    "aboutProgram": "about",
+    "programName": "Program Name",
+    "programVersion": "Program Version",
+    "version": "Version"
+  }
+}

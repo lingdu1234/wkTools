@@ -1,31 +1,31 @@
 <template>
   <div>
-    <span>关于</span>
+    <span>{{t("about.title")}}</span>
     <div class="logo">
       <img src="@/assets/logo2.png" />
     </div>
     <div class="updater">
-      <el-button type="primary" @click="check_update">检查更新</el-button>
+      <el-button type="primary" @click="check_update">{{t("about.checkUpdate")}}</el-button>
     </div>
   </div>
   <el-divider></el-divider>
   <div class="content">
-    <p>一个日常工具合集,用于处理一些日常数据;</p>
-    <p>主要使用语言:rust,js;</p>
+    <p>{{t("about.p01")}}</p>
+    <p>{{t("about.p02")}}</p>
     <p>
-      主要使用技术:tauri,vue3,vue-i18n,vue-router,element-plus,@vueuse/core等;
+      {{t("about.p03")}}
     </p>
     <el-divider></el-divider>
-    <p>程序相关</p>
+    <p>{{t("about.aboutProgram")}}</p>
     <p>
-      <span>程序名称：</span><span>{{ v.appName }}</span>
+      <span>{{t("about.programName")}}：</span><span>{{ v.appName }}</span>
     </p>
     <p>
-      <span>程序版本：</span><span>{{ v.appVersion }}</span>
+      <span>{{t("about.programVersion")}}：</span><span>{{ v.appVersion }}</span>
     </p>
     <p>
       <a href="https://tauri.app/" target="_blank">tauri</a
-      ><span>版本：{{ v.tauriVersion }}</span>
+      ><span>{{t("about.version")}}：{{ v.tauriVersion }}</span>
     </p>
   </div>
 </template>

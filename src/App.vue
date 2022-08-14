@@ -10,7 +10,7 @@
       </el-container>
       <div class="operatorClass">
         <div class="operatorClassA">
-          <el-icon v-if="locale == 'zh'" @click="changeLang('en')">
+          <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
           <SvgIcon :name="isDark?'enDark':'en'"></SvgIcon>
           </el-icon>
           <el-icon v-else @click="changeLang('zh')">

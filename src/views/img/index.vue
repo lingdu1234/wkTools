@@ -1,42 +1,30 @@
 <template>
   <div>
-    <span>{{t('img.title')}}</span>
+    <span>{{ t('img.title') }}</span>
     <el-divider></el-divider>
     <el-form ref="queryRef" label-width="100px">
       <!-- 功能选择 -->
       <el-form-item :label="t('img.function')">
         <el-radio-group v-model="activeTab">
-          <el-radio label="compressImg">{{t('img.compressImg')}}</el-radio>
-          <el-radio label="deleteImg">{{t('img.delete_err_img')}}</el-radio>
+          <el-radio label="compressImg">{{ t('img.compressImg') }}</el-radio>
+          <el-radio label="deleteImg">{{ t('img.delete_err_img') }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <!-- 原始图片目录 -->
       <el-form-item :label="t('img.imgDir')">
-        <el-input
-          v-model="origin_dir"
-          :placeholder="t('img.imgDir_placeholder')"
-          clearable
-          @click="open_dir_dialog"
-        />
+        <el-input v-model="origin_dir" :placeholder="t('img.imgDir_placeholder')" clearable @click="open_dir_dialog" />
       </el-form-item>
       <!-- 开始处理按钮 -->
       <el-form-item :label="t('img.program')">
         <el-form-item>
           <el-button type="primary" :icon="Promotion" @click="run_program">
-            {{t('img.run')}}</el-button
-          >
-          <el-button :icon="Refresh" @click="clear_logs">{{t('img.clearLog')}}</el-button>
+            {{ t('img.run') }}</el-button>
+          <el-button :icon="Refresh" @click="clear_logs">{{ t('img.clearLog') }}</el-button>
         </el-form-item>
       </el-form-item>
       <!-- 压缩图片时保存目录 -->
       <el-form-item :label="t('img.log')">
-        <el-input
-          v-model="logs"
-          :placeholder="t('img.log_placeholder')"
-          type="textarea"
-          :rows="10"
-          clearable
-        />
+        <el-input v-model="logs" :placeholder="t('img.log_placeholder')" type="textarea" :rows="10" clearable />
       </el-form-item>
     </el-form>
   </div>
@@ -48,7 +36,7 @@ import { Refresh, Promotion } from '@element-plus/icons-vue';
 import { invoke } from '@tauri-apps/api/tauri';
 import { getCurrentInstance } from 'vue';
 
-import i18n from '@/locals'; 
+import i18n from '@/locals';
 const { t } = i18n.global;
 
 
