@@ -19,16 +19,7 @@
           @click="open_dir_dialog"
         />
       </el-form-item>
-      <!-- 压缩图片时保存目录 -->
-      <!-- <el-form-item v-if="activeTab == 'compressImg'" label="保存目录">
-        <el-input
-          v-model="save_dir"
-          placeholder="需要保存图片的目录"
-          clearable
-          @click="open_dir_dialog('save')"
-        />
-      </el-form-item> -->
-      <!-- 开始出路按钮 -->
+      <!-- 开始处理按钮 -->
       <el-form-item :label="t('img.program')">
         <el-form-item>
           <el-button type="primary" :icon="Promotion" @click="run_program">

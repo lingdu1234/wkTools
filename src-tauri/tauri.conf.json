@@ -79,9 +79,12 @@
         "resizable": true,
         "title": "wkTools",
         "width": 800,
+        "minWidth": 600,
+        "minHeight": 450,
         "decorations": false,
         "transparent": true
       }
     ]
   }
+  
 }

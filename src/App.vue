@@ -4,7 +4,7 @@
       <el-container @mousedown="dragWindow">
         <!-- 头部标题 -->
         <div class="title_logo" @click="gotoAdminHome">
-          <img src="./assets/logo2.png" />
+          <img src="@/assets/logo2.png" />
           <span>{{ Headertitile }}</span>
         </div>
       </el-container>
@@ -30,7 +30,7 @@
     <el-container>
       <el-aside>
         <div class="aside_logo" @click="gotoAdminHome">
-          <img src="./assets/logo2.png" />
+          <img src="@/assets/logo2.png" />
           <span>WkTools</span>
         </div>
         <el-menu
