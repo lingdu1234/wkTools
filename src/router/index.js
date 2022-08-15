@@ -30,6 +30,13 @@ export const constantRoutes = [
 
   },
   {
+    path: '/excel',
+    component: () => import('@/views/excel'),
+    name: "Excel",
+    meta: { title: t("route.excel"), icon: 'excel' },
+
+  },
+  {
     path: '/setting',
     component: () => import('@/views/setting'),
     name: 'Setting',
@@ -47,7 +54,7 @@ const router = createRouter({
   // history: createWebHistory(),
   history: createWebHashHistory(),
   routes: redirectRoute.concat(...constantRoutes),
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {

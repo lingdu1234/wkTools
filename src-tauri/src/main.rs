@@ -3,15 +3,15 @@
     windows_subsystem = "windows"
 )]
 
-
 mod tools;
 
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
+            tools::msgs::get_log,
             tools::imgtools::delete_err_img,
-            tools::imgtools::get_img_log,
-            tools::imgtools::compress_img
+            tools::imgtools::compress_img,
+            tools::exceltools::export_excel,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,33 +1,11 @@
 use std::{
     fs::{self, File, ReadDir},
     path::PathBuf,
-    sync::{Arc, Mutex},
 };
 
 use image::{imageops::FilterType, DynamicImage, ImageOutputFormat};
-use once_cell::sync::Lazy;
 
-pub static MSGS: Lazy<Arc<Mutex<Vec<String>>>> = Lazy::new(|| Arc::new(Mutex::new(Vec::new())));
-// 添加一条消息
-fn add_msg(msg: &str) {
-    let mut msgs = MSGS.lock().unwrap();
-    msgs.push(msg.to_string());
-    drop(msgs);
-}
-
-// 获取日志信息
-#[tauri::command]
-pub fn get_img_log() -> String {
-    let mut msgs = MSGS.lock().unwrap();
-    let mut log = String::new();
-    for msg in msgs.iter() {
-        log.push_str(&msg);
-        log.push_str("\n");
-    }
-    msgs.clear();
-    drop(msgs);
-    log
-}
+use super::{comm_tools::get_dir_from_string, msgs::add_msg};
 
 // 删除错误图片
 #[tauri::command]
@@ -35,22 +13,10 @@ pub fn delete_err_img(dir: String) {
     let msg = format!("现在正在执行的任务是 : {}", "删除错误的图片");
     add_msg(&msg);
     let start_time = chrono::Local::now(); //获取结束时间
-    let pic_dir = match fs::read_dir(&dir) {
-        Ok(dirs) => {
-            match &dir.len() {
-                0 => {
-                    add_msg("你输入的文件夹不存在,请重新输入");
-                    return;
-                }
-                _ => {
-                    let msg = format!("你输入的文件夹为:{}", &dir);
-                    add_msg(&msg);
-                }
-            }
-            dirs
-        }
-        _ => {
-            let msg = format!("你输入的文件夹不存在,请重新输入");
+
+    let pic_dir = match get_dir_from_string(&dir, "图片文件") {
+        Ok(dir) => dir,
+        Err(msg) => {
             add_msg(&msg);
             return;
         }

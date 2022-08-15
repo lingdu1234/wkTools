@@ -31,6 +31,10 @@
 </template>
 
 <script setup>
+
+import i18n from '@/locals';
+const { t } = i18n.global;
+
 import { getName, getTauriVersion, getVersion } from '@tauri-apps/api/app';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'

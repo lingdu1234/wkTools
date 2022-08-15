@@ -75,7 +75,7 @@ const open_dir_dialog = async (v) => {
 };
 // 运行程序
 const run_program = async () => {
-  fresh_img_logs();
+  fresh_logs();
   if (activeTab.value == 'compressImg') {
     await invoke('compress_img', { dir: origin_dir.value });
   }
@@ -85,15 +85,17 @@ const run_program = async () => {
   task_done.value = true;
 };
 // 获取日志
+// 获取日志
 const get_logs = async () => {
-  const log = await invoke('get_img_log');
+  const log = await invoke('get_log');
   if (log.length == 0 && task_done.value) {
     stop_timer();
+    return
   }
-  logs.value += log;
+  logs.value = log + log.value;
 };
 // 定时获取日志
-const fresh_img_logs = () => {
+const fresh_logs = () => {
   proxy.timer = setInterval(() => {
     setTimeout(get_logs, 0);
   }, 500);

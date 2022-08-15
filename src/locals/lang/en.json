@@ -6,7 +6,8 @@
     "home": "Home",
     "img": "Images",
     "setting": "Setting",
-    "about": "About"
+    "about": "About",
+    "excel": "Excel"
   },
   "img": {
     "title": "image processing",
@@ -19,17 +20,26 @@
     "clearLog": "clear log",
     "log": "log",
     "log_placeholder": "program log",
-    "imgDir_placeholder": "please select the image directory"
+    "imgDir_placeholder": "please select the image directory",
+    "exceTolDir": "Save DIR"
   },
   "about": {
     "title": "About",
     "checkUpdate": "check update",
-    "p01": "A collection of everyday tools for working with some everyday data;",
+    "p01": "A collection of  tools wirch working for deal wirh some data;",
     "p02": "language used: rust, js;",
-    "p03": "Technology: tauri, vue3, vue-i18n, vue-router, element-plus, @vueuse/core, etc.;",
+    "p03": "Technology: tauri, vue3, vue-i18n, vue-router, element-plus, vueuse/core, etc.;",
     "aboutProgram": "about",
     "programName": "Program Name",
     "programVersion": "Program Version",
-    "version": "Version"
+    "version": " Version"
+  },
+  "excel": {
+    "title": "Excel",
+    "export": "Export  excel directly",
+    "export_dir": "export excel - add date folder name",
+    "excelDir": "Excel DIR",
+    "excelDir_placeholder": "Please select the directory where excel is located",
+    "excel_save_placeholder": "Please select the excel save directory"
   }
 }

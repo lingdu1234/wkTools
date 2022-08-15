@@ -11,19 +11,29 @@
       <div class="operatorClass">
         <div class="operatorClassA">
           <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
-          <SvgIcon :name="isDark?'enDark':'en'"></SvgIcon>
+            <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
           </el-icon>
           <el-icon v-else @click="changeLang('zh')">
-          <SvgIcon  :name="isDark?'zhDark':'zh'"></SvgIcon>
+            <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
           </el-icon>
           <span> </span>
-          <el-icon v-if="isDark" @click="toggleDark()"><Moon /></el-icon>
-          <el-icon v-else @click="toggleDark()"><Sunny /></el-icon>
+          <el-icon v-if="isDark" @click="toggleDark()">
+            <Moon />
+          </el-icon>
+          <el-icon v-else @click="toggleDark()">
+            <Sunny />
+          </el-icon>
         </div>
         <div class="operatorClassB">
-          <el-icon @click="minimize"><Minus /></el-icon>
-          <el-icon @click="maximize"><Plus /></el-icon>
-          <el-icon @click="titlebarClose"><CloseBold /></el-icon>
+          <el-icon @click="minimize">
+            <Minus />
+          </el-icon>
+          <el-icon @click="maximize">
+            <Plus />
+          </el-icon>
+          <el-icon @click="titlebarClose">
+            <CloseBold />
+          </el-icon>
         </div>
       </div>
     </el-header>
@@ -33,18 +43,9 @@
           <img src="@/assets/logo2.png" />
           <span>WkTools</span>
         </div>
-        <el-menu
-          active-text-color="#5352ed"
-          :default-active="activePath"
-          unique-opened
-          @select="handleMenuChange"
-        >
-          <el-menu-item
-            v-for="menu in menus"
-            :index="menu.path"
-            :key="menu.path"
-            @click="getMenu(menu.meta.title)"
-          >
+        <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
+          <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
+            @click="getMenu(menu.path, menu.meta.title)">
             <el-icon>
               <SvgIcon :name="menu.meta.icon"></SvgIcon>
             </el-icon>
@@ -71,6 +72,7 @@ import { useDark, useToggle } from '@vueuse/core';
 
 import { useI18n } from 'vue-i18n';
 import i18n from '@/locals'; // 当前语言
+import { onMounted } from 'vue';
 const { locale } = useI18n();
 
 const { t } = i18n.global;
@@ -92,6 +94,11 @@ const isMaximize = ref(false);
 // 激活菜单
 const activePath = ref('/index');
 
+onMounted(() => {
+  activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
+  Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
+})
+
 function gotoAdminHome() {
   proxy.$router.push('/index');
   activePath.value = '/index';
@@ -100,7 +107,9 @@ function handleMenuChange(index, _indexPath) {
   activePath.value = index;
   proxy.$router.push(index);
 }
-function getMenu(title) {
+function getMenu(index, title) {
+  localStorage.setItem('sfsafasfsa', index)
+  localStorage.setItem('wfw3t3t32t', title)
   Headertitile.value = title;
 }
 //  窗口操作
@@ -145,32 +154,39 @@ function changeLang(v) {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+
   .operatorClass {
     width: 160px;
     display: flex;
     justify-content: space-between;
+
     .operatorClassA {
       width: 60px;
       display: flex;
       justify-content: space-around;
     }
+
     .operatorClassB {
       width: 80px;
       display: flex;
       justify-content: space-between;
       size: 36px;
+
       i {
         cursor: pointer;
       }
     }
   }
+
   .title_logo {
     display: flex;
     justify-content: start;
+
     img {
       height: 22px;
       width: 22px;
     }
+
     span {
       margin-left: 10px;
       font-size: 18px;
@@ -183,9 +199,11 @@ function changeLang(v) {
   background-color: #bbe6d6;
   color: rgb(8, 7, 7);
   height: 100vh;
+
   ul {
     background-color: #bbe6d6;
   }
+
   img {
     height: 32px;
     width: 32px;
@@ -203,6 +221,7 @@ function changeLang(v) {
   height: 60px;
   align-items: center;
   cursor: pointer;
+
   span {
     font-size: 16px;
     font-weight: 800;
@@ -231,13 +250,16 @@ html.dark {
     background-color: rgb(13, 17, 23);
     color: #d9f1e8;
   }
+
   .el-aside {
     background-color: rgb(13, 17, 23);
     color: rgb(209, 191, 191);
+
     ul {
       background-color: rgb(13, 17, 23);
     }
   }
+
   .el-main {
     background-color: rgb(1, 4, 9);
     color: rgb(216, 203, 203);
@@ -246,6 +268,7 @@ html.dark {
   .el-menu-item {
     background-color: rgb(13, 17, 23) !important;
   }
+
   .el-menu-item.is-active {
     background-color: rgb(1, 4, 9) !important;
   }
