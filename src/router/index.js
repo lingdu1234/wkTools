@@ -37,6 +37,13 @@ export const constantRoutes = [
 
   },
   {
+    path: '/regent',
+    component: () => import('@/views/regent'),
+    name: "Regent",
+    meta: { title: t("route.regent"), icon: 'regent' },
+
+  },
+  {
     path: '/setting',
     component: () => import('@/views/setting'),
     name: 'Setting',

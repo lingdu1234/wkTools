@@ -4,17 +4,16 @@ use std::{
 };
 
 use image::{imageops::FilterType, DynamicImage, ImageOutputFormat};
+use rust_i18n::t;
 
 use super::{comm_tools::get_dir_from_string, msgs::add_msg};
 
 // 删除错误图片
 #[tauri::command]
 pub fn delete_err_img(dir: String) {
-    let msg = format!("现在正在执行的任务是 : {}", "删除错误的图片");
-    add_msg(&msg);
     let start_time = chrono::Local::now(); //获取结束时间
 
-    let pic_dir = match get_dir_from_string(&dir, "图片文件") {
+    let pic_dir = match get_dir_from_string(&dir, &t!("image file")) {
         Ok(dir) => dir,
         Err(msg) => {
             add_msg(&msg);
@@ -28,9 +27,12 @@ pub fn delete_err_img(dir: String) {
     let duration_time = end_time.signed_duration_since(start_time).to_std().unwrap(); //耗时
 
     let msg = format!(
-        "删除任务开始时间 : {:?},结束时间 :{:?},耗时:{:?}",
+        "{} : {:?},{} :{:?},{}:{:?}",
+        t!("task_bengin_time"),
         start_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+        t!("task_end_time"),
         end_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+        t!("elapsed_time"),
         duration_time
     );
     add_msg(&msg);
@@ -38,20 +40,20 @@ pub fn delete_err_img(dir: String) {
 // 删除错误图片
 fn delete_err_images(dirs: ReadDir) {
     for entry in dirs {
-        let entry = entry.expect("读取文件夹失败");
+        let entry = entry.expect(&t!("Failed to read the folder"));
         let path = entry.path();
         if path.is_dir() {
-            let msg = format!("正在遍历处理文件夹: {}", path.display());
+            let msg = format!("{}: {}", t!("Traversing folders"), path.display());
             add_msg(&msg);
             delete_err_images(fs::read_dir(path).unwrap()); //递归遍历文件夹
         } else {
             let f_name = path.to_str().unwrap().to_string();
             if f_name.ends_with("Err.png") {
                 //如果图片以错误结尾
-                let msg = format!("正在删除错误Err图片: {}", f_name);
+                let msg = format!("{}: {}", t!("deleting err images"), f_name);
                 add_msg(&msg);
 
-                fs::remove_file(path).expect("文件删除失败");
+                fs::remove_file(path).expect(&t!("delete file failed"));
             }
         }
     }
@@ -60,25 +62,10 @@ fn delete_err_images(dirs: ReadDir) {
 //  压缩图片
 #[tauri::command]
 pub async fn compress_img(dir: String) {
-    let msg = format!("现在正在执行的任务是 : {}", "压缩大体积的图片");
-    add_msg(&msg);
     let start_time = chrono::Local::now(); //获取结束时间
-    let pic_dir = match fs::read_dir(&dir) {
-        Ok(dirs) => {
-            match &dir.len() {
-                0 => {
-                    add_msg("你输入的文件夹不存在,请重新输入");
-                    return;
-                }
-                _ => {
-                    let msg = format!("你输入的文件夹为:{}", &dir);
-                    add_msg(&msg);
-                }
-            }
-            dirs
-        }
-        _ => {
-            let msg = format!("你输入的文件夹不存在,请重新输入");
+    let pic_dir = match get_dir_from_string(&dir, &t!("image file")) {
+        Ok(dir) => dir,
+        Err(msg) => {
             add_msg(&msg);
             return;
         }
@@ -89,9 +76,12 @@ pub async fn compress_img(dir: String) {
     let end_time = chrono::Local::now(); //获取结束时间
     let duration_time = end_time.signed_duration_since(start_time).to_std().unwrap(); //耗时
     let msg = format!(
-        "压缩任务开始时间 : {:?},结束时间 :{:?},耗时:{:?}",
+        "{} : {:?},{} :{:?},{}:{:?}",
+        t!("task_bengin_time"),
         start_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+        t!("task_end_time"),
         end_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+        t!("elapsed_time"),
         duration_time
     );
     add_msg(&msg);
@@ -102,10 +92,10 @@ pub async fn compress_img(dir: String) {
 fn compress_images(dirs: fs::ReadDir) {
     let exts: Vec<&str> = vec!["png", "jpg", "jpeg"];
     for entry in dirs {
-        let entry = entry.expect("读取文件夹失败");
+        let entry = entry.expect(&t!("Failed to read the folder"));
         let path = entry.path();
         if path.is_dir() {
-            let msg = format!("正在遍历处理文件夹: {}", path.display());
+            let msg = format!("{}: {}", t!("Traversing folders"), path.display());
             add_msg(&msg);
             compress_images(fs::read_dir(path).unwrap()); //递归遍历文件夹
         } else {
@@ -120,14 +110,21 @@ fn compress_images(dirs: fs::ReadDir) {
                 //  如果文件小于5MB 就不处理
                 let file_origin_size = entry.metadata().unwrap().len();
                 if file_origin_size < 5300000 {
-                    let msg = format!("文件:{} 体积大小:{}  =>无需处理", f_name, file_origin_size,);
+                    let msg = format!(
+                        "{}:{} {}:{}  => {}",
+                        t!("File"),
+                        f_name,
+                        t!("size_is"),
+                        file_origin_size,
+                        t!("No need compress")
+                    );
                     add_msg(&msg);
                 } else {
                     //  扩展名在里面,文件大于5MB才压缩
                     let pic_reader = match image::open(&path) {
                         Ok(img) => img,
                         _ => {
-                            let msg = format!("图片读取错误:  {}", f_name);
+                            let msg = format!("{}:  {}", t!("file read err"), f_name);
                             add_msg(&msg);
                             return;
                         }
@@ -161,8 +158,14 @@ fn com_image(out_path: PathBuf, f_name: String, pic_reader: DynamicImage, ori_si
     let new_file = fs::File::open(out_path).unwrap();
     let size = new_file.metadata().unwrap().len();
     let msg = format!(
-        "图片:{} 处理完成,原始大小:{}  |  处理后大小:{}",
-        f_name, ori_size, size
+        "{}:{} {},{}:{}  |  {}:{}",
+        t!("image"),
+        f_name,
+        t!("competed"),
+        t!("ori_size"),
+        ori_size,
+        t!("now_size"),
+        size
     );
     add_msg(&msg);
 }

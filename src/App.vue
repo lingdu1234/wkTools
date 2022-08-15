@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @contextmenu="handleMouse">
     <el-header>
       <el-container @mousedown="dragWindow">
         <!-- 头部标题 -->
@@ -65,6 +65,7 @@
 
 <script setup>
 import { appWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/tauri';
 import SvgIcon from '@/components/SvgIcon.vue';
 import { constantRoutes as menus } from './router';
 import { Minus, Plus, CloseBold, Sunny, Moon } from '@element-plus/icons-vue';
@@ -97,6 +98,8 @@ const activePath = ref('/index');
 onMounted(() => {
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
+  const v = localStorage.getItem('lang') || "zh";
+  invoke('set_lang', { lang: v });
 })
 
 function gotoAdminHome() {
@@ -137,10 +140,15 @@ async function dragWindow(e) {
 }
 
 // 切换语言
-function changeLang(v) {
+async function changeLang(v) {
   locale.value = v;
+  await invoke('set_lang', { lang: v });
   localStorage.setItem('lang', v);
   window.location.reload();
+}
+
+const handleMouse = (e) => {
+  e.preventDefault();
 }
 </script>
 

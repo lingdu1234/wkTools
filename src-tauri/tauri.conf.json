@@ -75,12 +75,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 768,
         "resizable": true,
         "title": "wkTools",
-        "width": 800,
-        "minWidth": 600,
-        "minHeight": 450,
+        "width": 1024,
+        "minWidth": 800,
+        "minHeight": 600,
         "decorations": false,
         "transparent": true
       }
