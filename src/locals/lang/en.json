@@ -8,7 +8,8 @@
     "setting": "Setting",
     "about": "About",
     "excel": "Excel",
-    "regent": "Regent"
+    "regent": "Regent",
+    "dict": "Dict"
   },
   "img": {
     "title": "image processing",

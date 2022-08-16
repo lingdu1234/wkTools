@@ -7,7 +7,7 @@ use super::{comm_tools::get_dir_from_string, msgs::add_msg};
 
 // 导出excel
 #[tauri::command]
-pub async fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
+pub  fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
     let start_time = chrono::Local::now(); //获取结束时间
 
     match to_dir.contains(&dir) {

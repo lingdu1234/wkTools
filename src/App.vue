@@ -98,6 +98,7 @@ const activePath = ref('/index');
 onMounted(() => {
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
+  proxy.$router.push(activePath.value);
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
 })
@@ -148,7 +149,7 @@ async function changeLang(v) {
 }
 
 const handleMouse = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
 }
 </script>
 

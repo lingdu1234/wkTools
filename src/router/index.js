@@ -12,6 +12,15 @@ const redirectRoute = [
   },
 ]
 
+//  跳转路由
+const hiddenRoute = [
+  {
+    path: '/dict_data/:dict_type_id',
+    component: () => import('@/views/dict/data'),
+    name: 'Dict_Data',
+  }
+]
+
 // 公共路由
 export const constantRoutes = [
 
@@ -37,6 +46,12 @@ export const constantRoutes = [
 
   },
   {
+    path: '/dict',
+    component: () => import('@/views/dict'),
+    name: "Dict",
+    meta: { title: t("route.dict"), icon: 'dict' },
+  },
+  {
     path: '/regent',
     component: () => import('@/views/regent'),
     name: "Regent",
@@ -60,7 +75,7 @@ export const constantRoutes = [
 const router = createRouter({
   // history: createWebHistory(),
   history: createWebHashHistory(),
-  routes: redirectRoute.concat(...constantRoutes),
+  routes: redirectRoute.concat(...hiddenRoute,...constantRoutes),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
