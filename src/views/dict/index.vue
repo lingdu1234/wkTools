@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <span>{{t("dict.dict")}}</span>
+        <span>{{ t("dict.dict") }}</span>
         <el-divider></el-divider>
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="字典名称" prop="dict_name">
@@ -56,8 +56,8 @@
             <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button link icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-link type="success" :icon="Edit" @click="handleUpdate(scope.row)">修改</el-link>
+                    <el-link type="danger" :icon="Delete" @click="handleDelete(scope.row)">删除</el-link>
                 </template>
             </el-table-column>
         </el-table>
@@ -270,3 +270,8 @@ const goToData = (v) => {
 
 getList();
 </script>
+<style scoped>
+.el-link {
+    margin-right: 8px;
+}
+</style>

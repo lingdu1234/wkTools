@@ -1,67 +1,67 @@
 <template>
-<el-config-provider :locale="localeLang">
-  <div @contextmenu="handleMouse">
-    <el-header>
-      <el-container @mousedown="dragWindow">
-        <!-- 头部标题 -->
-        <div class="title_logo" @click="gotoAdminHome">
-          <img src="@/assets/logo2.png" />
-          <span>{{ Headertitile }}</span>
-        </div>
-      </el-container>
-      <div class="operatorClass">
-        <div class="operatorClassA">
-          <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
-            <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
-          </el-icon>
-          <el-icon v-else @click="changeLang('zh')">
-            <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
-          </el-icon>
-          <span> </span>
-          <el-icon v-if="isDark" @click="toggleDark()">
-            <Moon />
-          </el-icon>
-          <el-icon v-else @click="toggleDark()">
-            <Sunny />
-          </el-icon>
-        </div>
-        <div class="operatorClassB">
-          <el-icon @click="minimize">
-            <Minus />
-          </el-icon>
-          <el-icon @click="maximize">
-            <Plus />
-          </el-icon>
-          <el-icon @click="titlebarClose">
-            <CloseBold />
-          </el-icon>
-        </div>
-      </div>
-    </el-header>
-    <el-container>
-      <el-aside>
-        <div class="aside_logo" @click="gotoAdminHome">
-          <img src="@/assets/logo2.png" />
-          <span>WkTools</span>
-        </div>
-        <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
-          <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
-            @click="getMenu(menu.path, menu.meta.title)">
-            <el-icon>
-              <SvgIcon :name="menu.meta.icon"></SvgIcon>
+  <el-config-provider :locale="localeLang">
+    <div @contextmenu="handleMouse">
+      <el-header>
+        <el-container @mousedown="dragWindow">
+          <!-- 头部标题 -->
+          <div class="title_logo" @click="gotoAdminHome">
+            <img src="@/assets/logo2.png" />
+            <span>{{ Headertitile }}</span>
+          </div>
+        </el-container>
+        <div class="operatorClass">
+          <div class="operatorClassA">
+            <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
+              <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
             </el-icon>
-            <span>{{ menu.meta.title }}</span>
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
+            <el-icon v-else @click="changeLang('zh')">
+              <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
+            </el-icon>
+            <span> </span>
+            <el-icon v-if="isDark" @click="toggleDark()">
+              <Moon />
+            </el-icon>
+            <el-icon v-else @click="toggleDark()">
+              <Sunny />
+            </el-icon>
+          </div>
+          <div class="operatorClassB">
+            <el-icon @click="minimize">
+              <Minus />
+            </el-icon>
+            <el-icon @click="maximize">
+              <Plus />
+            </el-icon>
+            <el-icon @click="titlebarClose">
+              <CloseBold />
+            </el-icon>
+          </div>
+        </div>
+      </el-header>
       <el-container>
-        <el-main>
-          <!-- 路由占位符 -->
-          <router-view />
-        </el-main>
+        <el-aside>
+          <div class="aside_logo" @click="gotoAdminHome">
+            <img src="@/assets/logo2.png" />
+            <span>WkTools</span>
+          </div>
+          <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
+          <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
+                @click="getMenu(menu.path, menu.meta.title)">
+                <el-icon>
+                  <SvgIcon :name="menu.meta.icon"></SvgIcon>
+                </el-icon>
+                <span>{{ menu.meta.title }}</span>
+              </el-menu-item>
+          </el-menu>
+        </el-aside>
+        <el-container>
+          <el-main>
+            <!-- 路由占位符 -->
+            <router-view />
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
-  </div>
+    </div>
   </el-config-provider>
 </template>
 

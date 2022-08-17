@@ -75,7 +75,7 @@ export const constantRoutes = [
 const router = createRouter({
   // history: createWebHistory(),
   history: createWebHashHistory(),
-  routes: redirectRoute.concat(...hiddenRoute,...constantRoutes),
+  routes: redirectRoute.concat(...hiddenRoute, ...constantRoutes),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition

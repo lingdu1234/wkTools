@@ -61,8 +61,8 @@
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button type="text" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button type="text" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-link type="success" :icon="Edit" @click="handleUpdate(scope.row)">修改</el-link>
+          <el-link type="danger" :icon="Delete" @click="handleDelete(scope.row)">删除</el-link>
         </template>
       </el-table-column>
     </el-table>
@@ -119,7 +119,7 @@ import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { invoke } from '@tauri-apps/api/tauri';
 
-import { Plus, Edit, Delete, Search, Refresh,Close } from '@element-plus/icons-vue';
+import { Plus, Edit, Delete, Search, Refresh, Close } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from "element-plus"
 
 
@@ -280,63 +280,68 @@ function handleSelectionChange(selection) {
 }
 /** 修改按钮操作 */
 async function handleUpdate(row) {
-    reset();
-    const dict_data_id = row.dict_data_id || ids.value[0];
-    const [data, msg] = await invoke("get_dict_data_by_id", { id: dict_data_id })
-    if (msg == null) {
-        form.value = data;
-        open.value = true;
-        title.value = '修改字典数据';
-    } else {
-        ElMessage.error(msg)
-    }
+  reset();
+  const dict_data_id = row.dict_data_id || ids.value[0];
+  const [data, msg] = await invoke("get_dict_data_by_id", { id: dict_data_id })
+  if (msg == null) {
+    form.value = data;
+    open.value = true;
+    title.value = '修改字典数据';
+  } else {
+    ElMessage.error(msg)
+  }
 
 }
 /** 提交按钮 */
 function submitForm() {
-    proxy.$refs['dataRef'].validate(async (valid) => {
-        if (valid) {
-            if (form.value.dict_data_id != undefined) {
-                let [_res, msg] = await invoke("edit_dict_data", { req: form.value });
-                if (msg == null) {
-                    ElMessage.success('修改成功')
-                    open.value = false;
-                    getList();
-                } else {
-                    ElMessage.error(msg)
-                }
-            } else {
-                let [_res, msg] = await invoke("add_dict_data", { req: form.value });
-                if (msg == null) {
-                    ElMessage.success('新增成功')
-                    open.value = false;
-                    getList();
-                } else {
-                    ElMessage.error(msg)
-                }
-
-            }
+  proxy.$refs['dataRef'].validate(async (valid) => {
+    if (valid) {
+      if (form.value.dict_data_id != undefined) {
+        let [_res, msg] = await invoke("edit_dict_data", { req: form.value });
+        if (msg == null) {
+          ElMessage.success('修改成功')
+          open.value = false;
+          getList();
+        } else {
+          ElMessage.error(msg)
         }
-    });
+      } else {
+        let [_res, msg] = await invoke("add_dict_data", { req: form.value });
+        if (msg == null) {
+          ElMessage.success('新增成功')
+          open.value = false;
+          getList();
+        } else {
+          ElMessage.error(msg)
+        }
+
+      }
+    }
+  });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-    const _ids = row.dict_data_id ? [row.dict_data_id] : ids.value;
-    const _names = row.dict_type_id ? row.dict_label : labels.value;
-    ElMessageBox
-        .confirm('是否确认删除字典编号为"' + _names + '"的数据项？')
-        .then(async () => {
-            let [res, msg] = await invoke("delete_dict_data", { ids: _ids });
-            if (msg == null) {
-                ElMessage.success('删除成功')
-                getList();
-            } else {
-                ElMessage.error(msg)
-            }
+  const _ids = row.dict_data_id ? [row.dict_data_id] : ids.value;
+  const _names = row.dict_type_id ? row.dict_label : labels.value;
+  ElMessageBox
+    .confirm('是否确认删除字典编号为"' + _names + '"的数据项？')
+    .then(async () => {
+      let [res, msg] = await invoke("delete_dict_data", { ids: _ids });
+      if (msg == null) {
+        ElMessage.success('删除成功')
+        getList();
+      } else {
+        ElMessage.error(msg)
+      }
 
-        }).catch(() => { });
+    }).catch(() => { });
 }
 
 getTypes(route.params && route.params.dict_type);
 getTypeList();
 </script>
+<style scoped>
+.el-link {
+  margin-right: 8px;
+}
+</style>
