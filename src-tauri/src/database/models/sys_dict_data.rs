@@ -6,8 +6,6 @@ pub struct SearchReq {
     pub dict_type: Option<String>,
     pub dict_label: Option<String>,
     pub status: Option<String>,
-    pub begin_time: Option<String>,
-    pub end_time: Option<String>,
 }
 
 #[derive(Default, Deserialize, Clone, Debug)]
@@ -21,11 +19,6 @@ pub struct AddReq {
     pub is_default: String,
     pub status: String,
     pub remark: Option<String>,
-}
-
-#[derive(Deserialize)]
-pub struct DeleteReq {
-    pub dict_data_ids: Vec<String>,
 }
 
 #[derive(Deserialize, Debug)]

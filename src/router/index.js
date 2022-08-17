@@ -15,7 +15,7 @@ const redirectRoute = [
 //  跳转路由
 const hiddenRoute = [
   {
-    path: '/dict_data/:dict_type_id',
+    path: '/dict_data/:dict_type',
     component: () => import('@/views/dict/data'),
     name: 'Dict_Data',
   }

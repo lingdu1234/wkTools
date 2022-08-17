@@ -3,7 +3,7 @@ use crate::{
     database::{
         common::{ListData, PageParams},
         entities::sys_dict_data,
-        models::sys_dict_data::{AddReq, DeleteReq, EditReq, SearchReq},
+        models::sys_dict_data::{AddReq, EditReq, SearchReq},
     },
     tools::db::{db_conn, DB},
 };
@@ -34,9 +34,9 @@ pub async fn add_dict_data(req: AddReq) -> (Option<String>, Option<String>) {
 
 /// delete 完全删除
 #[tauri::command]
-pub async fn delete_dict_data(req: DeleteReq) -> (Option<String>, Option<String>) {
+pub async fn delete_dict_data(ids: Vec<String>) -> (Option<String>, Option<String>) {
     let db = DB.get_or_init(db_conn).await;
-    let res = services::sys_dict_data::delete(db, req).await;
+    let res = services::sys_dict_data::delete(db, ids).await;
     match res {
         Ok(x) => (Some(x), None),
         Err(e) => (None, Some(e.to_string())),
@@ -57,9 +57,9 @@ pub async fn edit_dict_data(req: EditReq) -> (Option<String>, Option<String>) {
 /// get_user_by_id 获取用户Id获取用户
 /// db 数据库连接 使用db.0
 #[tauri::command]
-pub async fn get_dict_data_by_id(req: SearchReq) -> (Option<sys_dict_data::Model>, Option<String>) {
+pub async fn get_dict_data_by_id(id: String) -> (Option<sys_dict_data::Model>, Option<String>) {
     let db = DB.get_or_init(db_conn).await;
-    let res = services::sys_dict_data::get_by_id(db, req).await;
+    let res = services::sys_dict_data::get_by_id(db, &id).await;
     match res {
         Ok(x) => (Some(x), None),
         Err(e) => (None, Some(e.to_string())),

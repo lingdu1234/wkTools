@@ -43,5 +43,9 @@
     "excelDir": "Excel 目录",
     "excelDir_placeholder": "请选择excel所在目录",
     "excel_save_placeholder": "请选择excel保存目录"
+  },
+  "dict": {
+    "dict": "字典",
+    "dict_data": "字典数据"
   }
 }

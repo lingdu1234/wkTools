@@ -5,8 +5,6 @@ import App from './App.vue'
 import router from './router'
 import 'virtual:svg-icons-register'
 
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
-
 import './style.scss'
 import './styleDark.scss'
 import 'element-plus/dist/index.css'
@@ -23,14 +21,13 @@ const app = createApp(App)
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.resetForm = resetForm
 
+
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('RightToolbar', RightToolbar)
 
 app.use(router)
-app.use(ElementPlus, {
-  locale: zhCn,
-})
+app.use(ElementPlus)
 
 app.use(i18n);
 

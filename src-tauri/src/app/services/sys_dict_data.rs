@@ -5,7 +5,7 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseConnection
 use crate::database::{
     common::{ListData, PageParams},
     entities::sys_dict_data,
-    models::sys_dict_data::{AddReq, DeleteReq, EditReq, SearchReq},
+    models::sys_dict_data::{AddReq, EditReq, SearchReq},
 };
 
 /// get_list 获取列表
@@ -90,10 +90,10 @@ where
 }
 
 /// delete 完全删除
-pub async fn delete(db: &DatabaseConnection, delete_req: DeleteReq) -> Result<String> {
+pub async fn delete(db: &DatabaseConnection, ids: Vec<String>) -> Result<String> {
     let mut s = sys_dict_data::Entity::delete_many();
 
-    s = s.filter(sys_dict_data::Column::DictDataId.is_in(delete_req.dict_data_ids));
+    s = s.filter(sys_dict_data::Column::DictDataId.is_in(ids));
 
     // 开始删除
     let d = s.exec(db).await?;
@@ -129,13 +129,9 @@ pub async fn edit(db: &DatabaseConnection, req: EditReq) -> Result<String> {
 /// get_user_by_id 获取用户Id获取用户
 /// db 数据库连接 使用db.0
 
-pub async fn get_by_id(db: &DatabaseConnection, search_req: SearchReq) -> Result<sys_dict_data::Model> {
+pub async fn get_by_id(db: &DatabaseConnection, id: &str) -> Result<sys_dict_data::Model> {
     let mut s = sys_dict_data::Entity::find();
-    if let Some(x) = search_req.dict_data_id {
-        s = s.filter(sys_dict_data::Column::DictDataId.eq(x));
-    } else {
-        return Err(anyhow!("请输入字典类型id",));
-    }
+    s = s.filter(sys_dict_data::Column::DictDataId.eq(id));
 
     let res = match s.one(db).await? {
         Some(m) => m,

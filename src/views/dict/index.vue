@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <span>字典</span>
+        <span>{{t("dict.dict")}}</span>
         <el-divider></el-divider>
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item label="字典名称" prop="dict_name">
@@ -43,7 +43,7 @@
             <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
                 <template #default="scope">
 
-                    <el-link type="success" @click="goToData(scope.row.dict_type_id)">{{ scope.row.dict_type }}
+                    <el-link type="success" @click="goToData(scope.row.dict_type)">{{ scope.row.dict_type }}
                     </el-link>
 
                 </template>
@@ -101,6 +101,9 @@ import { ElMessage, ElMessageBox } from "element-plus"
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
+
+import i18n from '@/locals';
+const { t } = i18n.global;
 
 
 const typeList = ref([]);

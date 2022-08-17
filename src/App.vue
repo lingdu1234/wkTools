@@ -1,4 +1,5 @@
 <template>
+<el-config-provider :locale="localeLang">
   <div @contextmenu="handleMouse">
     <el-header>
       <el-container @mousedown="dragWindow">
@@ -61,6 +62,7 @@
       </el-container>
     </el-container>
   </div>
+  </el-config-provider>
 </template>
 
 <script setup>
@@ -75,6 +77,9 @@ import { useI18n } from 'vue-i18n';
 import i18n from '@/locals'; // 当前语言
 import { onMounted } from 'vue';
 const { locale } = useI18n();
+
+import zh from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
 
 const { t } = i18n.global;
 
@@ -102,6 +107,8 @@ onMounted(() => {
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
 })
+
+const localeLang = computed(() => (locale.value === 'zh' ? zh : en))
 
 function gotoAdminHome() {
   proxy.$router.push('/index');

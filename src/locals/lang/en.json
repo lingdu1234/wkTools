@@ -43,5 +43,9 @@
     "excelDir": "Excel DIR",
     "excelDir_placeholder": "Please select the directory where excel is located",
     "excel_save_placeholder": "Please select the excel save directory"
+  },
+  "dict": {
+    "dict": "Dictionary",
+    "dict_data": "Dict Data"
   }
 }

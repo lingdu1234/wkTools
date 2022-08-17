@@ -78,11 +78,12 @@
         "height": 768,
         "resizable": true,
         "title": "wkTools",
-        "width": 1024,
+        "width": 1366,
         "minWidth": 800,
         "minHeight": 600,
         "decorations": false,
-        "transparent": true
+        "transparent": true,
+        "center": true
       }
     ]
   }
