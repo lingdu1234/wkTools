@@ -1,6 +1,6 @@
 <template>
   <el-config-provider :locale="localeLang">
-    <div @contextmenu="handleMouse">
+    <div @contextmenu="handleMouse" :style="'opacity:' + opacity / 1000 + ';'">
       <el-header>
         <el-container @mousedown="dragWindow">
           <!-- 头部标题 -->
@@ -11,19 +11,30 @@
         </el-container>
         <div class="operatorClass">
           <div class="operatorClassA">
-            <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
-              <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
-            </el-icon>
-            <el-icon v-else @click="changeLang('zh')">
-              <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
-            </el-icon>
-            <span> </span>
-            <el-icon v-if="isDark" @click="toggleDark()">
-              <Moon />
-            </el-icon>
-            <el-icon v-else @click="toggleDark()">
-              <Sunny />
-            </el-icon>
+            <el-popover>
+              <template #reference>
+                <el-icon>
+                  <SvgIcon :name="isDark ? 'setOpacityDark' : 'setOpacity'"></SvgIcon>
+                </el-icon>
+              </template>
+              <el-slider v-model="opacity" :format-tooltip="formatTooltip" :min="600" :max="1000" />
+            </el-popover>
+            <div>
+              <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
+                <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
+              </el-icon>
+              <el-icon v-else @click="changeLang('zh')">
+                <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
+              </el-icon>
+            </div>
+            <div>
+              <el-icon v-if="isDark" @click="toggleDark()">
+                <Moon />
+              </el-icon>
+              <el-icon v-else @click="toggleDark()">
+                <Sunny />
+              </el-icon>
+            </div>
           </div>
           <div class="operatorClassB">
             <el-icon @click="minimize">
@@ -92,6 +103,14 @@ const toggleDark = useToggle(isDark);
 
 const { proxy } = getCurrentInstance();
 
+// 透明度
+const opacity = ref(1000)
+
+const formatTooltip = (val) => {
+  return val / 1000
+}
+
+
 
 // 标题
 const Headertitile = ref(t('app.welcome'));
@@ -110,14 +129,14 @@ onMounted(() => {
   proxy.$router.push(activePath.value);
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
-    window.onresize = () => {
-    get_table_height()
+  window.onresize = () => {
+    get_window_height()
   };
 })
 
 
-const get_table_height = () => {
-  window_h.value = document.documentElement.clientHeight*0.9;
+const get_window_height = () => {
+  window_h.value = document.documentElement.clientHeight * 0.9;
 }
 
 
@@ -185,12 +204,12 @@ const handleMouse = (e) => {
   cursor: pointer;
 
   .operatorClass {
-    width: 160px;
+    width: 180px;
     display: flex;
     justify-content: space-between;
 
     .operatorClassA {
-      width: 60px;
+      width: 80px;
       display: flex;
       justify-content: space-around;
     }
