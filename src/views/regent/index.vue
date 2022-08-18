@@ -27,10 +27,8 @@
           <el-button type="success" plain :icon="Edit" @click="handleRelation">新增关联</el-button>
         </el-col>
       </el-row>
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.page_num"
-        v-model:limit="queryParams.page_size" @pagination="getList" />
       <el-table v-loading="loading" :data="dataList">
-       <!-- :height="table_height" -->
+        <!-- :height="table_height" -->
         <el-table-column :index="(index) => index" align="center" label="#" type="index" />
         <el-table-column label="简称" align="center" prop="name_en" />
         <el-table-column label="code" align="center" prop="code" />
@@ -58,6 +56,8 @@
           </template>
         </el-table-column>
       </el-table>
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.page_num"
+        v-model:limit="queryParams.page_size" @pagination="getList" />
     </div>
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
@@ -89,31 +89,31 @@
 
   </div>
 
-      <!-- 添加或修改项目组关联项目对话框 -->
-    <el-dialog :title="title" v-model="testRelatedDialogOpen" append-to-body width="350px">
-      <el-form ref="relationFormRef" :model="relationForm" :rules="relationFormRules" label-width="80px">
-        <el-form-item label="测试组" prop="test_group">
-          <el-select v-model="relationForm.test_group" placeholder="状态" clearable>
-            <el-option v-for="dict in mc_test_group" :key="dict.value" :label="dict.label" :value="dict.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目名称" prop="test_code">
-          <el-select v-model="relationForm.test_code" placeholder="项目名称" @change="handleTestOptionChanged">
-            <el-option v-for="dict in testOptions" :key="dict.key" :label="dict.key + ' -- ' + dict.value"
-              :value="dict.key"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="组内排序" prop="test_order">
-          <el-input v-model="relationForm.test_order" placeholder="请输入组内排序" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitRelationForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
+  <!-- 添加或修改项目组关联项目对话框 -->
+  <el-dialog :title="title" v-model="testRelatedDialogOpen" append-to-body width="350px">
+    <el-form ref="relationFormRef" :model="relationForm" :rules="relationFormRules" label-width="80px">
+      <el-form-item label="测试组" prop="test_group">
+        <el-select v-model="relationForm.test_group" placeholder="状态" clearable>
+          <el-option v-for="dict in mc_test_group" :key="dict.value" :label="dict.label" :value="dict.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="项目名称" prop="test_code">
+        <el-select v-model="relationForm.test_code" placeholder="项目名称" @change="handleTestOptionChanged">
+          <el-option v-for="dict in testOptions" :key="dict.key" :label="dict.key + ' -- ' + dict.value"
+            :value="dict.key"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="组内排序" prop="test_order">
+        <el-input v-model="relationForm.test_order" placeholder="请输入组内排序" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="submitRelationForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup name="LabTest">
@@ -358,8 +358,5 @@ getTestList();
 <style scoped>
 .el-link {
   margin-right: 8px;
-}
-.el-table {
-  margin-bottom: 50px !important;
 }
 </style>
