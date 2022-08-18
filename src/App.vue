@@ -45,19 +45,21 @@
             <span>WkTools</span>
           </div>
           <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
-          <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
-                @click="getMenu(menu.path, menu.meta.title)">
-                <el-icon>
-                  <SvgIcon :name="menu.meta.icon"></SvgIcon>
-                </el-icon>
-                <span>{{ menu.meta.title }}</span>
-              </el-menu-item>
+            <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
+              @click="getMenu(menu.path, menu.meta.title)">
+              <el-icon>
+                <SvgIcon :name="menu.meta.icon"></SvgIcon>
+              </el-icon>
+              <span>{{ menu.meta.title }}</span>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-container>
           <el-main>
-            <!-- 路由占位符 -->
-            <router-view />
+            <el-scrollbar :height="window_h">
+              <!-- 路由占位符 -->
+              <router-view />
+            </el-scrollbar>
           </el-main>
         </el-container>
       </el-container>
@@ -100,13 +102,24 @@ const isMaximize = ref(false);
 // 激活菜单
 const activePath = ref('/index');
 
+const window_h = ref(null)
+
 onMounted(() => {
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
   proxy.$router.push(activePath.value);
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
+    window.onresize = () => {
+    get_table_height()
+  };
 })
+
+
+const get_table_height = () => {
+  window_h.value = document.documentElement.clientHeight*0.9;
+}
+
 
 const localeLang = computed(() => (locale.value === 'zh' ? zh : en))
 
@@ -230,6 +243,7 @@ const handleMouse = (e) => {
 .el-main {
   background-color: #d9f1e8;
   color: rgb(14, 13, 13);
+  height: 100vh;
 }
 
 .aside_logo {

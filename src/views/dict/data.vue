@@ -222,11 +222,11 @@ async function getList() {
   if (msg == null) {
     dataList.value = res.list;
     total.value = res.total;
-    loading.value = false;
   }
   else {
     ElMessage.error(msg)
   }
+  loading.value = false;
 }
 /** 取消按钮 */
 function cancel() {

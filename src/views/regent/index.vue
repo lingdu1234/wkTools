@@ -1,8 +1,7 @@
 <template>
-
   <div style="display: flex; justify-content: center; align-items: center">
     <span>项目</span>
-    <el-radio-group v-model="activeGroup" style="margin:-10px auto;">
+    <el-radio-group v-model="activeGroup" style="margin:0 auto -5px;">
       <el-radio-button label="labTest">项目管理</el-radio-button>
       <el-radio-button label="testComp">项目对比</el-radio-button>
     </el-radio-group>
@@ -11,7 +10,7 @@
   <el-divider></el-divider>
   <div class="app-container">
 
-    <!-- <TestComp v-if="activeGroup === 'testComp'" /> -->
+    <testCompVue v-if="activeGroup === 'testComp'" />
     <div v-if="activeGroup === 'labTest'">
       <div style="display: flex; justify-content: center; align-items: center">
         <el-radio-group v-model="activeTestGroup" style="margin: -15px auto 10px;" @change="getList">
@@ -28,8 +27,10 @@
           <el-button type="success" plain :icon="Edit" @click="handleRelation">新增关联</el-button>
         </el-col>
       </el-row>
-
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.page_num"
+        v-model:limit="queryParams.page_size" @pagination="getList" />
       <el-table v-loading="loading" :data="dataList">
+       <!-- :height="table_height" -->
         <el-table-column :index="(index) => index" align="center" label="#" type="index" />
         <el-table-column label="简称" align="center" prop="name_en" />
         <el-table-column label="code" align="center" prop="code" />
@@ -57,9 +58,6 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.page_num"
-        v-model:limit="queryParams.page_size" @pagination="getList" />
     </div>
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
@@ -88,7 +86,10 @@
       </template>
     </el-dialog>
 
-    <!-- 添加或修改项目组关联项目对话框 -->
+
+  </div>
+
+      <!-- 添加或修改项目组关联项目对话框 -->
     <el-dialog :title="title" v-model="testRelatedDialogOpen" append-to-body width="350px">
       <el-form ref="relationFormRef" :model="relationForm" :rules="relationFormRules" label-width="80px">
         <el-form-item label="测试组" prop="test_group">
@@ -113,14 +114,14 @@
         </div>
       </template>
     </el-dialog>
-  </div>
 </template>
 
 <script setup name="LabTest">
-import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
+import { getCurrentInstance, ref, toRefs, reactive, onMounted } from 'vue';
 import { invoke } from '@tauri-apps/api/tauri';
-import { Plus, Edit, Delete, Search, Refresh } from '@element-plus/icons-vue';
+import { Plus, Edit, Delete } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from "element-plus"
+import testCompVue from './testComp.vue';
 
 const { proxy } = getCurrentInstance();
 
@@ -135,12 +136,13 @@ const activeTestGroup = ref('ALL');
 const open = ref(false);
 const testRelatedDialogOpen = ref(false);
 const loading = ref(true);
-const showSearch = ref(true);
 const ids = ref([]);
 const total = ref(0);
 const title = ref('');
 const testOptions = ref([]);
 const testOptionsObj = ref({});
+
+
 
 const data = reactive({
   form: {},
@@ -186,11 +188,10 @@ async function getList() {
   if (msg == null) {
     dataList.value = data.list;
     total.value = data.total;
-    loading.value = false;
   } else {
     ElMessage.error(msg)
   }
-
+  loading.value = false;
 }
 
 // 获取全部测试数
@@ -221,7 +222,6 @@ const getTestList = async () => {
   });
   testOptions.value = _testOptions;
   testOptionsObj.value = _testOptionsObj;
-  queryParams.value.page_size = 20;
   loading.value = false;
 };
 const handleTestOptionChanged = (v) => {
@@ -358,5 +358,8 @@ getTestList();
 <style scoped>
 .el-link {
   margin-right: 8px;
+}
+.el-table {
+  margin-bottom: 50px !important;
 }
 </style>
