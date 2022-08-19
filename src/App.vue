@@ -11,6 +11,16 @@
         </el-container>
         <div class="operatorClass">
           <div class="operatorClassA">
+            <!-- 最上层切换 -->
+            <div>
+              <el-icon v-if="isDark" @click="set_always_on_top">
+                <SvgIcon :name="is_on_top ? 'pined' : 'pinDark'"></SvgIcon>
+              </el-icon>
+              <el-icon v-else @click="set_always_on_top">
+                <SvgIcon :name="is_on_top ? 'pined' : 'pin'"></SvgIcon>
+              </el-icon>
+            </div>
+            <!-- 透明度切换 -->
             <el-popover>
               <template #reference>
                 <el-icon>
@@ -19,6 +29,7 @@
               </template>
               <el-slider v-model="opacity" :format-tooltip="formatTooltip" :min="600" :max="1000" />
             </el-popover>
+            <!-- 语言切换 -->
             <div>
               <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
                 <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
@@ -27,6 +38,7 @@
                 <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
               </el-icon>
             </div>
+            <!-- 黑暗模式切换 -->
             <div>
               <el-icon v-if="isDark" @click="toggleDark()">
                 <Moon />
@@ -98,6 +110,9 @@ const { t } = i18n.global;
 
 // 当前是否为暗色模式
 const isDark = useDark();
+
+// 是否最上层
+const is_on_top = ref(false);
 
 const toggleDark = useToggle(isDark);
 
@@ -186,6 +201,10 @@ async function changeLang(v) {
   localStorage.setItem('lang', v);
   window.location.reload();
 }
+async function set_always_on_top() {
+  is_on_top.value = !is_on_top.value
+  await appWindow.setAlwaysOnTop(is_on_top.value)
+}
 
 const handleMouse = (e) => {
   // e.preventDefault();
@@ -204,12 +223,12 @@ const handleMouse = (e) => {
   cursor: pointer;
 
   .operatorClass {
-    width: 180px;
+    width: 200px;
     display: flex;
     justify-content: space-between;
 
     .operatorClassA {
-      width: 80px;
+      width: 100px;
       display: flex;
       justify-content: space-around;
     }
