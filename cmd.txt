@@ -1,0 +1,32 @@
+
+sea-orm-cli migrate init
+
+sea-orm-cli migrate up
+sea-orm-cli migrate down
+
+==========
+cargo watch -x run -w src
+=======
+cargo clippy --fix --allow-dirty --allow-staged
+
+# rust fmt
+cargo +nightly fmt
+==========
+#  strip -s target/release/wk
++=======
+
+
+sea-orm-cli generate entity -o src/database/entities  --expanded-format  --with-serde both
+#  测试文件
+sea-orm-cli generate entity -o src/database/entities  --expanded-format  --with-serde both  -t regent,regent_group,sys_dict_data,sys_dict_data
+
+sea-orm-cli generate entity -o db/src/database/entities  --with-serde both  -t regent,regent_group
+
+##
+sea-orm-cli generate entity -o db/src/system/entities  --expanded-format  --with-serde both  -t sys_dept,sys_dict_type,sys_dict_data,sys_job,sys_job_log,sys_login_log,sys_menu,sys_oper_log,sys_post,sys_role,sys_role_api,sys_role_dept,sys_user,sys_user_online,sys_user_post,sys_user_role,sys_api_db
+
+#  mclia数据管理
+sea-orm-cli generate entity -o db/src/dm/entities  --expanded-format  --with-serde both  -t dm_hospital,dm_instrument,dm_mc_group_test,dm_mc_sample,dm_mc_sample_pic,dm_mc_sample_result,dm_mc_test_detail,dm_province,dm_city,dm_update_info
+
+
+

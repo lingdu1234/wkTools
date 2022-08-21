@@ -1,0 +1,54 @@
+{
+  "app": {
+    "welcome": "欢迎"
+  },
+  "route": {
+    "home": "主页",
+    "img": "图片",
+    "setting": "设置",
+    "about": "关于",
+    "excel": "Excel",
+    "regent": "项目",
+    "dict": "字典",
+    "hospital": "医院",
+    "sample": "样本"
+  },
+  "img": {
+    "title": "图片处理",
+    "function": "功能选择",
+    "compressImg": "压缩图片",
+    "delete_err_img": "删除错误图片",
+    "imgDir": "图片目录",
+    "program": "程序",
+    "run": "运行程序",
+    "clearLog": "清除日志",
+    "log": "日志",
+    "log_placeholder": "程序运行日志",
+    "imgDir_placeholder": "请选择图片目录",
+    "exceTolDir": "保存目录"
+  },
+  "about": {
+    "title": "关于",
+    "checkUpdate": "检查更新",
+    "p01": "一个日常工具合集,用于处理一些日常数据;",
+    "p02": "主要使用语言:rust,js;",
+    "p03": "主要使用技术:tauri,vue3,vue-i18n,vue-router,element-plus,vueuse/core等;",
+    "aboutProgram": "程序相关",
+    "programName": "程序名称",
+    "programVersion": "程序版本",
+    "version": "版本"
+  },
+  "excel": {
+    "title": "Excel",
+    "export": "直接导出excel",
+    "export_dir": "导出excel-添加日期文件夹名",
+    "excelDir": "Excel 目录",
+    "excelDir_placeholder": "请选择excel所在目录",
+    "excel_save_placeholder": "请选择excel保存目录"
+  },
+  "dict": {
+    "dict": "字典",
+    "dict_data": "字典数据",
+    "instrument": "仪器"
+  }
+}

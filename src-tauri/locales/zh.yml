@@ -1,0 +1,27 @@
+zh:
+  excel_ori_dir: excel原始文件夹
+  excel_save_dir: excel保存文件夹
+  the_dir_you_input: 你输入的文件夹
+  is_not_exist: 不存在
+  input_again: 请重新输入
+  task_bengin_time: 任务开始时间
+  task_end_time: 任务结束时间
+  elapsed_time: 耗时
+  Failed to read the folder: 读取文件夹失败
+  Traversing folders: 遍历文件夹
+  File: 文件
+  copy to: 复制到
+  competed: 完成
+  create dir failed: 创建文件夹失败
+  copy file failed: 复制文件失败
+  delete file failed: 文件删除失败
+  image file: 图片文件
+  deleting err images: 正在删除错误Err图片
+  size_is: 体积大小
+  No need compress: 无需压缩
+  file read err: 文件读取错误
+  image: 图片
+  ori_size: 原始大小
+  now_size: 现在大小
+  is: 是
+  subfolder: 子文件夹

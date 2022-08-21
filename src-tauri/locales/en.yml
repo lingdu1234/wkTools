@@ -1,0 +1,27 @@
+en:
+  excel_ori_dir: Original folder of Excel
+  excel_save_dir: Save folder of Excel
+  the_dir_you_input: the DIR of you input
+  is_not_exist: is not exist
+  input_again: please input again
+  task_bengin_time: task bengin time
+  task_end_time: task end time
+  elapsed_time: elapsed time
+  Failed to read the folder: Failed to read the folder
+  Traversing folders: Traversing folder
+  File: File
+  copy to: copy to
+  competed: competed
+  create dir failed: create dir failed
+  copy file failed: copy file failed
+  delete file failed: delete file failed
+  image file: image file
+  deleting err images: is deleting err images
+  size_is: size is
+  No need compress: No need compress
+  file read err: file read err
+  image: image
+  ori_size: origin size
+  now_size: now size
+  is: is
+  subfolder: ’subfolder
