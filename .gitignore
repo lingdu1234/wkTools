@@ -13,8 +13,7 @@ dist-ssr
 *.local
 
 # 
-database
-__data
+src-tauri/__data/database/database.db
 ~
 
 # Editor directories and files
