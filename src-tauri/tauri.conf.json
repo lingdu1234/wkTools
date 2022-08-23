@@ -8,13 +8,14 @@
   },
   "package": {
     "productName": "wkTools",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "tauri": {
     "allowlist": {
       "all": true,
       "fs": {
         "scope": [
+          "$LOCALDATA/__data/*",
           "**"
         ],
         "all": true,
