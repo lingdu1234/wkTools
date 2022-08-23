@@ -5,14 +5,25 @@ mod app;
 mod database;
 mod tools;
 mod utils;
+use tauri::Manager;
+use tauri_plugin_log::{fern::colors::ColoredLevelConfig, LogTarget, LoggerBuilder};
 
 rust_i18n::i18n!("locales");
 
 // #[tokio::main]
 fn main() {
-    tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).with_test_writer().pretty().init();
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
+        let targets = [LogTarget::LogDir, LogTarget::Stdout, LogTarget::Webview];
+        let colors = ColoredLevelConfig::default();
+
+        tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).with_test_writer().pretty().init();
+        tauri::Builder::default()
+            .setup(|app| {
+                    #[cfg(debug_assertions)]
+                    app.get_window("main").unwrap().open_devtools();
+                    Ok(())
+            })
+            .plugin(LoggerBuilder::new().with_colors(colors).targets(targets).build())
+            .invoke_handler(tauri::generate_handler![
             // 日志
             tools::msgs::get_log,
             // 设置语言
@@ -84,6 +95,6 @@ fn main() {
             dm_mc_sample_statistics::get_cipian_data_for_chart,
             dm_mc_sample_statistics::get_all_result,
         ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+            .run(tauri::generate_context!())
+            .expect("error while running tauri application");
 }

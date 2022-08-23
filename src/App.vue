@@ -138,6 +138,7 @@ const activePath = ref('/index');
 const window_h = ref(null)
 
 onMounted(() => {
+  localStorage.clear()
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
   proxy.$router.push(activePath.value);
