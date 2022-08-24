@@ -13,30 +13,26 @@ use crate::{
     utils::path,
 };
 
-// const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
-// const DB_URL: &str = "./__data/database/database.db";
-// const SQL_URL: &str = "./__data/sql";
+const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
+const DB_PATH: &str = "./__data/database/database.db";
+const SQL_PATH: &str = "./__data/sql";
 
 //  异步初始化数据库
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 pub async fn db_conn() -> DatabaseConnection {
-    let paths = path::get_paths(vec!["DB_PATH".to_string(), "BLANK_DB_PATH".to_string(), "DB_SQL".to_string()]).await;
-    let db_path = paths.get("DB_PATH").unwrap();
-    let blank_db_path = paths.get("BLANK_DB_PATH").unwrap();
-    let db_sql = paths.get("DB_SQL").unwrap();
-    match fs::File::open(db_path) {
-        Ok(_) => connect_db(db_path).await,
-        Err(_) => {
-            tracing::info!("数据库文件不存在,需重新建立");
+    match fs::File::open(DB_PATH) {
+        Ok(_) => connect_db(DB_PATH).await,
+        Err(e) => {
+            tracing::info!("数据库文件不存在,需重新建立:{}",e.to_string());
 
-            database_file_init(&blank_db_path,&db_path);
+            database_file_init(BLANK_DB_URL,DB_PATH);
 
-            let db_conn = connect_db(db_path).await;
+            let db_conn = connect_db(DB_PATH).await;
             // 创建表格
             creat_table(&db_conn).await.expect("数据库创建失败");
             // // 数据库初始化
-            database_data_init(&db_conn,&db_sql).await;
+            database_data_init(&db_conn,&SQL_PATH).await;
             db_conn
         }
     }
@@ -47,7 +43,7 @@ async fn connect_db(db_path: &str) -> DatabaseConnection {
     let db_url = "sqlite://".to_string() + db_path;
     let mut opt = ConnectOptions::new(db_url);
     opt.sqlx_logging(false);
-    let db = Database::connect(opt).await.unwrap();
+    let db = Database::connect(opt).await.expect("database connect err");
     db
 }
 
@@ -58,7 +54,10 @@ pub async fn get_db() -> &'static DatabaseConnection {
 
 //  数据库文件复制
 fn database_file_init(blan_db_path:&str,db_path:&str) {
-    fs::copy(blan_db_path, db_path).expect("数据库文件复制失败");
+   match fs::copy(blan_db_path, db_path){
+    Ok(_) => tracing::info!("database copy success"),
+    Err(e) => tracing::info!("database copy failed:{}",e.to_string()),
+};
 }
 
 // 数据库基本数据初始化
