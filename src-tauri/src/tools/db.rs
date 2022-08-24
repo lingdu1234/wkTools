@@ -10,9 +10,9 @@ use tokio::sync::OnceCell;
 
 use crate::database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_sample_result, regent, regent_group, sys_dict_data, sys_dict_type};
 
-const BLANK_DB_URL: &str = "__data/database/db_blank.db";
-const DB_URL: &str = "__data/database/database.db";
-const SQL_URL: &str = "__data/sql";
+const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
+const DB_URL: &str = "./__data/database/database.db";
+const SQL_URL: &str = "./__data/sql";
 
 //  异步初始化数据库
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();

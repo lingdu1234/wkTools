@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Tauri App"
 authors = ["lingdu"]
 license = ""
@@ -39,7 +39,7 @@ scru128 = "2"
 # 
 futures = "0.3"
 
-tracing-subscriber="0"
+# tracing-subscriber="0"
 tracing="0"
 #  log
 tauri-plugin-log = {git="https://github.com/tauri-apps/tauri-plugin-log",features = ["colored"] }
