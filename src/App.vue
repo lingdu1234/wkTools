@@ -81,7 +81,7 @@
           <el-main>
             <el-scrollbar :height="window_h">
               <!-- 路由占位符 -->
-                <router-view />
+              <router-view />
             </el-scrollbar>
           </el-main>
         </el-container>
@@ -93,6 +93,8 @@
 <script setup>
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
+import { resourceDir } from '@tauri-apps/api/path';
+import { resolveResource } from '@tauri-apps/api/path';
 import SvgIcon from '@/components/SvgIcon.vue';
 import { constantRoutes as menus } from './router';
 import { Minus, Plus, CloseBold, Sunny, Moon } from '@element-plus/icons-vue';
@@ -138,7 +140,6 @@ const activePath = ref('/index');
 const window_h = ref(null)
 
 onMounted(() => {
-  localStorage.clear()
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
   proxy.$router.push(activePath.value);
@@ -206,9 +207,37 @@ async function set_always_on_top() {
   await appWindow.setAlwaysOnTop(is_on_top.value)
 }
 
-const handleMouse = (e) => {
-  // e.preventDefault();
+// 设置路径
+async function set_path() {
+  const res_path = await resourceDir();
+  const db_path = await resolveResource('__data/database/database.db');
+  const blank_db_path = await resolveResource('__data/database/db_blank.db');
+  const db_sql = await resolveResource('__data/sql');
+  let v = [
+    {
+      key: "RES_PATH",
+      path: res_path
+    },
+    {
+      key: "DB_PATH",
+      path: db_path
+    },
+    {
+      key: "BLANK_DB_PATH",
+      path: blank_db_path
+    },
+    {
+      key: "DB_SQL",
+      path: db_sql
+    },
+  ]
+  await invoke("set_path_js", { v })
 }
+
+const handleMouse = (e) => {
+  e.preventDefault();
+}
+set_path()
 </script>
 
 <style lang="scss" scoped>

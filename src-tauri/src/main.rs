@@ -11,13 +11,15 @@ rust_i18n::i18n!("locales");
 
 // #[tokio::main]
 fn main() {
-        let targets = [LogTarget::LogDir, LogTarget::Stdout, LogTarget::Webview];
-        let colors = ColoredLevelConfig::default();
+    let targets = [LogTarget::LogDir, LogTarget::Stdout, LogTarget::Webview];
+    let colors = ColoredLevelConfig::default();
 
-        // tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).with_test_writer().pretty().init();
-        tauri::Builder::default()
-            .plugin(LoggerBuilder::new().with_colors(colors).targets(targets).build())
-            .invoke_handler(tauri::generate_handler![
+    // tracing_subscriber::fmt().with_max_level(tracing::Level::DEBUG).with_test_writer().pretty().init();
+    tauri::Builder::default()
+        .plugin(LoggerBuilder::new().with_colors(colors).targets(targets).build())
+        .invoke_handler(tauri::generate_handler![
+            // path
+            utils::path::set_path_js,
             // 日志
             tools::msgs::get_log,
             // 设置语言
@@ -89,6 +91,6 @@ fn main() {
             dm_mc_sample_statistics::get_cipian_data_for_chart,
             dm_mc_sample_statistics::get_all_result,
         ])
-            .run(tauri::generate_context!())
-            .expect("error while running tauri application");
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

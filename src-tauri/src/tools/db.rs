@@ -8,25 +8,35 @@ use anyhow::{anyhow, Result};
 use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, DbErr, EntityTrait, Schema, Statement};
 use tokio::sync::OnceCell;
 
-use crate::database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_sample_result, regent, regent_group, sys_dict_data, sys_dict_type};
+use crate::{
+    database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_sample_result, regent, regent_group, sys_dict_data, sys_dict_type},
+    utils::path,
+};
 
-const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
-const DB_URL: &str = "./__data/database/database.db";
-const SQL_URL: &str = "./__data/sql";
+// const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
+// const DB_URL: &str = "./__data/database/database.db";
+// const SQL_URL: &str = "./__data/sql";
 
 //  异步初始化数据库
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 pub async fn db_conn() -> DatabaseConnection {
-    match fs::File::open(DB_URL) {
-        Ok(_) => connect_db(DB_URL).await,
+    let paths = path::get_paths(vec!["DB_PATH".to_string(), "BLANK_DB_PATH".to_string(), "DB_SQL".to_string()]).await;
+    let db_path = paths.get("DB_PATH").unwrap();
+    let blank_db_path = paths.get("BLANK_DB_PATH").unwrap();
+    let db_sql = paths.get("DB_SQL").unwrap();
+    match fs::File::open(db_path) {
+        Ok(_) => connect_db(db_path).await,
         Err(_) => {
-            database_file_init();
-            let db_conn = connect_db(DB_URL).await;
+            tracing::info!("数据库文件不存在,需重新建立");
+
+            database_file_init(&blank_db_path,&db_path);
+
+            let db_conn = connect_db(db_path).await;
             // 创建表格
             creat_table(&db_conn).await.expect("数据库创建失败");
-            // 数据库初始化
-            database_data_init(&db_conn).await;
+            // // 数据库初始化
+            database_data_init(&db_conn,&db_sql).await;
             db_conn
         }
     }
@@ -47,15 +57,14 @@ pub async fn get_db() -> &'static DatabaseConnection {
 }
 
 //  数据库文件复制
-fn database_file_init() -> &'static str {
-    fs::copy(BLANK_DB_URL, DB_URL).expect("数据库文件复制失败");
-    DB_URL
+fn database_file_init(blan_db_path:&str,db_path:&str) {
+    fs::copy(blan_db_path, db_path).expect("数据库文件复制失败");
 }
 
 // 数据库基本数据初始化
-async fn database_data_init(db: &DatabaseConnection) {
+async fn database_data_init(db: &DatabaseConnection,sql_path:&str) {
     let db_end = db.get_database_backend();
-    let mut entries = match fs::read_dir(SQL_URL) {
+    let mut entries = match fs::read_dir(sql_path) {
         Ok(x) => x,
         Err(_) => {
             println!("数据文件不存在，请先确认迁移文件是否存在");
@@ -154,10 +163,10 @@ async fn test_db() {
     let _db = get_db().await;
 }
 
-#[tokio::test]
-async fn test_db_file_and_data_init() {
-    database_file_init();
-    let db_conn = connect_db(DB_URL).await;
-    creat_table(&db_conn).await.expect("数据库创建失败");
-    database_data_init(&db_conn).await;
-}
+// #[tokio::test]
+// async fn test_db_file_and_data_init() {
+//     database_file_init();
+//     let db_conn = connect_db(DB_URL).await;
+//     creat_table(&db_conn).await.expect("数据库创建失败");
+//     database_data_init(&db_conn).await;
+// }
