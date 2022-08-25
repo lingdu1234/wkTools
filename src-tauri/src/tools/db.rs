@@ -8,10 +8,10 @@ use anyhow::{anyhow, Result};
 use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, DbErr, EntityTrait, Schema, Statement};
 use tokio::sync::OnceCell;
 
-use crate::{
-    database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_sample_result, regent, regent_group, sys_dict_data, sys_dict_type},
-    utils::path,
-};
+use crate::database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_sample_result, regent, regent_group, sys_dict_data, sys_dict_type};
+
+#[cfg(not(target_os = "windows"))]
+use crate::utils::path;
 
 const BLANK_DB_URL: &str = "__data/database/db_blank.db";
 const DB_PATH: &str = "__data/database/database.db";
