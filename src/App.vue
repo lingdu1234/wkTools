@@ -78,7 +78,7 @@
           </el-menu>
         </el-aside>
         <el-container>
-          <el-main>
+          <el-main v-if="is_started">
             <el-scrollbar :height="window_h">
               <!-- 路由占位符 -->
               <router-view />
@@ -120,6 +120,9 @@ const { proxy } = getCurrentInstance();
 
 // 透明度
 const opacity = ref(1000)
+
+//  软件是否已经启动
+const is_started = ref(false)
 
 const formatTooltip = (val) => {
   return val / 1000
@@ -240,7 +243,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
   setTimeout(async () => {
     await invoke('close_splashscreen')
+    is_started.value = true
   }, 1000)
+
+  
   // await invoke('close_splashscreen');
 })
 
