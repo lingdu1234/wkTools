@@ -209,7 +209,6 @@ async function set_always_on_top() {
 // 设置路径
 async function set_path() {
   const res_path = await resourceDir();
-  const db_path = await resolveResource('__data/database/database.db');
   const blank_db_path = await resolveResource('__data/database/db_blank.db');
   const db_sql = await resolveResource('__data/sql');
   const appDirPath = await appDir();
@@ -217,10 +216,6 @@ async function set_path() {
     {
       key: "RES_PATH",
       path: res_path
-    },
-    {
-      key: "DB_PATH",
-      path: db_path
     },
     {
       key: "BLANK_DB_PATH",
@@ -245,7 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
   setTimeout(async () => {
     await invoke('close_splashscreen')
-  }, 20000)
+  }, 1000)
   // await invoke('close_splashscreen');
 })
 

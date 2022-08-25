@@ -30,6 +30,7 @@ pub async fn set_path(v:Vec<PathValue>) {
     drop(path_data)
 }
 
+#[allow(dead_code)]
 pub async fn get_path(key: &str) -> String {
     let path_data = PATH_DATA.lock().await;
 

@@ -13,8 +13,11 @@ use crate::database::entities::{dm_hospital, dm_instrument, dm_mc_sample, dm_mc_
 #[cfg(not(target_os = "windows"))]
 use crate::utils::path;
 
-const BLANK_DB_URL: &str = "__data/database/db_blank.db";
 const DB_PATH: &str = "__data/database/database.db";
+
+#[cfg(target_os = "windows")]
+const BLANK_DB_URL: &str = "__data/database/db_blank.db";
+#[cfg(target_os = "windows")]
 const SQL_PATH: &str = "__data/sql";
 
 //  异步初始化数据库
@@ -22,11 +25,12 @@ pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 #[cfg(not(target_os = "windows"))]
 pub async fn db_conn() -> DatabaseConnection {
-    let paths = path::get_paths(vec!["DB_PATH".to_string(), "BLANK_DB_PATH".to_string(), "DB_SQL".to_string()]).await;
-    let db_path = paths.get("DB_PATH").unwrap();
+    let keys = vec!["BLANK_DB_PATH".to_string(), "DB_SQL".to_string(), "APP_PATH".to_string()];
+    let paths = path::get_paths(keys).await;
     let blank_db_path = paths.get("BLANK_DB_PATH").unwrap();
     let db_sql = paths.get("DB_SQL").unwrap();
-
+    let app_path = paths.get("APP_PATH").unwrap();
+    let db_path = &(app_path.to_owned() + DB_PATH);
     tracing::info!("{}|{}|{}", db_path, blank_db_path, db_sql);
     match fs::File::open(db_path) {
         Ok(_) => connect_db(db_path).await,
@@ -84,8 +88,17 @@ pub async fn get_db() -> &'static DatabaseConnection {
 }
 
 //  数据库文件复制
-fn database_file_init(blan_db_path: &str, db_path: &str) {
-    match fs::copy(blan_db_path, db_path) {
+fn database_file_init(blank_db_path: &str, db_path: &str) {
+    match fs::read(blank_db_path) {
+        Ok(_) => {},
+        Err(e) => tracing::error!("blank database file is not exist:{}",e.to_string())
+    }
+    let to_path = PathBuf::from(db_path);
+    let to_path_parent = to_path.parent().unwrap();
+    if !to_path_parent.exists() {
+        fs::create_dir_all(&to_path_parent).expect("创建目录失败");
+    }
+    match fs::copy(blank_db_path, db_path) {
         Ok(_) => tracing::info!("database copy success"),
         Err(e) => tracing::info!("database copy failed:{}", e.to_string()),
     };
