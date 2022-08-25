@@ -43,6 +43,7 @@ pub async fn get_path(key: &str) -> String {
     }
 }
 
+#[allow(dead_code)]
 pub async fn get_paths(keys: Vec<String>) -> HashMap<String,String> {
     let path_data = PATH_DATA.lock().await;
 
