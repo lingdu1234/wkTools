@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
   setTimeout(async () => {
     await invoke('close_splashscreen')
-  }, 2000)
+  }, 20000)
   // await invoke('close_splashscreen');
 })
 
