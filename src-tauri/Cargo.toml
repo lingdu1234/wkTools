@@ -18,7 +18,7 @@ tauri-build = { version = "1.0.4", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.5", features = ["api-all", "updater"] }
+tauri = { version = "1.0.5", features = ["api-all", "macos-private-api", "updater"] }
 # tauri = { git = "https://github.com/tauri-apps/tauri", branch = "dev",features = ["api-all", "updater"] }
 # 时间
 chrono = "0.4.21"
