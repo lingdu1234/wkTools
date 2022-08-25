@@ -5,7 +5,7 @@
     "beforeDevCommand": "vite dev",
     "devPath": "http://localhost:5173",
     "distDir": "../dist",
-    "withGlobalTauri":true
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "wkTools",
@@ -59,7 +59,10 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["__data/database/db_blank.db","__data/sql"],
+      "resources": [
+        "__data/database/db_blank.db",
+        "__data/sql"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -90,9 +93,18 @@
         "minHeight": 600,
         "decorations": false,
         "transparent": true,
-        "center": true
+        "center": true,
+        "visible": false
+      },
+      {
+        "width": 300,
+        "height": 300,
+        "decorations": false,
+        "transparent": true,
+        "center": true,
+        "url": "splashscreen.html",
+        "label": "splashscreen"
       }
     ]
   }
-  
 }

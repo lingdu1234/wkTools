@@ -93,8 +93,7 @@
 <script setup>
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
-import { resourceDir } from '@tauri-apps/api/path';
-import { resolveResource } from '@tauri-apps/api/path';
+import { resourceDir, appDir, resolveResource } from '@tauri-apps/api/path';
 import SvgIcon from '@/components/SvgIcon.vue';
 import { constantRoutes as menus } from './router';
 import { Minus, Plus, CloseBold, Sunny, Moon } from '@element-plus/icons-vue';
@@ -213,6 +212,7 @@ async function set_path() {
   const db_path = await resolveResource('__data/database/database.db');
   const blank_db_path = await resolveResource('__data/database/db_blank.db');
   const db_sql = await resolveResource('__data/sql');
+  const appDirPath = await appDir();
   let v = [
     {
       key: "RES_PATH",
@@ -230,14 +230,28 @@ async function set_path() {
       key: "DB_SQL",
       path: db_sql
     },
+    {
+      key: "APP_PATH",
+      path: appDirPath
+    },
   ]
   await invoke("set_path_js", { v })
 }
 
+// 添加监听函数，监听 DOM 内容加载完成事件
+document.addEventListener('DOMContentLoaded', async () => {
+
+  await set_path();
+  // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
+  setTimeout(async () => {
+    await invoke('close_splashscreen')
+  }, 2000)
+  // await invoke('close_splashscreen');
+})
+
 const handleMouse = (e) => {
   e.preventDefault();
 }
-set_path()
 </script>
 
 <style lang="scss" scoped>

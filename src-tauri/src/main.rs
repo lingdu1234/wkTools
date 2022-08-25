@@ -18,6 +18,8 @@ fn main() {
     tauri::Builder::default()
         .plugin(LoggerBuilder::new().with_colors(colors).targets(targets).build())
         .invoke_handler(tauri::generate_handler![
+            // 开屏幕动画
+            tools::comm_tools::close_splashscreen,
             // path
             utils::path::set_path_js,
             // 日志

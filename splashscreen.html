@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Wk-tools</title>
+    <style>
+        html,
+        body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 15px 15px 15px 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .splashscreen-image {
+            background-color: rgba(0, 0, 0, 0);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 50%;
+            width: 100vw !important;
+            height: 100vh !important;
+            overflow: hidden;
+            align-items: center;
+            display: flex;
+        }
+
+        .logo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            align-self: center;
+        }
+
+        .init_font {
+            font-size: 30px;
+            font-weight: bold;
+            color: aliceblue;
+        }
+
+        .myclass {
+            letter-spacing: 2px;
+            color: red;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-moz-keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-ms-keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @-o-keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .blink {
+            color: red;
+            font-size: 46px;
+            animation: blink 1s linear infinite;
+            -webkit-animation: blink 1s linear infinite;
+            -moz-animation: blink 1s linear infinite;
+            -ms-animation: blink 1s linear infinite;
+            -o-animation: blink 1s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="splashscreen-image">
+        <div class="logo">
+            <img class="logo blink" src="src/assets/logo2.png" />
+            <div class="logo">
+                <span class="blink">initializing</span>
+            </div>
+        </div>
+       
+    </div>
+</body>
+
+</html>

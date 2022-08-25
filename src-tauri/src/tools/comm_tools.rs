@@ -3,6 +3,7 @@ use std::fs::{self, ReadDir};
 use super::msgs::add_msg;
 
 use rust_i18n::t;
+use tauri::Manager;
 
 pub fn get_dir_from_string(dir: &str, label: &str) -> Result<ReadDir, String> {
     #[allow(unused_assignments)]
@@ -44,4 +45,14 @@ pub fn get_dir_from_string(dir: &str, label: &str) -> Result<ReadDir, String> {
         }
     };
     Ok(directory)
+}
+
+#[tauri::command]
+pub fn close_splashscreen(window: tauri::Window) {
+  // 关闭启动视图
+  if let Some(splashscreen) = window.get_window("splashscreen") {
+    splashscreen.close().expect("close splashscreen err");
+  }
+  // 展示主视图
+  window.get_window("main").unwrap().show().expect("show main err");
 }
