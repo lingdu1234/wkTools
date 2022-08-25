@@ -17,7 +17,7 @@
       "fs": {
         "scope": [
           "$LOCALDATA/__data/*",
-          "**"
+          "*"
         ],
         "all": true,
         "readFile": true,

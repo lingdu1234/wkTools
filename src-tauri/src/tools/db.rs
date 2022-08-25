@@ -13,26 +13,57 @@ use crate::{
     utils::path,
 };
 
-const BLANK_DB_URL: &str = "./__data/database/db_blank.db";
-const DB_PATH: &str = "./__data/database/database.db";
-const SQL_PATH: &str = "./__data/sql";
+const BLANK_DB_URL: &str = "__data/database/db_blank.db";
+const DB_PATH: &str = "__data/database/database.db";
+const SQL_PATH: &str = "__data/sql";
 
 //  异步初始化数据库
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
+#[cfg(not(target_os = "windows"))]
 pub async fn db_conn() -> DatabaseConnection {
-    match fs::File::open(DB_PATH) {
-        Ok(_) => connect_db(DB_PATH).await,
-        Err(e) => {
-            tracing::info!("数据库文件不存在,需重新建立:{}",e.to_string());
+    let paths = path::get_paths(vec!["DB_PATH".to_string(), "BLANK_DB_PATH".to_string(), "DB_SQL".to_string()]).await;
+    let db_path = paths.get("DB_PATH").unwrap();
+    let blank_db_path = paths.get("BLANK_DB_PATH").unwrap();
+    let db_sql = paths.get("DB_SQL").unwrap();
 
-            database_file_init(BLANK_DB_URL,DB_PATH);
+    tracing::info!("{}|{}|{}", db_path, blank_db_path, db_sql);
+    match fs::File::open(db_path) {
+        Ok(_) => connect_db(db_path).await,
+        Err(_) => {
+            tracing::info!("数据库文件不存在,需重新建立");
 
-            let db_conn = connect_db(DB_PATH).await;
+            database_file_init(&blank_db_path, &db_path);
+
+            let db_conn = connect_db(db_path).await;
             // 创建表格
             creat_table(&db_conn).await.expect("数据库创建失败");
             // // 数据库初始化
-            database_data_init(&db_conn,&SQL_PATH).await;
+            database_data_init(&db_conn, &db_sql).await;
+            db_conn
+        }
+    }
+}
+
+#[cfg(target_os = "windows")]
+pub async fn db_conn() -> DatabaseConnection {
+    let db_path = DB_PATH;
+    let blank_db_path = BLANK_DB_URL;
+    let db_sql = SQL_PATH;
+
+    tracing::info!("{}|{}|{}", db_path, blank_db_path, db_sql);
+    match fs::File::open(db_path) {
+        Ok(_) => connect_db(db_path).await,
+        Err(_) => {
+            tracing::info!("数据库文件不存在,需重新建立");
+
+            database_file_init(&blank_db_path, &db_path);
+
+            let db_conn = connect_db(db_path).await;
+            // 创建表格
+            creat_table(&db_conn).await.expect("数据库创建失败");
+            // // 数据库初始化
+            database_data_init(&db_conn, &db_sql).await;
             db_conn
         }
     }
@@ -53,15 +84,15 @@ pub async fn get_db() -> &'static DatabaseConnection {
 }
 
 //  数据库文件复制
-fn database_file_init(blan_db_path:&str,db_path:&str) {
-   match fs::copy(blan_db_path, db_path){
-    Ok(_) => tracing::info!("database copy success"),
-    Err(e) => tracing::info!("database copy failed:{}",e.to_string()),
-};
+fn database_file_init(blan_db_path: &str, db_path: &str) {
+    match fs::copy(blan_db_path, db_path) {
+        Ok(_) => tracing::info!("database copy success"),
+        Err(e) => tracing::info!("database copy failed:{}", e.to_string()),
+    };
 }
 
 // 数据库基本数据初始化
-async fn database_data_init(db: &DatabaseConnection,sql_path:&str) {
+async fn database_data_init(db: &DatabaseConnection, sql_path: &str) {
     let db_end = db.get_database_backend();
     let mut entries = match fs::read_dir(sql_path) {
         Ok(x) => x,
