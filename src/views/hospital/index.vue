@@ -288,7 +288,7 @@ const goToData = (id, name) => {
 getList();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .el-link {
   margin-right: 8px;
 }

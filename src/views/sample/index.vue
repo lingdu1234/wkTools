@@ -758,20 +758,6 @@ function handleDelete() {
         .catch(() => { });
 }
 
-
-function handleRecover() {
-    ElMessageBox
-        .confirm('是否确认恢复"  ' + ids.value.length + '  "项数据？')
-        .then(function () {
-            return recoverSample({ ids: ids.value });
-        })
-        .then(() => {
-            getList();
-            ElMessage.error('删除成功');
-        })
-        .catch(() => { });
-}
-
 const progressValueFormat = (v) => {
     return '文件处理进度' + v + '%';
 };
@@ -789,3 +775,8 @@ const init = async () => {
 init();
 </script>
 
+<style lang="scss" scoped>
+.el-link {
+  margin-right: 8px;
+}
+</style>

@@ -22,7 +22,7 @@
       </el-form-item>
       <!-- 开始处理按钮 -->
       <el-form-item :label="t('img.program')">
-        <el-form-item>
+        <el-form-item style="width:500px">
           <el-button type="primary" :icon="Promotion" @click="run_program">
             {{ t('img.run') }}</el-button>
           <el-button :icon="Refresh" @click="clear_logs">{{ t('img.clearLog') }}</el-button>

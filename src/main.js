@@ -13,6 +13,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import Pagination from '@/components/Pagination'
 import DictTag from '@/components/DictTag'
+import RightToolbar from '@/components/RightToolbar'
 import { useDict } from '@/utils/dict'
 import { resetForm, parseTime } from '@/utils/utl'
 
@@ -26,6 +27,7 @@ app.config.globalProperties.parseTime = parseTime
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('parseTime', parseTime)
+app.component('right-toolbar', RightToolbar)
 
 app.use(router)
 app.use(ElementPlus)

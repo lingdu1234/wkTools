@@ -56,7 +56,7 @@ onMounted(async () => {
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
   window.onresize = () => {
-    get_window_height()
+    // get_window_height()
   };
 })
 
