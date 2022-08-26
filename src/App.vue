@@ -1,6 +1,6 @@
 <template>
   <el-config-provider :locale="localeLang">
-    <div @contextmenu="handleMouse" :style="'opacity:' + opacity / 1000 + ';'">
+    <div v-if="is_started" @contextmenu="handleMouse" :style="'opacity:' + opacity / 1000 + ';'">
       <el-header>
         <el-container @mousedown="dragWindow">
           <!-- 头部标题 -->
@@ -78,7 +78,7 @@
           </el-menu>
         </el-aside>
         <el-container>
-          <el-main v-if="is_started">
+          <el-main>
             <el-scrollbar :height="window_h">
               <!-- 路由占位符 -->
               <router-view />
@@ -203,6 +203,7 @@ async function changeLang(v) {
   await invoke('set_lang', { lang: v });
   localStorage.setItem('lang', v);
   window.location.reload();
+  is_started.value = true
 }
 async function set_always_on_top() {
   is_on_top.value = !is_on_top.value
@@ -238,20 +239,19 @@ async function set_path() {
 
 // 添加监听函数，监听 DOM 内容加载完成事件
 document.addEventListener('DOMContentLoaded', async () => {
-
   await set_path();
-  // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
-  setTimeout(async () => {
-    await invoke('close_splashscreen')
-    is_started.value = true
-  }, 1000)
+  is_started.value = true
 
-  
-  // await invoke('close_splashscreen');
+  // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
+  // setTimeout(async () => {
+  await invoke('close_splashscreen')
+  // is_started.value = true
+  // }, 1000)
+
 })
 
 const handleMouse = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
 }
 </script>
 

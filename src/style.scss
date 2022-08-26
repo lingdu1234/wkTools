@@ -24,12 +24,20 @@ body,
   --el-input-border-radius:5px !important;
   // --el-input-bg-color:#bbe6d6!important;
 }
+.el-form-item__content{
+  width: 210px !important;
+}
 
 // .el-popper{
 //   // --el-bg-color-overlay::#bbe6d6!important;
 // }
 .el-slider__button{
   --el-color-white:#bbe6d6!important;
+}
+
+.el-dialog {
+  --el-dialog-border-radius: 8px !important;
+  // --el-bg-color:#bbe6d6 !important;
 }
 
 
