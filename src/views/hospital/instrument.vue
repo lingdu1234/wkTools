@@ -147,7 +147,6 @@ const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型详细 */
 function getIns(id,name) {
-  console.log(id,name)
   queryParams.value.hospital_id = id;
   queryParams.value.hospital_name = name;
   getList();

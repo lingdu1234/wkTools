@@ -162,7 +162,7 @@
             <el-form-item v-if="isUploadSample">
                 <template #label>
                     <span>
-                        <el-tooltip placement="top">
+                        <el-tooltip effect="light" placement="top">
                             <template #content>
                                 <div>
                                     选择你上传的Excel表格数据类型，
@@ -193,7 +193,7 @@
             <el-form-item v-if="!isUploadSample">
                 <template #label>
                     <span>
-                        <el-tooltip placement="top">
+                        <el-tooltip effect="light" placement="top">
                             <template #content>
                                 <div>
                                     选择你上传的Excel表格类型，
@@ -220,7 +220,7 @@
             <el-form-item v-if="!isUploadSample">
                 <template #label>
                     <span>
-                        <el-tooltip placement="top">
+                        <el-tooltip effect="light" placement="top">
                             <template #content>
                                 <div>
                                     是否强制更新
@@ -240,7 +240,7 @@
             <el-form-item v-if="!isUploadSample">
                 <template #label>
                     <span>
-                        <el-tooltip placement="top">
+                        <el-tooltip effect="light" placement="top">
                             <template #content>
                                 <div>
                                     Excel上传

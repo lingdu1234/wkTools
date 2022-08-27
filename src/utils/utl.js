@@ -50,3 +50,18 @@ export function parseTime(time, pattern) {
   })
   return time_str
 }
+
+/**
+ *  转置数组，各个子数组长度必须一致
+ *  @List 需要转换的二维数
+ */
+ export const reverseArray = (List) => {
+  return List[0].map(function(col, i) {
+
+    return List.map(function(row) {
+
+      return row[i]
+
+    })
+  })
+}

@@ -11,7 +11,8 @@
     "regent": "项目",
     "dict": "字典",
     "hospital": "医院",
-    "sample": "样本"
+    "sample": "样本",
+    "statistics": "统计"
   },
   "img": {
     "title": "图片处理",

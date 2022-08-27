@@ -11,7 +11,8 @@
     "regent": "Regent",
     "dict": "Dict",
     "hospital": "Hospital",
-    "sample": "Sample"
+    "sample": "Sample",
+    "statistics": "statistics"
   },
   "img": {
     "title": "image processing",

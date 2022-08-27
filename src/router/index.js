@@ -80,6 +80,13 @@ export const constantRoutes = [
 
   },
   {
+    path: '/statistics',
+    component: () => import('@/views/sample/sample_statistics'),
+    name: "Statistics",
+    meta: { title: "route.statistics", icon: 'statistics' },
+
+  },
+  {
     path: '/setting',
     component: () => import('@/views/setting'),
     name: 'Setting',
