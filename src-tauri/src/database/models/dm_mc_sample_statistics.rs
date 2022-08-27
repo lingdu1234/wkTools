@@ -71,7 +71,8 @@ pub struct HashMapJsonWithTitle {
 #[derive(Debug, Serialize)]
 pub struct BendiResult {
     pub title: Vec<String>,
-    pub result: Vec<serde_json::Value>,
+    // pub result: Vec<serde_json::Value>,
+    pub result: Vec<HashMap<String,serde_json::Value>>,
 }
 #[derive(Debug, Serialize)]
 pub struct SampleWithResult {

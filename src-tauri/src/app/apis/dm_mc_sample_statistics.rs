@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{
     app::services,
     database::{
@@ -58,7 +60,7 @@ pub async fn get_bendi_count(options: QueryOptions, opt_string: String, req: Sea
 }
 
 #[tauri::command]
-pub async fn get_bendi_range(options: QueryOptions, opt_string: String, req: SearchReq) -> (Option<Vec<sea_orm::JsonValue>>, Option<String>) {
+pub async fn get_bendi_range(options: QueryOptions, opt_string: String, req: SearchReq) -> (Option<Vec<HashMap<String,serde_json::Value>>>, Option<String>) {
     let db = get_db().await;
     let res = services::dm_mc_sample_statistics::get_bendi_data_range(db, req, opt_string, options).await;
     match res {

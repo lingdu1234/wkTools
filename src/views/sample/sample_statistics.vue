@@ -356,15 +356,15 @@
 
       <el-table v-loading="loading" border :data="dataList">
         <el-table-column label="#" align="center" width="50" type="index" />
-        <!-- <el-table-column type="expand" label="＋">
-                    <template #default="props">
-                        <Instrument :sample_id="props.row.id" />
-                    </template>
-                </el-table-column> -->
-        <el-table-column label="医院名称" align="center" prop="hospital_name" :show-overflow-tooltip="true" width="180" />
-        <el-table-column label="条码" align="center" prop="sample_code" :show-overflow-tooltip="true" width="150" />
-        <el-table-column label="类型" align="center" width="100" prop="sample_type" />
 
+        <el-table-column label="医院名称" align="center" prop="hospital_name" :show-overflow-tooltip="true" width="180" />
+        <el-table-column label="条码" align="center" prop="sample_code" :show-overflow-tooltip="true" width="150">
+          <template #default="scope">
+            <el-link type="success" @click="goToData(scope.row.id)">{{ scope.row.sample_code }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column label="类型" align="center" width="100" prop="sample_type" />
         <el-table-column label="项目组" align="center" width="100" prop="test_group" />
         <el-table-column label="状态" align="center" width="80" prop="status" :show-overflow-tooltip="true" />
         <el-table-column label="试剂批次" align="center" width="120" prop="regent_lot" />
@@ -1286,9 +1286,6 @@ async function getBenDiRange() {
     ElMessage.error(msg2);
     return;
   }
-  console.log('result :>> ', result);
-  console.log('title :>> ', title);
-  console.log('range :>> ', range);
   const key_cn_s = ['月份', '医院', '仪器', '试剂', '试剂批号', '测试名称'];
   const key_en_s = [
     'month',
@@ -1303,7 +1300,8 @@ async function getBenDiRange() {
     ...title,
     '开始时间',
     '结束时间',
-    '均值',
+    '样本均值',
+    '总均值',
     '标准差',
     'CV',
   ];
@@ -1312,6 +1310,7 @@ async function getBenDiRange() {
     ...title,
     'begin_time',
     'end_time',
+    's_avg',
     'all_avg',
     'all_std',
     'all_cv',
@@ -1380,6 +1379,13 @@ async function getAllSampleData() {
     resultOptionValue.value
   );
 }
+
+//  数据页面跳转
+const goToData = (id) => {
+  proxy.$router.push({path:"/sample_result",query: {id}});
+}
+
+
 // --
 const init = async () => {
   await getHospitalsOption();

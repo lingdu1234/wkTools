@@ -1052,7 +1052,8 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
 }
 
 #[cfg(feature = "sqlite")]
-pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, options_string: String, opts: QueryOptions) -> Result<Vec<sea_orm::JsonValue>> {
+pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, options_string: String, opts: QueryOptions) -> Result<Vec<HashMap<String,serde_json::Value>>> {
+
     let option_str = options_string.split(',').collect::<Vec<&str>>();
     let mut options: Vec<f64> = Vec::new();
     for i in option_str {
@@ -1169,7 +1170,6 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         .column_as(Expr::cust(&all_avg), "all_avg")
         // .column_as(Expr::cust(&all_std), "all_std")
         // .column_as(Expr::cust(&all_cv), "all_cv")
-        .column_as(Expr::cust(&s_avg), "s_avg")
         .column_as(Expr::cust(&s_range), "s_range")
         .column_as(Expr::cust(&qc_avg), "qc_avg")
         .column_as(Expr::cust(&qc_range), "qc_range")
@@ -1179,7 +1179,33 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         .column_as(Expr::cust(&cal1_range), "cal1_range")
         .column_as(Expr::cust(&cal2_avg), "cal2_avg")
         .column_as(Expr::cust(&cal2_range), "cal2_range");
-    let range = s.into_json().all(db).await?;
+
+        let  keys: Vec<String> = vec![
+            "hospital".to_string(),
+            "instrument".to_string(),
+            "month".to_string(),
+            "test_group".to_string(),
+            "regent_lot".to_string(),
+            "test_name".to_string(),
+            "vid".to_string(),
+            "begin_time".to_string(),
+            "end_time".to_string(),
+            "s_avg".to_string(),
+            "s_range".to_string(),
+            "qc_avg".to_string(),
+            "npc_avg".to_string(),
+            "npc_range".to_string(),
+            "cal1_avg".to_string(),
+            "cal1_range".to_string(),
+            "cal2_avg".to_string(),
+            "cal2_range".to_string(),
+        ];
+        let ss = s.clone().build(db_end);
+        let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
+    
+    
+        let range = get_query_result(sql_result, keys);
+
     Ok(range)
 }
 // 获取本底计数
@@ -1315,6 +1341,19 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
 #[cfg(feature = "sqlite")] //需要重写
 pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, options_string: String, opts: QueryOptions) -> Result<BendiResult> {
     let option_str = options_string.split(',').collect::<Vec<&str>>();
+    let mut keys: Vec<String> = vec![
+        "hospital".to_string(),
+        "instrument".to_string(),
+        "month".to_string(),
+        "test_group".to_string(),
+        "regent_lot".to_string(),
+        "test_name".to_string(),
+        "vid".to_string(),
+        "begin_time".to_string(),
+        "end_time".to_string(),
+        "s_avg".to_string(),
+        "all_avg".to_string(),
+    ];
     let mut options: Vec<f64> = Vec::new();
     for i in option_str {
         let v = match i.parse::<f64>() {
@@ -1436,8 +1475,15 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
         // .column_as(Expr::cust(&all_std), "all_std")
         // .column_as(Expr::cust(&all_cv), "all_cv")
         ;
-    let result = s.into_json().all(db).await?;
-    tracing::info!("{:#?}",result[0]);
+        let ss = s.clone().build(db_end);
+        let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
+    
+        keys.append(&mut title.clone());
+    
+        let result = get_query_result(sql_result, keys);
+
+
+
     Ok(BendiResult { result, title })
 }
 
