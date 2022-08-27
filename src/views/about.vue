@@ -53,7 +53,6 @@ const get_base_info = async () => {
 const check_update = async () => {
   try {
   const { shouldUpdate, manifest } = await checkUpdate()
-  console.log('first', shouldUpdate)
   if (shouldUpdate) {
     // display dialog
     await installUpdate()

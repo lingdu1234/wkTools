@@ -52,7 +52,7 @@ default-locale = "en"
 # sea-orm
 [dependencies.sea-orm]
 default-features = false
-features = ["macros", "runtime-tokio-rustls", "with-json","debug-print"]
+features = ["macros", "runtime-tokio-rustls", "with-json","debug-print","with-rust_decimal"]
 version = "0.9"
 
 [features]

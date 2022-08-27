@@ -1,171 +1,72 @@
 <template>
   <div class="app-container">
     <div>
-      <el-form
-        :model="queryParams"
-        ref="queryRef"
-        :inline="true"
-        v-show="showSearch"
-        label-width="68px"
-      >
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="医院名称" prop="hospital_id">
-          <el-select
-            v-model="queryParams.hospital_id"
-            placeholder="医院名称"
-            clearable
-            class="query_form_item"
-            @change="getInstrumentsOption(1)"
-          >
-            <el-option
-              v-for="dict in hospitalsOption"
-              :key="dict.key"
-              :label="dict.label"
-              :value="dict.key"
-            />
+          <el-select v-model="queryParams.hospital_id" placeholder="医院名称" clearable class="query_form_item"
+            @change="getInstrumentsOption(1)">
+            <el-option v-for="dict in hospitalsOption" :key="dict.key" :label="dict.label" :value="dict.key" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="仪器名称" prop="instrument_id">
-          <el-select
-            v-model="queryParams.instrument_id"
-            placeholder="仪器名称"
-            clearable
-            class="query_form_item"
-          >
-            <el-option
-              v-for="dict in instrumentsOption"
-              :key="dict.key"
-              :label="dict.label + '-' + dict.code"
-              :value="dict.key"
-            />
+          <el-select v-model="queryParams.instrument_id" placeholder="仪器名称" clearable class="query_form_item">
+            <el-option v-for="dict in instrumentsOption" :key="dict.key" :label="dict.label + '-' + dict.code"
+              :value="dict.key" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="条码编号" prop="sample_code">
-          <el-input
-            class="query_form_item"
-            v-model="queryParams.sample_code"
-            placeholder="条码编号"
-            clearable
-          />
+          <el-input class="query_form_item" v-model="queryParams.sample_code" placeholder="条码编号" clearable />
         </el-form-item>
 
         <el-form-item label="样本类型" prop="sample_type">
-          <el-select
-            v-model="queryParams.sample_type"
-            placeholder="仪器名称"
-            clearable
-            class="query_form_item"
-          >
-            <el-option
-              v-for="dict in mc_sample_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.label"
-            />
+          <el-select v-model="queryParams.sample_type" placeholder="仪器名称" clearable class="query_form_item">
+            <el-option v-for="dict in mc_sample_type" :key="dict.value" :label="dict.label" :value="dict.label" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="项目组别" prop="test_group">
-          <el-select
-            v-model="queryParams.test_group"
-            placeholder="项目组别"
-            clearable
-            class="query_form_item"
-          >
-            <el-option
-              v-for="dict in mc_test_group"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.label"
-              :disabled="dict.status === '0'"
-            />
+          <el-select v-model="queryParams.test_group" placeholder="项目组别" clearable class="query_form_item">
+            <el-option v-for="dict in mc_test_group" :key="dict.value" :label="dict.label" :value="dict.label"
+              :disabled="dict.status === '0'" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="试剂批次" prop="regent_lot">
-          <el-input
-            class="query_form_item"
-            v-model="queryParams.regent_lot"
-            placeholder="试剂批次"
-            clearable
-          />
+          <el-input class="query_form_item" v-model="queryParams.regent_lot" placeholder="试剂批次" clearable />
         </el-form-item>
 
         <el-form-item label="样本状态" prop="status">
-          <el-select
-            class="query_form_item"
-            v-model="queryParams.status"
-            placeholder="样本状态"
-            clearable
-          >
-            <el-option
-              v-for="dict in mc_sample_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.label"
-            />
+          <el-select class="query_form_item" v-model="queryParams.status" placeholder="样本状态" clearable>
+            <el-option v-for="dict in mc_sample_status" :key="dict.value" :label="dict.label" :value="dict.label" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="开始时间" prop="begin_time">
-          <el-date-picker
-            class="query_form_item"
-            clearable
-            v-model="queryParams.begin_time"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="开始时间"
-          >
+          <el-date-picker class="query_form_item" clearable v-model="queryParams.begin_time" type="date"
+            value-format="YYYY-MM-DD" placeholder="开始时间">
           </el-date-picker>
         </el-form-item>
 
         <el-form-item label="结束时间" prop="end_time">
-          <el-date-picker
-            class="query_form_item"
-            clearable
-            v-model="queryParams.end_time"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="结束时间"
-          >
+          <el-date-picker class="query_form_item" clearable v-model="queryParams.end_time" type="date"
+            value-format="YYYY-MM-DD" placeholder="结束时间">
           </el-date-picker>
         </el-form-item>
 
         <el-form-item label="无效结果" prop="has_invalid_result">
-          <el-select
-            class="query_form_item"
-            v-model="queryParams.has_invalid_result"
-            placeholder="无效结果"
-            clearable
-          >
-            <el-option
-              v-for="dict in has_invalid_result"
-              :key="dict.key"
-              :label="dict.key"
-              :value="dict.value"
-            />
+          <el-select class="query_form_item" v-model="queryParams.has_invalid_result" placeholder="无效结果" clearable>
+            <el-option v-for="dict in has_invalid_result" :key="dict.key" :label="dict.key" :value="dict.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="项目一致" prop="is_abnormal">
-          <el-select
-            class="query_form_item"
-            v-model="queryParams.is_abnormal"
-            placeholder="项目一致性"
-            clearable
-          >
-            <el-option
-              v-for="dict in is_abnormal"
-              :key="dict.key"
-              :label="dict.key"
-              :value="dict.value"
-            />
+          <el-select class="query_form_item" v-model="queryParams.is_abnormal" placeholder="项目一致性" clearable>
+            <el-option v-for="dict in is_abnormal" :key="dict.key" :label="dict.key" :value="dict.value" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="getList"
-            >搜索</el-button
-          >
+          <el-button type="primary" icon="Search" @click="getList">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
@@ -189,41 +90,27 @@
                 <td>原始数据</td>
                 <td></td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    @click="getAllOriginData"
-                    >获取数据
+                  <el-button size="small" type="warning" @click="getAllOriginData">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    style="width: 60px"
-                    :disabled="exportOutData.OriginData.length === 0"
-                    @click="
+                  <el-button size="small" type="warning" style="width: 60px"
+                    :disabled="exportOutData.OriginData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.OriginData,
                         '原始数据'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    style="width: 60px"
-                    :disabled="exportOutData.OriginData.length === 0"
-                    @click="
+                  <el-button size="small" type="warning" style="width: 60px"
+                    :disabled="exportOutData.OriginData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.OriginData,
                         '原始数据'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -232,26 +119,15 @@
                 <td>样本统计</td>
                 <td></td>
                 <td>
-                  <el-button size="small" type="info" @click="getTestCount"
-                    >获取数据
+                  <el-button size="small" type="info" @click="getTestCount">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="info"
-                    style="width: 60px"
-                    :disabled="exportOutData.SampleCountData_A.length === 0"
-                    @click="exportSampleCountData('A')"
-                    >格式A
+                  <el-button size="small" type="info" style="width: 60px"
+                    :disabled="exportOutData.SampleCountData_A.length === 0" @click="exportSampleCountData('A')">格式A
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="info"
-                    style="width: 60px"
-                    :disabled="exportOutData.SampleCountData_B.length === 0"
-                    @click="exportSampleCountData('B')"
-                    >格式B
+                  <el-button size="small" type="info" style="width: 60px"
+                    :disabled="exportOutData.SampleCountData_B.length === 0" @click="exportSampleCountData('B')">格式B
                   </el-button>
                 </td>
               </tr>
@@ -260,54 +136,36 @@
                 <td>C</td>
                 <td>无效统计</td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="
-                      () => {
-                        tongJiDialogTitle = '无效统计设置';
-                        tongJiSettingDialog = true;
-                      }
-                    "
-                    >选项设置
+                  <el-button size="small" type="primary" @click="
+                    () => {
+                      tongJiDialogTitle = '无效统计设置';
+                      tongJiSettingDialog = true;
+                    }
+                  ">选项设置
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="getInvalidCount()"
-                    >获取数据
+                  <el-button size="small" type="primary" @click="getInvalidCount()">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.invalidResult.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.invalidResult.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.invalidResult,
                         '无效样本统计'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.invalidResult.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.invalidResult.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.invalidResult,
                         '无效样本统计'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -317,44 +175,27 @@
                 <td>无效样本</td>
                 <td></td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    plain
-                    @click="getInvalidSample()"
-                    >获取数据
+                  <el-button size="small" type="primary" plain @click="getInvalidSample()">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    plain
-                    style="width: 60px"
-                    :disabled="exportOutData.invalidSample.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" plain style="width: 60px"
+                    :disabled="exportOutData.invalidSample.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.invalidSample,
                         '无效样本'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    plain
-                    style="width: 60px"
-                    :disabled="exportOutData.invalidSample.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" plain style="width: 60px"
+                    :disabled="exportOutData.invalidSample.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.invalidSample,
                         '无效样本'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -380,49 +221,31 @@
                 <td>A</td>
                 <td>结果数据</td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    @click="OpenResultSettingDialog"
-                    >选项设置
+                  <el-button size="small" type="warning" @click="OpenResultSettingDialog">选项设置
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    @click="getAllSampleData"
-                    >获取数据
+                  <el-button size="small" type="warning" @click="getAllSampleData">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    style="width: 60px"
-                    :disabled="exportOutData.allSample.length === 0"
-                    @click="
+                  <el-button size="small" type="warning" style="width: 60px"
+                    :disabled="exportOutData.allSample.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.allSample,
                         '样本结果'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="warning"
-                    style="width: 60px"
-                    :disabled="exportOutData.allSample.length === 0"
-                    @click="
+                  <el-button size="small" type="warning" style="width: 60px"
+                    :disabled="exportOutData.allSample.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.allSample,
                         '样本结果'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -431,49 +254,31 @@
                 <td>B</td>
                 <td>阳性率</td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="openPositiveRateDialog"
-                    >选项设置
+                  <el-button size="small" type="primary" @click="openPositiveRateDialog">选项设置
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="getPositiveRateData"
-                    >获取数据
+                  <el-button size="small" type="primary" @click="getPositiveRateData">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.positiveRateData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.positiveRateData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.positiveRateData,
                         '阳性率统计'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.positiveRateData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.positiveRateData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.positiveRateData,
                         '阳性率统计'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -482,46 +287,31 @@
                 <td>C</td>
                 <td>磁片统计</td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="openMagnetSettingDialog"
-                    >选项设置
+                  <el-button size="small" type="primary" @click="openMagnetSettingDialog">选项设置
                   </el-button>
                 </td>
                 <td>
-                  <el-button size="small" type="primary" @click="getCiPianData"
-                    >获取数据
+                  <el-button size="small" type="primary" @click="getCiPianData">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.CiPianCountData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.CiPianCountData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.CiPianCountData,
                         '磁片统计'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.CiPianCountData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.CiPianCountData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.CiPianCountData,
                         '磁片统计'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -529,46 +319,31 @@
                 <td>D</td>
                 <td>本底范围</td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    @click="openBenDiRangeSettingDialog"
-                    >选项设置
+                  <el-button size="small" type="primary" @click="openBenDiRangeSettingDialog">选项设置
                   </el-button>
                 </td>
                 <td>
-                  <el-button size="small" type="primary" @click="getBenDiRange"
-                    >获取数据
+                  <el-button size="small" type="primary" @click="getBenDiRange">获取数据
                   </el-button>
                 </td>
                 <td>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.BenDiRangeData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.BenDiRangeData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'Excel',
                         exportOutData.BenDiRangeData,
                         '本底范围'
                       )
-                    "
-                    >Excel
+                    ">Excel
                   </el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                    style="width: 60px"
-                    :disabled="exportOutData.BenDiRangeData.length === 0"
-                    @click="
+                  <el-button size="small" type="primary" style="width: 60px"
+                    :disabled="exportOutData.BenDiRangeData.length === 0" @click="
                       exportDataExcelOrCsv(
                         'CSV',
                         exportOutData.BenDiRangeData,
                         '本底范围'
                       )
-                    "
-                    >CSV
+                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -586,156 +361,76 @@
                         <Instrument :sample_id="props.row.id" />
                     </template>
                 </el-table-column> -->
-        <el-table-column
-          label="医院名称"
-          align="center"
-          prop="hospital_name"
-          :show-overflow-tooltip="true"
-          width="180"
-        />
-        <el-table-column
-          label="条码"
-          align="center"
-          prop="sample_code"
-          :show-overflow-tooltip="true"
-          width="150"
-        />
-        <el-table-column
-          label="类型"
-          align="center"
-          width="100"
-          prop="sample_type"
-        />
+        <el-table-column label="医院名称" align="center" prop="hospital_name" :show-overflow-tooltip="true" width="180" />
+        <el-table-column label="条码" align="center" prop="sample_code" :show-overflow-tooltip="true" width="150" />
+        <el-table-column label="类型" align="center" width="100" prop="sample_type" />
 
-        <el-table-column
-          label="项目组"
-          align="center"
-          width="100"
-          prop="test_group"
-        />
-        <el-table-column
-          label="状态"
-          align="center"
-          width="80"
-          prop="status"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          label="试剂批次"
-          align="center"
-          width="120"
-          prop="regent_lot"
-        />
-        <el-table-column
-          label="备注"
-          align="center"
-          prop="remark"
-          :show-overflow-tooltip="true"
-        >
+        <el-table-column label="项目组" align="center" width="100" prop="test_group" />
+        <el-table-column label="状态" align="center" width="80" prop="status" :show-overflow-tooltip="true" />
+        <el-table-column label="试剂批次" align="center" width="120" prop="regent_lot" />
+        <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true">
         </el-table-column>
-        <el-table-column
-          label="样本描述"
-          align="center"
-          prop="desc"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          label="测试时间"
-          align="center"
-          prop="test_time"
-          width="160"
-        >
+        <el-table-column label="样本描述" align="center" prop="desc" :show-overflow-tooltip="true" />
+        <el-table-column label="测试时间" align="center" prop="test_time" width="160">
           <template #default="scope">
             <span>{{ parseTime(scope.row.test_time) }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="上传时间"
-          align="center"
-          prop="created_at"
-          width="160"
-        >
+        <el-table-column label="上传时间" align="center" prop="created_at" width="160">
           <template #default="scope">
             <span>{{ parseTime(scope.row.created_at) }}</span>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.page_num"
-        v-model:limit="queryParams.page_size"
-        @pagination="getList"
-      />
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.page_num"
+        v-model:limit="queryParams.page_size" @pagination="getList" />
     </div>
   </div>
   <!-- 对话框 -->
   <!-- 阳性率统计设置对话框 -->
-  <el-dialog
-    :title="tongJiDialogTitle"
-    v-model="tongJiSettingDialog"
-    :before-close="beforeTongJiDialogClose"
-    width="500px"
-    append-to-body
-  >
+  <el-dialog :title="tongJiDialogTitle" v-model="tongJiSettingDialog" :before-close="beforeTongJiDialogClose"
+    width="500px" append-to-body>
     <el-form label-width="80px">
       <!--         阳性率设置选项-->
       <el-form-item label="统计选项:" v-if="positiveRateOption.isShow">
         <el-radio-group v-model="positiveRateOption.optionSelected">
-          <el-radio
-            v-for="option in positiveRateOption.options"
-            :key="option.label"
-            :label="option.label"
-            >{{ option.tagName }}
+          <el-radio v-for="option in positiveRateOption.options" :key="option.label" :label="option.label">{{
+              option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="统计规则:" v-if="positiveRateOption.isShow">
         <!--          使用 ！== 注意类型-->
-        <el-input
-          :disabled="positiveRateOption.optionSelected !== '2'"
-          v-model="positiveRateOption.optionValue"
-          placeholder=""
-        ></el-input>
+        <el-input :disabled="positiveRateOption.optionSelected !== '2'" v-model="positiveRateOption.optionValue"
+          placeholder=""></el-input>
       </el-form-item>
       <!--        磁片数统计选项-->
       <el-form-item label="统计选项:" v-if="CiPianOptions.isShow">
         <el-radio-group v-model="CiPianOptions.optionSelected">
-          <el-radio
-            v-for="option in CiPianOptions.options"
-            :key="option.label"
-            :label="option.label"
-            >{{ option.tagName }}
+          <el-radio v-for="option in CiPianOptions.options" :key="option.label" :label="option.label">{{ option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="统计规则:" v-if="CiPianOptions.isShow">
         <!--          使用 ！== 注意类型-->
-        <el-input
-          :disabled="CiPianOptions.optionSelected !== '2'"
-          v-model="CiPianOptions.optionValue"
-          placeholder=""
-        ></el-input>
+        <el-input :disabled="CiPianOptions.optionSelected !== '2'" v-model="CiPianOptions.optionValue" placeholder="">
+        </el-input>
       </el-form-item>
       <!--        本底统计选项-->
       <el-form-item label="统计选项:" v-if="BendiOptions.isShow">
         <el-radio-group v-model="BendiOptions.optionSelected">
-          <el-radio
-            v-for="option in BendiOptions.options"
-            :key="option.label"
-            :label="option.label"
-            >{{ option.tagName }}
+          <el-radio v-for="option in BendiOptions.options" :key="option.label" :label="option.label">{{ option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="统计规则:" v-if="BendiOptions.isShow">
         <!--          使用 ！== 注意类型-->
-        <el-input
-          :disabled="BendiOptions.optionSelected !== '2'"
-          v-model="BendiOptions.optionValue"
-          placeholder=""
-        ></el-input>
+        <el-input :disabled="BendiOptions.optionSelected !== '2'" v-model="BendiOptions.optionValue" placeholder="">
+        </el-input>
       </el-form-item>
       <el-form-item label="统计分组">
         <table class="pure-table pure-table-bordered" style="width: 370px">
@@ -781,28 +476,17 @@
     <div slot="footer" class="dialog-footer"></div>
   </el-dialog>
   <!-- 结果数据统计对话 -->
-  <el-dialog
-    :title="resultSettingTitle"
-    v-model="openResultSettingDialog"
-    width="500px"
-    append-to-body
-  >
+  <el-dialog :title="resultSettingTitle" v-model="openResultSettingDialog" width="500px" append-to-body>
     <el-form label-width="80px">
       <el-form-item label="提示">
-        <el-tag type="danger"
-          >注意选择顺序,影响结果顺序,不确定全取消重选</el-tag
-        >
+        <el-tag type="danger">注意选择顺序,影响结果顺序,不确定全取消重选</el-tag>
       </el-form-item>
       <el-form-item label="选项值">
         <span>{{ resultOptionValue }}</span>
       </el-form-item>
       <el-form-item label="统计选项">
         <el-checkbox-group v-model="resultOptionValue">
-          <el-checkbox-button
-            v-for="it in resultOption"
-            :label="it.key"
-            :key="it.key"
-            >{{ it.Tag }}
+          <el-checkbox-button v-for="it in resultOption" :label="it.key" :key="it.key">{{ it.Tag }}
           </el-checkbox-button>
         </el-checkbox-group>
       </el-form-item>
@@ -816,20 +500,6 @@ import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
 import { invoke } from '@tauri-apps/api/tauri';
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
 
-// import { listHospital } from '@/api/dm/Hospital';
-// import { listSample } from '@/api/dm/sample';
-// import { listInstrument } from '@/api/dm/Instrument';
-// import {
-//     listOriginResult,
-//     listSampleCount,
-//     GetInvalidCount,
-//     GetPositiveRate,
-//     GetCiPianCount,
-//     GetBendiCount,
-//     GetBendiRange,
-//     GetAllResult,
-// } from '@/api/dm/statistics';
-// import { listSampleResult } from '@/api/dm/sample';
 import {
   exportSingleListData2excel,
   exportSingleListData2csv,
@@ -1136,6 +806,9 @@ async function getAllOriginData() {
   }
   exportOutData.value.OriginData = [res.title_cn, ...res.list];
 }
+
+
+//  数据导出为excel
 const exportDataExcelOrCsv = (v, data, file_name) => {
   if (v === 'Excel') {
     ElMessage.info('数据量大时，网页可能卡死！');
@@ -1428,7 +1101,7 @@ async function getPositiveRateData() {
       by_test_name: tongJiQueryParams.value.byTestName,
       time_option: tongJiQueryParams.value.byMonth ? 'M' : undefined,
     },
-    opt_string: positiveRateOption.value.optionValue,
+    optString: positiveRateOption.value.optionValue,
     req: {
       ...queryParams.value,
     },
@@ -1438,6 +1111,7 @@ async function getPositiveRateData() {
     ElMessage.error(msg);
     return;
   }
+  console.log('res :>> ', res);
   const data = res.list;
   const title = res.title;
 
@@ -1510,7 +1184,7 @@ async function getCiPianData() {
       by_test_name: tongJiQueryParams.value.byTestName,
       time_option: tongJiQueryParams.value.byMonth ? 'M' : undefined,
     },
-    opt_string: CiPianOptions.value.optionValue,
+    optString: CiPianOptions.value.optionValue,
     req: {
       ...queryParams.value,
     },
@@ -1594,7 +1268,7 @@ async function getBenDiRange() {
       by_test_name: tongJiQueryParams.value.byTestName,
       time_option: tongJiQueryParams.value.byMonth ? 'M' : undefined,
     },
-    opt_string: BendiOptions.value.optionValue,
+    optString: BendiOptions.value.optionValue,
     req: {
       ...queryParams.value,
     },
@@ -1767,7 +1441,7 @@ th {
   border-bottom: 1px solid #cbcbcb;
 }
 
-.pure-table-bordered tbody > tr:last-child > td {
+.pure-table-bordered tbody>tr:last-child>td {
   border-bottom-width: 0;
 }
 

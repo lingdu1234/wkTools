@@ -2,7 +2,7 @@ use crate::{
     app::services,
     database::{
         common::PageParams,
-        models::dm_mc_sample_statistics::{BendiResult, HashMapJsonWithTitle, JsonWithTitle, ListsData, QueryOptions, SampleCount, SampleWithResult, SearchReq, TestCountOptions},
+        models::dm_mc_sample_statistics::{BendiResult, HashMapJsonWithTitle, JsonWithTitle, ListsData, QueryOptions, SampleCount, SampleWithResult, SearchReq, TestCountOptions, InvalidCountRes},
     },
     tools::db::get_db,
 };
@@ -28,7 +28,7 @@ pub async fn get_test_count(req: SearchReq, opt: TestCountOptions) -> (Option<Sa
 }
 
 #[tauri::command]
-pub async fn get_invalid_count(opts: QueryOptions, req: SearchReq) -> (Option<Vec<serde_json::Value>>, Option<String>) {
+pub async fn get_invalid_count(opts: QueryOptions, req: SearchReq) -> (Option<Vec<InvalidCountRes>>, Option<String>) {
     let db = get_db().await;
     let res = services::dm_mc_sample_statistics::get_invalid_count(db, req, opts).await;
     match res {

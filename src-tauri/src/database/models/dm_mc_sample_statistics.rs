@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
-
-
+use sea_orm::FromQueryResult;
 use serde::{Deserialize, Serialize};
 
 use super::super::entities::{dm_mc_sample, dm_mc_sample_result};
@@ -58,7 +57,8 @@ pub struct ListsData {
 
 #[derive(Debug, Serialize, Default)]
 pub struct JsonWithTitle {
-    pub list: Vec<serde_json::Value>,
+    // pub list: Vec<serde_json::Value>,
+    pub list: Vec<HashMap<String,serde_json::Value>>,
     pub title: Vec<String>,
 }
 
@@ -103,3 +103,25 @@ pub struct DmResult(
     pub Option<f64>,
     pub Option<f64>,
 );
+
+#[derive(Debug, Clone, Serialize,FromQueryResult)]
+pub struct InvalidCountRes {
+    pub hospital: String,
+    pub instrument: String,
+    pub month: String,
+    pub test_group: String,
+    pub regent_lot: String,
+    pub test_name: String,
+    pub vid: String,
+    pub begin_time: String,
+    pub end_time: String,
+    pub invalid_cal: i64,
+    pub invalid_qc: i64,
+    pub invalid_npc: i64,
+    pub invalid_s: i64,
+    pub invalid_all: i64,
+    pub sample_total: i64,
+    pub all_total: i64,
+    pub invalid_s_percent: f64,
+    pub invalid_all_percent: f64,
+}
