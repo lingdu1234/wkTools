@@ -30,7 +30,8 @@
       </el-form-item>
       <!-- 压缩图片时保存目录 -->
       <el-form-item :label="t('img.log')">
-        <el-input v-model="logs" :placeholder="t('img.log_placeholder')" type="textarea" :rows="10" clearable />
+        <el-input id="textarea_log" v-model="logs" :placeholder="t('img.log_placeholder')" type="textarea" :rows="10"
+          clearable />
       </el-form-item>
     </el-form>
   </div>
@@ -64,6 +65,14 @@ const task_done = ref(false);
 onDeactivated(() => {
   stop_timer();
 });
+
+const log_scroll = () => {
+  nextTick(() => {
+    const textarea = document.getElementById('textarea_log');
+    console.log('textarea.scrollHeight :>> ', textarea.scrollHeight);
+    textarea.scrollTop = textarea.scrollHeight;
+  })
+}
 
 // 清除日志
 const clear_logs = () => {
@@ -104,7 +113,9 @@ const get_logs = async () => {
     stop_timer();
     return
   }
-  logs.value = log + log.value;
+  logs.value += log;
+  log_scroll()
+
 };
 // 定时获取日志
 const fresh_logs = () => {

@@ -33,7 +33,6 @@ const emits = defineEmits(['update:Headertitile']);
 const activePath = ref(null);
 
 onMounted(() => {
-  console.log("vdsvdsv我重载了")
   activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
   proxy.$router.push(activePath.value);
 })
