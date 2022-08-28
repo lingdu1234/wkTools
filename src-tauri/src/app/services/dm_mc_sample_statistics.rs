@@ -316,14 +316,14 @@ pub async fn get_invalid_count(db: &DatabaseConnection, req: SearchReq, options:
     let all_total = format!("COUNT({test_name})", test_name = dm_mc_sample_result::Column::TestGroup.as_str());
     // 样本无效率
     let invalid_s_percent = format!(
-        // "CAST(ROUND(({invalid_s}/{sample_total}),4) AS DOUBLE)",
+        // "CAST(ROUND(({invalid_s}/{sample_total}),4) AS DECIMAL)",
         "ROUND(({invalid_s}/GREATEST({sample_total},1)),4)",
         invalid_s = &invalid_s,
         sample_total = &sample_total
     );
     // 合计无效率
     let invalid_all_percent = format!(
-        // "CAST(ROUND(({invalid_all}/{all_total}),4) AS DOUBLE)",
+        // "CAST(ROUND(({invalid_all}/{all_total}),4) AS DECIMAL)",
         "ROUND(({invalid_all}/GREATEST({all_total},1)),4)",
         invalid_all = &invalid_all,
         all_total = &all_total
@@ -419,15 +419,15 @@ pub async fn get_invalid_count(db: &DatabaseConnection, req: SearchReq, options:
     let all_total = format!("COUNT({test_name})", test_name = dm_mc_sample_result::Column::TestGroup.as_str());
     // 样本无效率
     let invalid_s_percent = format!(
-        // "ROUND(({invalid_s}/{sample_total}),4) AS DOUBLE)",
-        "ROUND(({invalid_s}/MAX({sample_total},1)),4)",
+        // "ROUND(({invalid_s}/{sample_total}),4) AS DECIMAL)",
+        "ROUND(CAST({invalid_s} AS double)/MAX({sample_total},1),4)",  //这里取 1和计数 的最大值 是为了防止0作为除数，可能导致异常
         invalid_s = &invalid_s,
         sample_total = &sample_total
     );
     // 合计无效率
     let invalid_all_percent = format!(
-        // "CAST(ROUND(({invalid_all}/{all_total}),4) AS DOUBLE)",
-        "ROUND(({invalid_all}/MAX({all_total},1)),4)",
+        // "CAST(ROUND(({invalid_all}/{all_total}),4) AS DECIMAL)",
+        "ROUND(CAST({invalid_all} AS double)/MAX({all_total},1),4)",
         invalid_all = &invalid_all,
         all_total = &all_total
     );
@@ -513,7 +513,7 @@ pub async fn get_positive_rate_data(db: &DatabaseConnection, req: SearchReq, opt
                 result_ai_v2 = opt
             );
             let sql_b = format!(
-                "CAST(ROUND(({sql_a}/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END)),4) AS DECIMAL)",
+                "ROUND(CAST({sql_a} AS double)/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END),4)",
                 sql_a = &sql_a,
                 sample_type = dm_mc_sample_result::Column::SampleType.as_str(),
                 sample_type_v = "样本",
@@ -537,7 +537,7 @@ pub async fn get_positive_rate_data(db: &DatabaseConnection, req: SearchReq, opt
             result_ai_v1 = opt_dsdna,
             result_ai_v2 = opt);
             let sql_b = format!(
-                "CAST(ROUND(({sql_a}/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END)),4) AS DOUBLE)",
+                "ROUND(CAST({sql_a} AS double)/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END),4)",
                 sql_a = &sql_a,
                 sample_type = dm_mc_sample_result::Column::SampleType.as_str(),
                 sample_type_v = "样本",
@@ -566,7 +566,7 @@ pub async fn get_positive_rate_data(db: &DatabaseConnection, req: SearchReq, opt
             result_ai_v3 = opt_a,
             result_ai_v4 = opt_b,);
             let sql_b = format!(
-                "CAST(ROUND(({sql_a}/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END)),4) AS DOUBLE)",
+                "ROUND(CAST({sql_a} AS double)/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END),4)",
                 sql_a = &sql_a,
                 sample_type = dm_mc_sample_result::Column::SampleType.as_str(),
                 sample_type_v = "样本",
@@ -577,7 +577,7 @@ pub async fn get_positive_rate_data(db: &DatabaseConnection, req: SearchReq, opt
     }
     //  查询其他结果
     // 总测试
-    let all_total = format!("cast(COUNT({test_name}) as integer)", test_name = dm_mc_sample_result::Column::TestGroup.as_str());
+    let all_total = format!("COUNT({test_name})", test_name = dm_mc_sample_result::Column::TestGroup.as_str());
     // 总样本
     let sample_total = format!(
         "COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END)",
@@ -598,7 +598,7 @@ pub async fn get_positive_rate_data(db: &DatabaseConnection, req: SearchReq, opt
             result_ai_v1 = opt_dsdna,
             result_ai_v2 = opt);
     let sql_b = format!(
-        "ROUND(({sql_a}/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END)),4)",
+        "ROUND(CAST({sql_a} AS double)/COUNT(CASE WHEN {sample_type}='{sample_type_v}' THEN {test_name} ELSE NULL END),4)",
         sql_a = &sql_a,
         sample_type = dm_mc_sample_result::Column::SampleType.as_str(),
         sample_type_v = "样本",
@@ -726,9 +726,9 @@ pub async fn get_cipian_data_for_chart(db: &DatabaseConnection, req: SearchReq, 
     let mut s = self::get_result_group_entity(opts, db_end, s1);
     //  选项
 
-    let avg = format!("CAST(ROUND(AVG({cp_count}),4) AS DOUBLE)", cp_count = dm_mc_sample_result::Column::ResultCount.as_str(),);
-    let std = format!("CAST(ROUND(STDDEV({cp_count}),4) AS DOUBLE)", cp_count = dm_mc_sample_result::Column::ResultCount.as_str(),);
-    let cv = format!("CAST(100*ROUND({std}/{avg},4) AS DOUBLE)", std = &std, avg = &avg);
+    let avg = format!("CAST(ROUND(AVG({cp_count}),4) AS DECIMAL)", cp_count = dm_mc_sample_result::Column::ResultCount.as_str(),);
+    let std = format!("CAST(ROUND(STDDEV({cp_count}),4) AS DECIMAL)", cp_count = dm_mc_sample_result::Column::ResultCount.as_str(),);
+    let cv = format!("CAST(100*ROUND({std}/{avg},4) AS DECIMAL)", std = &std, avg = &avg);
     let having_f = format!("{} is not null", &cv);
     s = s
         .column_as(Expr::cust(&avg), "avg")
@@ -814,7 +814,7 @@ pub async fn get_cipian_count_data(db: &DatabaseConnection, req: SearchReq, opti
                 result_ai_v2 = opt
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -835,7 +835,7 @@ pub async fn get_cipian_count_data(db: &DatabaseConnection, req: SearchReq, opti
                 result_ai_v2 = opt
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -859,7 +859,7 @@ pub async fn get_cipian_count_data(db: &DatabaseConnection, req: SearchReq, opti
                 result_ai_v4 = opt_b,
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -885,7 +885,7 @@ pub async fn get_cipian_count_data(db: &DatabaseConnection, req: SearchReq, opti
         test_name = dm_mc_sample_result::Column::TestGroup.as_str(),
     );
     // 合计无效率
-    let invalid_all_percent = format!("ROUND(({invalid_all}/{all_total}),4)", invalid_all = &invalid_all, all_total = &all_total);
+    let invalid_all_percent = format!("ROUND(CAST({invalid_all} AS double)/{all_total},4)", invalid_all = &invalid_all, all_total = &all_total);
     s = s
         .column_as(Expr::cust(&invalid_all), "invalid_all")
         .column_as(Expr::cust(&invalid_all_percent), "invalid_all_percent");
@@ -893,15 +893,15 @@ pub async fn get_cipian_count_data(db: &DatabaseConnection, req: SearchReq, opti
     let avg = format!("ROUND(AVG({ResultCount}),4)", ResultCount = dm_mc_sample_result::Column::ResultCount.as_str(),);
     s = s.column_as(Expr::cust(&avg), "avg");
     // let std = format!(
-    //     "CAST(ROUND(STDDEV({ResultCount}),4) AS DOUBLE)",
+    //     "CAST(ROUND(STDDEV({ResultCount}),4) AS DECIMAL)",
     //     ResultCount = dm_mc_sample_result::Column::ResultCount.as_str(),
     // );
     // let std = format!(
-    //     "CAST(ROUND((AVG(({ResultCount} - sub.a) * ({ResultCount} - sub.a)) as std from {table},(SELECT AVG({ResultCount}) AS a FROM {table}) AS sub),4) AS DOUBLE)",
+    //     "CAST(ROUND((AVG(({ResultCount} - sub.a) * ({ResultCount} - sub.a)) as std from {table},(SELECT AVG({ResultCount}) AS a FROM {table}) AS sub),4) AS DECIMAL)",
     //     ResultCount = dm_mc_sample_result::Column::ResultCount.as_str(),
     //     table = dm_mc_sample_result::Entity.as_str()
     // );
-    // let cv = format!("CAST( std / avg,4) AS DOUBLE)", std = &std, avg = &avg);
+    // let cv = format!("CAST( std / avg,4) AS DECIMAL)", std = &std, avg = &avg);
     // s = s.column_as(Expr::cust(&avg), "avg").column_as(Expr::cust(&std), "std").column_as(Expr::cust(&cv), "cv");
     // 排除项目不一致样本
     s = s.filter(dm_mc_sample_result::Column::IsAbnormal.eq("0"));
@@ -1052,8 +1052,7 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
 }
 
 #[cfg(feature = "sqlite")]
-pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, options_string: String, opts: QueryOptions) -> Result<Vec<HashMap<String,serde_json::Value>>> {
-
+pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, options_string: String, opts: QueryOptions) -> Result<Vec<HashMap<String, serde_json::Value>>> {
     let option_str = options_string.split(',').collect::<Vec<&str>>();
     let mut options: Vec<f64> = Vec::new();
     for i in option_str {
@@ -1114,7 +1113,7 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         count_col = dm_mc_sample_result::Column::ResultSignal.as_str()
     );
     let cal1_avg = format!(
-        "ROUND(AVG(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}'  THEN {count_col} ELSE NULL END),4)",
+        "ROUND(AVG(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}'  THEN {count_col} ELSE NULL END),4)",
         sample_tye = dm_mc_sample_result::Column::SampleType.as_str(),
         sample_type_v = "校准品",
         code_col = dm_mc_sample_result::Column::SampleCode.as_str(),
@@ -1122,7 +1121,7 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         count_col = dm_mc_sample_result::Column::ResultSignal.as_str()
     );
     let cal2_avg = format!(
-        "ROUND(AVG(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}'  THEN {count_col} ELSE NULL END),4)",
+        "ROUND(AVG(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}'  THEN {count_col} ELSE NULL END),4)",
         sample_tye = dm_mc_sample_result::Column::SampleType.as_str(),
         sample_type_v = "校准品",
         code_col = dm_mc_sample_result::Column::SampleCode.as_str(),
@@ -1148,7 +1147,7 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         count_col = dm_mc_sample_result::Column::ResultSignal.as_str()
     );
     let cal1_range = format!(
-        "MIN(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}'  THEN {count_col} ELSE NULL END) || '--' || MAX(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}' THEN {count_col} ELSE NULL END)",
+        "MIN(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}'  THEN {count_col} ELSE NULL END) || '--' || MAX(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}' THEN {count_col} ELSE NULL END)",
         sample_tye = dm_mc_sample_result::Column::SampleType.as_str(),
         sample_type_v = "校准品",
         code_col = dm_mc_sample_result::Column::SampleCode.as_str(),
@@ -1156,7 +1155,7 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         count_col = dm_mc_sample_result::Column::ResultSignal.as_str()
     );
     let cal2_range = format!(
-        "MIN(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}'  THEN {count_col} ELSE NULL END) || '--' || MAX(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_'))='{code_v}' THEN {count_col} ELSE NULL END)",
+        "MIN(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}'  THEN {count_col} ELSE NULL END) || '--' || MAX(CASE WHEN {sample_tye}='{sample_type_v}' AND SUBSTR({code_col},instr({code_col},'_')+1)='{code_v}' THEN {count_col} ELSE NULL END)",
         sample_tye = dm_mc_sample_result::Column::SampleType.as_str(),
         sample_type_v = "校准品",
         code_col = dm_mc_sample_result::Column::SampleCode.as_str(),
@@ -1180,31 +1179,32 @@ pub async fn get_bendi_data_range(db: &DatabaseConnection, req: SearchReq, optio
         .column_as(Expr::cust(&cal2_avg), "cal2_avg")
         .column_as(Expr::cust(&cal2_range), "cal2_range");
 
-        let  keys: Vec<String> = vec![
-            "hospital".to_string(),
-            "instrument".to_string(),
-            "month".to_string(),
-            "test_group".to_string(),
-            "regent_lot".to_string(),
-            "test_name".to_string(),
-            "vid".to_string(),
-            "begin_time".to_string(),
-            "end_time".to_string(),
-            "s_avg".to_string(),
-            "s_range".to_string(),
-            "qc_avg".to_string(),
-            "npc_avg".to_string(),
-            "npc_range".to_string(),
-            "cal1_avg".to_string(),
-            "cal1_range".to_string(),
-            "cal2_avg".to_string(),
-            "cal2_range".to_string(),
-        ];
-        let ss = s.clone().build(db_end);
-        let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
-    
-    
-        let range = get_query_result(sql_result, keys);
+    let keys: Vec<String> = vec![
+        "hospital".to_string(),
+        "instrument".to_string(),
+        "month".to_string(),
+        "test_group".to_string(),
+        "regent_lot".to_string(),
+        "test_name".to_string(),
+        "vid".to_string(),
+        "begin_time".to_string(),
+        "end_time".to_string(),
+        "all_avg".to_string(),
+        "s_avg".to_string(),
+        "s_range".to_string(),
+        "qc_avg".to_string(),
+        "qc_range".to_string(),
+        "npc_avg".to_string(),
+        "npc_range".to_string(),
+        "cal1_avg".to_string(),
+        "cal1_range".to_string(),
+        "cal2_avg".to_string(),
+        "cal2_range".to_string(),
+    ];
+    let ss = s.clone().build(db_end);
+    let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
+
+    let range = get_query_result(sql_result, keys);
 
     Ok(range)
 }
@@ -1401,7 +1401,7 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
                 result_ai_v2 = opt
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -1421,7 +1421,7 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
                 result_ai_v2 = opt
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -1444,7 +1444,7 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
                 result_ai_v4 = opt_b,
             );
             let sql_b = format!(
-                "ROUND(({sql_a}/COUNT({test_name})),4)",
+                "ROUND(CAST({sql_a} AS double)/COUNT({test_name}),4)",
                 sql_a = &sql_a,
                 test_name = dm_mc_sample_result::Column::TestName.as_str(),
             );
@@ -1475,14 +1475,12 @@ pub async fn get_bendi_data_count(db: &DatabaseConnection, req: SearchReq, optio
         // .column_as(Expr::cust(&all_std), "all_std")
         // .column_as(Expr::cust(&all_cv), "all_cv")
         ;
-        let ss = s.clone().build(db_end);
-        let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
-    
-        keys.append(&mut title.clone());
-    
-        let result = get_query_result(sql_result, keys);
+    let ss = s.clone().build(db_end);
+    let sql_result = db.query_all(ss.clone()).await.expect("查询失败");
 
+    keys.append(&mut title.clone());
 
+    let result = get_query_result(sql_result, keys);
 
     Ok(BendiResult { result, title })
 }

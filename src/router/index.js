@@ -86,12 +86,12 @@ export const constantRoutes = [
     meta: { title: "route.statistics", icon: 'statistics' },
 
   },
-  {
-    path: '/setting',
-    component: () => import('@/views/setting'),
-    name: 'Setting',
-    meta: { title: "route.setting", icon: 'setting' }
-  },
+  // {
+  //   path: '/setting',
+  //   component: () => import('@/views/setting'),
+  //   name: 'Setting',
+  //   meta: { title: "route.setting", icon: 'setting' }
+  // },
   {
     path: '/about',
     component: () => import('@/views/about'),

@@ -779,4 +779,7 @@ init();
 .el-link {
   margin-right: 8px;
 }
+.pagination-container {
+    margin-bottom: 20px !important;
+}
 </style>

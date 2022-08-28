@@ -218,6 +218,7 @@ async function set_path() {
 
 // 添加监听函数，监听 DOM 内容加载完成事件
 document.addEventListener('DOMContentLoaded', async () => {
+  localStorage.setItem('sfsafasfsa', "/index")
   await set_path();
   is_started.value = true
 

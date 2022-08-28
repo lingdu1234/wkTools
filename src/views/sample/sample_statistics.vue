@@ -1382,7 +1382,7 @@ async function getAllSampleData() {
 
 //  数据页面跳转
 const goToData = (id) => {
-  proxy.$router.push({path:"/sample_result",query: {id}});
+  proxy.$router.push({ path: "/sample_result", query: { id } });
 }
 
 
@@ -1395,6 +1395,10 @@ const init = async () => {
 init();
 </script>
 <style lang="scss" scoped>
+.pagination-container {
+  margin-bottom: 20px !important;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
