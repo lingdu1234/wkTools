@@ -12,8 +12,6 @@ use crate::{
 /// page_params 分页参数
 #[tauri::command]
 pub async fn get_dict_type_list(page_params: PageParams, req: SearchReq) -> (Option<ListData<sys_dict_type::Model>>,Option<String>) {
-    println!("{:#?}",page_params);
-    println!("{:#?}",req);
     let db = DB.get_or_init(db_conn).await;
     let res = services::sys_dict_type::get_sort_list(db, page_params, req).await;
     match res {

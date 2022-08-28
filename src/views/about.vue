@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span>{{ t("about.title") }}</span>
     <div class="logo">
       <img src="@/assets/logo2.png" />
     </div>
@@ -76,7 +75,7 @@
 import { getName, getTauriVersion, getVersion } from '@tauri-apps/api/app';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
-import { configDir, appDir, resourceDir, downloadDir,logDir } from '@tauri-apps/api/path';
+import { configDir, appDir, resourceDir, downloadDir, logDir } from '@tauri-apps/api/path';
 import { invoke } from '@tauri-apps/api/tauri';
 
 
@@ -119,7 +118,6 @@ const check_update = async () => {
       await relaunch()
     }
   } catch (error) {
-    console.log(error)
   }
 }
 get_base_info();

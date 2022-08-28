@@ -1,44 +1,57 @@
 <template>
-  <div>
-    <p>首页</p>
-    <p>{{v}}</p>
-    <p>==========</p>
-    <p>{{v2}}</p>
-    <p>==========</p>
-    <p>{{v3}}</p>
-    <p>==========</p>
-    <p>{{v4}}</p>
-        <p>====appDir======</p>
-    <p>{{_appdir}}</p>
+  <div class="shouye">
+    <div class="logo">
+      <img src="@/assets/logo2.png" />
+    </div>
+  </div>
+  <div class="simg">
+    <img src="@/assets/img/001.webp" :style="'max-height:' + window_h + 'px;max-width:' + window_w + 'px;'" />
   </div>
 </template>
 
 <script setup>
-import { invoke } from '@tauri-apps/api/tauri';
-import { resourceDir,resolveResource,appDir } from '@tauri-apps/api/path';
+
+const window_h = ref(null)
+const window_w = ref(null)
+
+onMounted(() => {
+  window.onresize = () => {
+    get_window_height()
+  };
+})
+
+const get_window_height = () => {
+  window_h.value = document.documentElement.clientHeight - 200;
+  window_w.value = document.documentElement.clientWidth - 200;
+}
+get_window_height();
+</script>
 
 
-const v = ref("");
-const v2 = ref("");
-const v3 = ref("");
-const v4 = ref("");
-const _appdir = ref("");
-
-// 切换语言
-async function get_res_path() {
-const resourceDirPath = await resourceDir();
-const resourcePath = await resolveResource('__data/database/database.db');
-const db_blank = await resolveResource('__data/database/db_blank.db');
-const db_sql = await resolveResource('__data/sql');
-const appDirPath = await appDir();
-v.value = resourceDirPath;
-v2.value = resourcePath;
-v3.value = db_blank;
-v4.value = db_sql;
-_appdir.value = appDirPath;
-
+<style lang="scss" scoped>
+.logo {
+  width: 100px;
+  height: 100px;
+  margin: 10px auto 10px auto;
+  display: flex;
 }
 
-get_res_path()
+.simg {
+  img {
+    margin: 10px auto 10px auto;
+    display: block;
+  }
+}
 
-</script>
+.updater {
+  width: 100px;
+  margin: 10px auto 0px auto;
+  display: flex;
+}
+
+.content {
+  max-width: 1000px;
+  font-size: 18px;
+  margin: 0 auto;
+}
+</style>

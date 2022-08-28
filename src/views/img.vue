@@ -56,7 +56,6 @@ const task_done = ref(false);
 const log_scroll = () => {
   nextTick(() => {
     const textarea = document.getElementById('textarea_log');
-    console.log('textarea.scrollHeight :>> ', textarea.scrollHeight);
     textarea.scrollTop = textarea.scrollHeight;
   })
 }

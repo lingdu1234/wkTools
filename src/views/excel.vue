@@ -69,7 +69,6 @@ onDeactivated(() => {
 const log_scroll = () => {
   nextTick(() => {
     const textarea = document.getElementById('textarea_log');
-    console.log('textarea.scrollHeight :>> ', textarea.scrollHeight);
     textarea.scrollTop = textarea.scrollHeight;
   })
 }
@@ -96,7 +95,6 @@ const open_dir_dialog = async (v) => {
 };
 // 运行程序
 const run_program = async () => {
-  console.log(origin_dir.value, to_dir.value)
   fresh_logs();
   if (activeTab.value == 'excel') {
     await invoke('export_excel', { dir: origin_dir.value, toDir: to_dir.value, isWithDir: false });

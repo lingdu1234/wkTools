@@ -1111,7 +1111,6 @@ async function getPositiveRateData() {
     ElMessage.error(msg);
     return;
   }
-  console.log('res :>> ', res);
   const data = res.list;
   const title = res.title;
 

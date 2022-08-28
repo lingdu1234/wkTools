@@ -139,7 +139,6 @@ pub async fn add(db: &DatabaseConnection, base: AddReqBaseInfo, excel_data: Vec<
     let test_time = NaiveDateTime::parse_from_str(&base.test_time, "%Y-%m-%d %H:%M:%S")?;
     // 查找样本
     let sample = get_the_sample(db, test_time, base.clone()).await?;
-    println!("{:#?}",sample.clone());
     let sample_id = sample.id.clone();
 
     if let Some(v) = base.force_update {

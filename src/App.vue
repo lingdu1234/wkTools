@@ -7,7 +7,7 @@
             <!-- 头部标题 -->
             <div class="title_logo" @click="gotoAdminHome">
               <img src="@/assets/logo2.png" />
-              <span>{{ Headertitile }}</span>
+              <span>{{ t(route_title) }}</span>
             </div>
           </el-container>
           <div class="operatorClass">
@@ -63,7 +63,7 @@
           </div>
         </el-header>
         <el-container>
-          <SideBar v-model:Headertitile="Headertitile"></SideBar>
+          <SideBar v-model:route_title="route_title"></SideBar>
           <el-container>
             <el-main>
               <el-scrollbar :height="window_h">
@@ -119,7 +119,9 @@ const formatTooltip = (val) => {
 
 
 // 标题
-const Headertitile = ref(t('app.welcome'));
+// const Headertitile = ref(t('app.welcome'));
+
+const route_title = ref(null);
 
 // 是否最大化
 const isMaximize = ref(false);
@@ -128,7 +130,7 @@ const isMaximize = ref(false);
 const window_h = ref(null)
 
 onMounted(() => {
-  Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
+  route_title.value = localStorage.getItem("wfw3t3t32t") || route_title.value
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
   window.onresize = () => {
@@ -181,7 +183,6 @@ async function changeLang(v) {
   locale.value = v;
   await invoke('set_lang', { lang: v });
   localStorage.setItem('lang', v);
-  // window.location.reload();
   reload()
 }
 async function set_always_on_top() {
@@ -231,8 +232,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 const handleMouse = (e) => {
-  // e.preventDefault();
+  e.preventDefault();
 }
+get_window_height();
 </script>
 
 <style lang="scss" scoped>

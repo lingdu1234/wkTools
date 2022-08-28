@@ -33,7 +33,7 @@ export const constantRoutes = [
   {
     path: '/index',
     component: () => import('@/views/index'),
-    name: "Index",
+    name: "home",
     // meta: { title: t("route.home"), icon: 'home' },
     meta: { title: "route.home", icon: 'home' },
 
@@ -41,48 +41,48 @@ export const constantRoutes = [
   {
     path: '/img',
     component: () => import('@/views/img'),
-    name: "Img",
+    name: "img",
     meta: { title: "route.img", icon: 'img' },
 
   },
   {
     path: '/excel',
     component: () => import('@/views/excel'),
-    name: "Excel",
+    name: "excel",
     meta: { title: "route.excel", icon: 'excel' },
 
   },
   {
     path: '/dict',
     component: () => import('@/views/dict'),
-    name: "Dict",
+    name: "dict",
     meta: { title: "route.dict", icon: 'dict' },
   },
   {
     path: '/regent',
     component: () => import('@/views/regent'),
-    name: "Regent",
+    name: "regent",
     meta: { title: "route.regent", icon: 'regent' },
 
   },
   {
     path: '/hospital',
     component: () => import('@/views/hospital'),
-    name: "Hospital",
+    name: "hospital",
     meta: { title: "route.hospital", icon: 'hospital' },
 
   },
   {
     path: '/sample',
     component: () => import('@/views/sample'),
-    name: "Sample",
+    name: "sample",
     meta: { title: "route.sample", icon: 'sample' },
 
   },
   {
     path: '/statistics',
     component: () => import('@/views/sample/sample_statistics'),
-    name: "Statistics",
+    name: "statistics",
     meta: { title: "route.statistics", icon: 'statistics' },
 
   },
@@ -95,7 +95,7 @@ export const constantRoutes = [
   {
     path: '/about',
     component: () => import('@/views/about'),
-    name: 'About',
+    name: 'about',
     meta: { title: "route.about", icon: 'about' }
   },
 ];

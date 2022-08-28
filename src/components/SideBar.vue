@@ -6,7 +6,7 @@
     </div>
     <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
       <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
-        @click="getMenu(menu.path, t(menu.meta.title))">
+        @click="getMenu(menu.path, menu.meta.title)">
         <el-icon>
           <SvgIcon :name="menu.meta.icon"></SvgIcon>
         </el-icon>
@@ -27,7 +27,7 @@ const { t } = i18n.global
 
 const { proxy } = getCurrentInstance();
 
-const emits = defineEmits(['update:Headertitile']);
+const emits = defineEmits(['update:route_title']);
 
 // 激活菜单
 const activePath = ref(null);
@@ -44,7 +44,7 @@ function handleMenuChange(index, _indexPath) {
 function getMenu(index, title) {
   localStorage.setItem('sfsafasfsa', index)
   localStorage.setItem('wfw3t3t32t', title)
-   emits("update:Headertitile", title);
+   emits("update:route_title", title);
 }
 
 function gotoAdminHome() {

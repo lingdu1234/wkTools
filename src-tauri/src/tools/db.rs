@@ -110,7 +110,7 @@ async fn database_data_init(db: &DatabaseConnection, sql_path: &str) {
     let mut entries = match fs::read_dir(sql_path) {
         Ok(x) => x,
         Err(_) => {
-            println!("数据文件不存在，请先确认迁移文件是否存在");
+            tracing::info!("数据文件不存在，请先确认迁移文件是否存在");
             return;
         }
     };
@@ -118,7 +118,7 @@ async fn database_data_init(db: &DatabaseConnection, sql_path: &str) {
         let entry = match res {
             Ok(v) => v,
             Err(e) => {
-                println!("{}", e);
+                tracing::info!("{}", e);
                 return;
             }
         };
@@ -126,21 +126,21 @@ async fn database_data_init(db: &DatabaseConnection, sql_path: &str) {
         let sql_string = match get_insert_sql_string(path.clone()).await {
             Ok(v) => v,
             Err(e) => {
-                println!("{:?}", e);
+                tracing::info!("{:?}", e);
                 return;
             }
         };
         let stmt = Statement::from_string(db_end, sql_string).to_owned();
         match db.execute(stmt).await {
             Ok(_) => {
-                println!("表格数据初始化成功:{}", path.to_str().unwrap());
+                tracing::info!("表格数据初始化成功:{}", path.to_str().unwrap());
             }
             Err(e) => {
-                println!("{}", e);
+                tracing::info!("{}", e);
             }
         };
     }
-    println!("全部表格数据初始化成功");
+    tracing::info!("全部表格数据初始化成功");
 }
 
 async fn get_insert_sql_string(path: PathBuf) -> Result<String> {
@@ -163,7 +163,7 @@ async fn get_insert_sql_string(path: PathBuf) -> Result<String> {
 }
 
 async fn creat_table(db: &DatabaseConnection) -> Result<(), DbErr> {
-    println!("开始创建表格----------");
+    tracing::info!("开始创建表格----------");
     let builder = db.get_database_backend();
     let schema = Schema::new(builder);
 
@@ -186,8 +186,8 @@ where
     E: EntityTrait,
 {
     match db.execute(builder.build(schema.create_table_from_entity(e).to_owned().if_not_exists())).await {
-        Ok(_) => println!("创建表格成功:{}", e.table_name()),
-        Err(e) => println!("{}", e),
+        Ok(_) => tracing::info!("创建表格成功:{}", e.table_name()),
+        Err(e) => tracing::info!("{}", e),
     };
 
     Ok(())
@@ -197,10 +197,10 @@ where
 async fn test_db() {
     match fs::File::open("__data/database/database.db") {
         Ok(_) => {
-            println!("database is OK")
+            tracing::info!("database is OK")
         }
         Err(e) => {
-            println!("{:?}", e.to_string())
+            tracing::info!("{:?}", e.to_string())
         }
     };
     let _db = get_db().await;

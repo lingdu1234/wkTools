@@ -202,7 +202,6 @@ function handleAdd() {
   form.value.hospital_id = queryParams.value.hospital_id;
   open.value = true;
   title.value = '添加仪器数据';
-console.log(form.value)
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {

@@ -15,7 +15,6 @@ pub async fn get_sort_list(db: &DatabaseConnection, page_params: PageParams, req
     let page_num = page_params.page_num.unwrap_or(1);
     let page_per_size = page_params.page_size.unwrap_or(10);
 
-    println!("{:#?}",req);
     //  生成查询条件
     let mut s = dm_instrument::Entity::find();
 
