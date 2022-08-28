@@ -9,7 +9,7 @@
   },
   "package": {
     "productName": "wkTools",
-    "version": "0.1.3"
+    "version": "0.1.5"
   },
   "tauri": {
     "macOSPrivateApi": true,
