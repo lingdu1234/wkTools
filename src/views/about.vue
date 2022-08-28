@@ -193,7 +193,7 @@ th {
 
 .pure-table td {
   max-width: 200px;
-  min-with: 100px;
+  min-width: 100px;
   width: 25%;
   background-color: transparent;
 }
