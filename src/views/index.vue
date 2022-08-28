@@ -21,7 +21,7 @@ onMounted(() => {
 })
 
 const get_window_height = () => {
-  window_h.value = document.documentElement.clientHeight - 200;
+  window_h.value = document.documentElement.clientHeight - 250;
   window_w.value = document.documentElement.clientWidth - 200;
 }
 get_window_height();

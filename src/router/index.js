@@ -40,14 +40,14 @@ export const constantRoutes = [
   },
   {
     path: '/img',
-    component: () => import('@/views/img'),
+    component: () => import('@/views/tools/img'),
     name: "img",
     meta: { title: "route.img", icon: 'img' },
 
   },
   {
     path: '/excel',
-    component: () => import('@/views/excel'),
+    component: () => import('@/views/tools/excel'),
     name: "excel",
     meta: { title: "route.excel", icon: 'excel' },
 

@@ -66,7 +66,6 @@
         </tr>
       </tbody>
     </table>
-    <el-divider content-position="left">{{ t("about.aboutProgram") }}</el-divider>
 
   </div>
 </template>
