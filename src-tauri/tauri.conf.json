@@ -82,7 +82,7 @@
       "endpoints": [
         "https://cloud.iu1314.top:58376/_wktools/update/latest.json"
       ],
-      "dialog": true,
+      "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEJFMzQxQTYyODVBNkU1NjEKUldSaDVhYUZZaG8wdnZxbHlSMkZzYkgvT09uWHRiUEhGc1hqTEI5NW9VNEthbjlVRDlpTXV4OGMK"
     },
     "windows": [

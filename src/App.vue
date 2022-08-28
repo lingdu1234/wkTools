@@ -89,10 +89,11 @@ import { useDark, useToggle } from '@vueuse/core';
 
 import { useI18n } from 'vue-i18n';
 import i18n from '@/locals'; // 当前语言
-const { locale } = useI18n();
 
 import zh from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
+
+const { locale } = useI18n();
 
 const { t } = i18n.global;
 
@@ -232,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 const handleMouse = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
 }
 get_window_height();
 </script>

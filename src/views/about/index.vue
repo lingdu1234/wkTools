@@ -66,8 +66,38 @@
         </tr>
       </tbody>
     </table>
-
   </div>
+  <el-dialog v-model="open" width="500px" :show-close="false">
+    <template #header>
+      <div class="update-header">
+        <div class="up_logo">
+          <img src="@/assets/logo2.png" />
+          <span>程序更新</span>
+        </div>
+      </div>
+      <el-divider style="margin: 5px auto 0;"></el-divider>
+    </template>
+    <el-form ref="updateRef" label-width="80px">
+      <el-form-item label="当前版本">
+        <span>{{ appVersion }}</span>
+      </el-form-item>
+      <el-form-item label="更新版本">
+        <span>{{ up_info.version }}</span>
+      </el-form-item>
+      <el-form-item label="更新日期">
+        <span>{{ up_info.date }}</span>
+      </el-form-item>
+      <el-form-item label="更新日志">
+        <span>{{ up_info.body }}</span>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -75,10 +105,9 @@ import { getName, getTauriVersion, getVersion } from '@tauri-apps/api/app';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 import { configDir, appDir, resourceDir, downloadDir, logDir } from '@tauri-apps/api/path';
-import { invoke } from '@tauri-apps/api/tauri';
-
 
 import i18n from '@/locals';
+import { ElMessage, ElNotification } from 'element-plus';
 const { t } = i18n.global;
 
 const app_dir = ref(null);
@@ -86,6 +115,14 @@ const log_dir = ref(null);
 const config_dir = ref(null);
 const res_dir = ref(null);
 const download_dir = ref(null);
+
+const open = ref(false);
+
+const up_info = ref({
+  version: "",
+  date: "",
+  body: ""
+})
 
 const v = ref({
   appName: '',
@@ -111,13 +148,40 @@ const check_update = async () => {
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
     if (shouldUpdate) {
-      // display dialog
-      await installUpdate()
-      // install complete, restart app
-      await relaunch()
+      open.value = true
+      const { body, date, version } = manifest;
+      up_info.value = {
+        version: version,
+        date: date,
+        body: body
+      }
+    } else {
+      ElNotification.info("已经是最新版本了!")
     }
-  } catch (error) {
+  } catch (err) {
+    ElMessage.error("检出更新出错:" + err)
   }
+}
+
+const submitForm = async () => {
+  try {
+    ElMessage.info("开始更新")
+    await installUpdate();
+  } catch (err) {
+    ElMessage.error("更新出错:" + err)
+    open.value = false
+  }
+  try {
+    ElMessage.info("开始重启")
+    await relaunch();
+  } catch (err) {
+    ElMessage.error("重启出错:" + err)
+    open.value = false
+  }
+}
+const cancel = async () => {
+  ElNotification.info("你取消了更新")
+  open.value = false
 }
 get_base_info();
 get_app_dir();
@@ -125,6 +189,14 @@ get_app_dir();
 
 
 <style lang="scss" scoped>
+html.dark {
+  .up_logo {
+    span {
+      color: #FFFFFF;
+    }
+  }
+}
+
 .logo {
   width: 100px;
   height: 100px;
@@ -141,8 +213,47 @@ get_app_dir();
 .content {
   max-width: 1000px;
   font-size: 18px;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
+
+.update-header {
+  height: 30px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0px;
+
+  .up_logo {
+    display: flex;
+    justify-content: start;
+
+    img {
+      height: 22px;
+      width: 22px;
+    }
+
+    span {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+  }
+}
+
+.el-form {
+  font-weight: bolder;
+
+  span {
+    font-weight: normal;
+    word-break: normal;
+    width: auto;
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+  }
+}
+
 
 table {
   border-collapse: collapse;
