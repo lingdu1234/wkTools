@@ -165,17 +165,11 @@ const check_update = async () => {
 
 const submitForm = async () => {
   try {
-    ElMessage.info("开始更新")
+    ElMessage.info("开始更新并重启")
     await installUpdate();
-  } catch (err) {
-    ElMessage.error("更新出错:" + err)
-    open.value = false
-  }
-  try {
-    ElMessage.info("开始重启")
     await relaunch();
   } catch (err) {
-    ElMessage.error("重启出错:" + err)
+    ElMessage.error("更新出错:" + err)
     open.value = false
   }
 }
