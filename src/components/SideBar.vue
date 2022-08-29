@@ -55,7 +55,6 @@ function gotoAdminHome() {
 
 
 <style lang="scss" scoped>
-
 .el-aside {
   width: 130px;
   background-color: #bbe6d6;
@@ -72,6 +71,7 @@ function gotoAdminHome() {
     padding-left: 10px;
   }
 }
+
 .aside_logo {
   display: flex;
   height: 60px;
@@ -99,6 +99,12 @@ function gotoAdminHome() {
 .el-menu-item.is-active {
   background-color: #d9f1e8 !important;
   border-radius: 30px 0px 0px 30px;
+}
+
+.operatorClassA {
+  width: 100px;
+  display: flex;
+  justify-content: space-around;
 }
 
 html.dark {
