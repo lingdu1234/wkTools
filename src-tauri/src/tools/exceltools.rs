@@ -7,18 +7,12 @@ use super::{comm_tools::get_dir_from_string, msgs::add_msg};
 
 // 导出excel
 #[tauri::command]
-pub  fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
+pub fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
     let start_time = chrono::Local::now(); //获取结束时间
 
     match to_dir.contains(&dir) {
         true => {
-            let msg = format!(
-                "{}  {}  {} {}",
-                &t!("excel_save_dir"),
-                &t!("is"),
-                &t!("excel_ori_dir"),
-                &t!("subfolder"),
-            );
+            let msg = format!("{}  {}  {} {}", &t!("excel_save_dir"), &t!("is"), &t!("excel_ori_dir"), &t!("subfolder"),);
             add_msg(&msg);
             return;
         }
@@ -104,17 +98,8 @@ fn copy_excel(src: PathBuf, to_dir: &str, is_with_dir: bool) {
     let to_dist_path = format!("{}\\{}", &to_dir, &file_pre);
 
     let to_dist_file_name = match is_with_dir {
-        true => format!(
-            "{}\\{}@{}",
-            &to_dist_path,
-            file_pre,
-            src.file_name().unwrap().to_str().unwrap()
-        ),
-        false => format!(
-            "{}\\{}",
-            &to_dist_path,
-            src.file_name().unwrap().to_str().unwrap()
-        ),
+        true => format!("{}\\{}@{}", &to_dist_path, file_pre, src.file_name().unwrap().to_str().unwrap()),
+        false => format!("{}\\{}", &to_dist_path, src.file_name().unwrap().to_str().unwrap()),
     };
     let to_path = PathBuf::from(&to_dist_file_name);
 
@@ -126,13 +111,6 @@ fn copy_excel(src: PathBuf, to_dir: &str, is_with_dir: bool) {
 
     // 复制文件
     fs::copy(src, to_path).expect(&t!("copy file failed"));
-    let msg = format!(
-        "{}: {} {} {}  {}",
-        t!("File"),
-        &f_name,
-        t!("copy to"),
-        &to_dist_file_name,
-        t!("comeleted")
-    );
+    let msg = format!("{}: {} {} {}  {}", t!("File"), &f_name, t!("copy to"), &to_dist_file_name, t!("completed"));
     add_msg(&msg);
 }

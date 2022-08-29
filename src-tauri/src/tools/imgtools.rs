@@ -161,7 +161,7 @@ fn com_image(out_path: PathBuf, f_name: String, pic_reader: DynamicImage, ori_si
         "{}:{} {},{}:{}  |  {}:{}",
         t!("image"),
         f_name,
-        t!("competed"),
+        t!("completed"),
         t!("ori_size"),
         ori_size,
         t!("now_size"),
