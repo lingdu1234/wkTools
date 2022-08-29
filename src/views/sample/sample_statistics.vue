@@ -158,15 +158,6 @@
                       )
                     ">Excel
                   </el-button>
-                  <el-button size="small" type="primary" style="width: 60px"
-                    :disabled="exportOutData.invalidResult.length === 0" @click="
-                      exportDataExcelOrCsv(
-                        'CSV',
-                        exportOutData.invalidResult,
-                        '无效样本统计'
-                      )
-                    ">CSV
-                  </el-button>
                 </td>
               </tr>
               <!-- 无效样本 -->
@@ -187,15 +178,6 @@
                         '无效样本'
                       )
                     ">Excel
-                  </el-button>
-                  <el-button size="small" type="primary" plain style="width: 60px"
-                    :disabled="exportOutData.invalidSample.length === 0" @click="
-                      exportDataExcelOrCsv(
-                        'CSV',
-                        exportOutData.invalidSample,
-                        '无效样本'
-                      )
-                    ">CSV
                   </el-button>
                 </td>
               </tr>
@@ -271,15 +253,6 @@
                       )
                     ">Excel
                   </el-button>
-                  <el-button size="small" type="primary" style="width: 60px"
-                    :disabled="exportOutData.positiveRateData.length === 0" @click="
-                      exportDataExcelOrCsv(
-                        'CSV',
-                        exportOutData.positiveRateData,
-                        '阳性率统计'
-                      )
-                    ">CSV
-                  </el-button>
                 </td>
               </tr>
 
@@ -304,15 +277,6 @@
                       )
                     ">Excel
                   </el-button>
-                  <el-button size="small" type="primary" style="width: 60px"
-                    :disabled="exportOutData.CiPianCountData.length === 0" @click="
-                      exportDataExcelOrCsv(
-                        'CSV',
-                        exportOutData.CiPianCountData,
-                        '磁片统计'
-                      )
-                    ">CSV
-                  </el-button>
                 </td>
               </tr>
               <tr class="pure-table-odd">
@@ -336,15 +300,6 @@
                       )
                     ">Excel
                   </el-button>
-                  <el-button size="small" type="primary" style="width: 60px"
-                    :disabled="exportOutData.BenDiRangeData.length === 0" @click="
-                      exportDataExcelOrCsv(
-                        'CSV',
-                        exportOutData.BenDiRangeData,
-                        '本底范围'
-                      )
-                    ">CSV
-                  </el-button>
                 </td>
               </tr>
             </tbody>
@@ -360,7 +315,7 @@
         <el-table-column label="医院名称" align="center" prop="hospital_name" :show-overflow-tooltip="true" width="180" />
         <el-table-column label="条码" align="center" prop="sample_code" :show-overflow-tooltip="true" width="150">
           <template #default="scope">
-            <el-link type="success" @click="goToData(scope.row.id)">{{ scope.row.sample_code }}
+            <el-link type="success" @click="goToData(scope.row.id)">{{  scope.row.sample_code  }}
             </el-link>
           </template>
         </el-table-column>
@@ -373,12 +328,12 @@
         <el-table-column label="样本描述" align="center" prop="desc" :show-overflow-tooltip="true" />
         <el-table-column label="测试时间" align="center" prop="test_time" width="160">
           <template #default="scope">
-            <span>{{ parseTime(scope.row.test_time) }}</span>
+            <span>{{  parseTime(scope.row.test_time)  }}</span>
           </template>
         </el-table-column>
         <el-table-column label="上传时间" align="center" prop="created_at" width="160">
           <template #default="scope">
-            <span>{{ parseTime(scope.row.created_at) }}</span>
+            <span>{{  parseTime(scope.row.created_at)  }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -396,8 +351,8 @@
       <el-form-item label="统计选项:" v-if="positiveRateOption.isShow">
         <el-radio-group v-model="positiveRateOption.optionSelected">
           <el-radio v-for="option in positiveRateOption.options" :key="option.label" :label="option.label">{{
-              option.tagName
-          }}
+             option.tagName 
+            }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -409,8 +364,8 @@
       <!--        磁片数统计选项-->
       <el-form-item label="统计选项:" v-if="CiPianOptions.isShow">
         <el-radio-group v-model="CiPianOptions.optionSelected">
-          <el-radio v-for="option in CiPianOptions.options" :key="option.label" :label="option.label">{{ option.tagName
-          }}
+          <el-radio v-for="option in CiPianOptions.options" :key="option.label" :label="option.label">{{  option.tagName 
+            }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -422,8 +377,8 @@
       <!--        本底统计选项-->
       <el-form-item label="统计选项:" v-if="BendiOptions.isShow">
         <el-radio-group v-model="BendiOptions.optionSelected">
-          <el-radio v-for="option in BendiOptions.options" :key="option.label" :label="option.label">{{ option.tagName
-          }}
+          <el-radio v-for="option in BendiOptions.options" :key="option.label" :label="option.label">{{  option.tagName 
+            }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -482,11 +437,11 @@
         <el-tag type="danger">注意选择顺序,影响结果顺序,不确定全取消重选</el-tag>
       </el-form-item>
       <el-form-item label="选项值">
-        <span>{{ resultOptionValue }}</span>
+        <span>{{  resultOptionValue  }}</span>
       </el-form-item>
       <el-form-item label="统计选项">
         <el-checkbox-group v-model="resultOptionValue">
-          <el-checkbox-button v-for="it in resultOption" :label="it.key" :key="it.key">{{ it.Tag }}
+          <el-checkbox-button v-for="it in resultOption" :label="it.key" :key="it.key">{{  it.Tag  }}
           </el-checkbox-button>
         </el-checkbox-group>
       </el-form-item>
@@ -496,15 +451,16 @@
 </template>
 
 <script setup name="McStatistics">
-import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
 import { invoke } from '@tauri-apps/api/tauri';
+import { save } from '@tauri-apps/api/dialog';
+import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
 
-import {
-  exportSingleListData2excel,
-  exportSingleListData2csv,
-  exportSingleJsonData2excel,
-} from '@/utils/excelUtils';
+// import {
+//   exportSingleListData2excel,
+//   exportSingleListData2csv,
+//   exportSingleJsonData2excel,
+// } from '@/utils/excelUtils';
 import {
   ObjectList_to_2dList,
   ObjectList_to_childList,
@@ -809,13 +765,17 @@ async function getAllOriginData() {
 
 
 //  数据导出为excel
-const exportDataExcelOrCsv = (v, data, file_name) => {
-  if (v === 'Excel') {
-    ElMessage.info('数据量大时，网页可能卡死！');
-    exportSingleListData2excel(data, file_name);
+const exportDataExcelOrCsv = async (v, data, file_name) => {
+  if (v === "Excel") {
+    const file_path = await save();
+    await invoke("write_array_data_to_excel", { fileName: file_path, excelData: data })
+    ElMessage.success("数据导出完成")
   } else {
-    exportSingleListData2csv(data, file_name);
+    const file_path = await save();
+    await invoke("write_array_data_to_csv", { fileName: file_path, csvData: data })
+    ElMessage.success("数据导出完成")
   }
+
 };
 
 // 样本统计结果
@@ -863,15 +823,17 @@ async function getTestCount() {
     'children'
   );
   exportOutData.value.SampleCountData_A.push(...ddList_A, [], [], ...ddList_B);
+  console.log('exportOutData.value.SampleCountData_A :>> ', exportOutData.value.SampleCountData_A);
+  console.log('res.list :>> ', res.list);
   exportOutData.value.SampleCountData_B = res.list;
 }
 
-const exportSampleCountData = (v) => {
+const exportSampleCountData = async (v) => {
+
   if (v === 'A') {
-    exportSingleListData2excel(
-      exportOutData.value.SampleCountData_A,
-      '样本统计结果'
-    );
+    const file_path = await save();
+    await invoke("write_array_data_to_excel", { fileName: file_path, excelData: exportOutData.value.SampleCountData_A })
+    ElMessage.success("数据导出完成")
   } else {
     let header = [
       '医院',
@@ -888,11 +850,10 @@ const exportSampleCountData = (v) => {
       '有效',
       '合计',
     ];
-    exportSingleJsonData2excel(
-      exportOutData.value.SampleCountData_B,
-      header,
-      '样本统计结果'
-    );
+    console.log('B :>> ', exportOutData.value.SampleCountData_B);
+    const file_path = await save();
+    await invoke("write_array_map_data_to_excel", { fileName: file_path, header: header, excelData: exportOutData.value.SampleCountData_B })
+    ElMessage.success("数据导出完成")
   }
 };
 // 无效结果统计

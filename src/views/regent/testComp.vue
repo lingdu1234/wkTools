@@ -20,6 +20,7 @@
 
 <script setup name="TestComp">
 import { invoke } from '@tauri-apps/api/tauri';
+import { save } from '@tauri-apps/api/dialog';
 import { exportSingleListData2excel } from '@/utils/excelUtils';
 import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
@@ -132,8 +133,10 @@ async function getData() {
 }
 
 /** 导出按钮操作 */
-function handleExport() {
-    exportSingleListData2excel(excelData.value, '项目对比');
+async function handleExport() {
+    const file_path = await save();
+    await invoke("write_array_data_to_excel", { fileName: file_path, excelData: excelData.value })
+    ElMessage.success("数据导出完成")
 }
 
 async function get() {
@@ -150,6 +153,6 @@ get();
 
 <style scoped>
 .el-table {
-  margin-bottom: 50px !important;
+    margin-bottom: 50px !important;
 }
 </style>

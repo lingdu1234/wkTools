@@ -45,7 +45,8 @@ pub struct OptionsString {
 #[derive(Serialize, Debug, Clone)]
 pub struct SampleCount {
     pub time_list: Vec<String>,
-    pub list: Vec<serde_json::Value>,
+    // pub list: Vec<serde_json::Value>,
+    pub list: Vec<HashMap<String, serde_json::Value>>,
 }
 
 #[derive(Debug, Serialize, Default)]

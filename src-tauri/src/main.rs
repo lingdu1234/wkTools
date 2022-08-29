@@ -20,6 +20,12 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             // 开屏幕动画
             tools::comm_tools::close_splashscreen,
+            // 写二维数组数据到excel
+            tools::comm_tools::write_array_data_to_excel,
+            // 写map数组到excel
+            tools::comm_tools::write_array_map_data_to_excel,
+            // 写二维数组数据到csv
+            tools::comm_tools::write_array_data_to_csv,
             // path
             utils::path::set_path_js,
             // 日志

@@ -49,12 +49,12 @@ export const readExcel = (file, raw, header) => {
 //   XLSX.writeFile(wb, `sampleData.xlsx`) // 下载写入文件
 // }
 
-export const exportSingleJsonData2excel = (exceldata, header, fileName) => {
-  const wb = XLSX.utils.book_new() // 创建数据表
-  const worksheet = XLSX.utils.json_to_sheet(exceldata, { header: header })
-  XLSX.utils.book_append_sheet(wb, worksheet, fileName)
-  XLSX.writeFile(wb, fileName + '.xlsx') // 下载写入文件
-}
+// export const exportSingleJsonData2excel = (exceldata, header, fileName) => {
+//   const wb = XLSX.utils.book_new() // 创建数据表
+//   const worksheet = XLSX.utils.json_to_sheet(exceldata, { header: header })
+//   XLSX.utils.book_append_sheet(wb, worksheet, fileName)
+//   XLSX.writeFile(wb, fileName + '.xlsx') // 下载写入文件
+// }
 
 /**
  * 将`MAP`结果的`List`数据导出为Excel表格
@@ -71,12 +71,12 @@ export const exportSingleJsonData2excel = (exceldata, header, fileName) => {
 /**
  * 将单个的`List`数据导出为Excel表格
  */
-export const exportSingleListData2excel = (exceldata, filename) => {
-  const wb = XLSX.utils.book_new() // 创建数据表
-  const worksheet = XLSX.utils.aoa_to_sheet(exceldata)
-  XLSX.utils.book_append_sheet(wb, worksheet, filename)
-  XLSX.writeFile(wb, filename + '.xlsx') // 下载写入文件
-}
+// export const exportSingleListData2excel = (exceldata, filename) => {
+//   const wb = XLSX.utils.book_new() // 创建数据表
+//   const worksheet = XLSX.utils.aoa_to_sheet(exceldata)
+//   XLSX.utils.book_append_sheet(wb, worksheet, filename)
+//   XLSX.writeFile(wb, filename + '.xlsx') // 下载写入文件
+// }
 
 /**
  * 将`map`中的`List`数据导出为CSV
@@ -102,26 +102,26 @@ export const exportSingleListData2excel = (exceldata, filename) => {
 
 // }
 
-export const exportSingleListData2csv = (exceldata, filename) => {
-  // const wb = XLSX.utils.book_new() // 创建数据表
-  const worksheet = XLSX.utils.aoa_to_sheet(exceldata)
-  const csv = XLSX.utils.sheet_to_csv(worksheet)
-  //定义文件内容，类型必须为Blob 否则createObjectURL会报错
-  let content = new Blob([csv])
-  //生成url对象
-  let urlObject = window.URL || window.webkitURL || window
-  let url = urlObject.createObjectURL(content)
-  //生成<a></a>DOM元素
-  let el = document.createElement('a')
-  //链接赋值
-  el.href = url
-  el.download = filename + '.csv'
-  //必须点击否则不会下载
-  el.click()
-  //移除链接释放资源
-  urlObject.revokeObjectURL(url)
+// export const exportSingleListData2csv = (exceldata, filename) => {
+//   // const wb = XLSX.utils.book_new() // 创建数据表
+//   const worksheet = XLSX.utils.aoa_to_sheet(exceldata)
+//   const csv = XLSX.utils.sheet_to_csv(worksheet)
+//   //定义文件内容，类型必须为Blob 否则createObjectURL会报错
+//   let content = new Blob([csv])
+//   //生成url对象
+//   let urlObject = window.URL || window.webkitURL || window
+//   let url = urlObject.createObjectURL(content)
+//   //生成<a></a>DOM元素
+//   let el = document.createElement('a')
+//   //链接赋值
+//   el.href = url
+//   el.download = filename + '.csv'
+//   //必须点击否则不会下载
+//   el.click()
+//   //移除链接释放资源
+//   urlObject.revokeObjectURL(url)
 
-}
+// }
 
 // 数组求和
 // export const arrSum = (arr) => {

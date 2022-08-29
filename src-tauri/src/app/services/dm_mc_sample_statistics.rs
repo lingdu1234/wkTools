@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, vec};
 
 use anyhow::{anyhow, Result};
 use futures::TryStreamExt;
@@ -227,8 +227,27 @@ pub async fn get_test_count(db: &DatabaseConnection, req: SearchReq, test_count_
         .column_as(Expr::cust(&sample_total_valid), "有效")
         .column_as(dm_mc_sample::Column::TestGroup.count(), "合计");
     // 查询结果
-    // let result = db.query_all(s.build(db_backend)).await?;
-    let result = s.into_json().all(db).await?;
+    let keys = vec![
+        "id".to_string(),
+        "医院".to_string(),
+        "仪器SN".to_string(),
+        "测试组".to_string(),
+        "月份".to_string(),
+        "开始时间".to_string(),
+        "截止时间".to_string(),
+        "样本".to_string(),
+        "校准".to_string(),
+        "质控".to_string(),
+        "对照".to_string(),
+        "无效".to_string(),
+        "有效".to_string(),
+        "合计".to_string(),
+    ];
+
+    let ss = s.clone().build(db_end);
+    let sql_result = db.query_all(ss.clone()).await?;
+    let result = get_query_result(sql_result, keys);
+
     let month = s2.into_json().all(db).await?;
     let mut t_list: Vec<String> = Vec::new();
     for it in month.iter() {
@@ -420,7 +439,7 @@ pub async fn get_invalid_count(db: &DatabaseConnection, req: SearchReq, options:
     // 样本无效率
     let invalid_s_percent = format!(
         // "ROUND(({invalid_s}/{sample_total}),4) AS DECIMAL)",
-        "ROUND(CAST({invalid_s} AS double)/MAX({sample_total},1),4)",  //这里取 1和计数 的最大值 是为了防止0作为除数，可能导致异常
+        "ROUND(CAST({invalid_s} AS double)/MAX({sample_total},1),4)", //这里取 1和计数 的最大值 是为了防止0作为除数，可能导致异常
         invalid_s = &invalid_s,
         sample_total = &sample_total
     );
