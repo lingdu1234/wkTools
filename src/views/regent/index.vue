@@ -1,9 +1,9 @@
 <template>
   <div style="display: flex; justify-content: center; align-items: center">
-    <span>项目</span>
+    <span>{{t("regent.title")}}</span>
     <el-radio-group v-model="activeGroup" style="margin:0 auto -5px;">
-      <el-radio-button label="labTest">项目管理</el-radio-button>
-      <el-radio-button label="testComp">项目对比</el-radio-button>
+      <el-radio-button label="labTest">{{t("regent.manager")}}</el-radio-button>
+      <el-radio-button label="testComp">{{t("regent.compare")}}</el-radio-button>
     </el-radio-group>
     <span></span>
   </div>
@@ -21,20 +21,20 @@
 
       <el-row :gutter="10" class="mb8" style="height: 35px">
         <el-col :span="1.5">
-          <el-button type="primary" plain :icon="Plus" @click="handleAdd">新增项目</el-button>
+          <el-button type="primary" plain :icon="Plus" @click="handleAdd">{{t("regent.add")}}</el-button>
         </el-col>
         <el-col :span="1.5">
-          <el-button type="success" plain :icon="Edit" @click="handleRelation">新增关联</el-button>
+          <el-button type="success" plain :icon="Edit" @click="handleRelation">{{t("regent.add_relation")}}</el-button>
         </el-col>
       </el-row>
       <el-table v-loading="loading" :data="dataList">
         <!-- :height="table_height" -->  
         <el-table-column :index="(index) => index" align="center" label="#" type="index" />
-        <el-table-column label="简称" align="center" prop="name_en" />
+        <el-table-column :label='t("regent.shortName")' align="center" prop="name_en" />
         <el-table-column label="code" align="center" prop="code" />
-        <el-table-column label="中文" align="center" prop="name_cn" />
-        <el-table-column label="排序" align="center" prop="order" />
-        <el-table-column align="center" label="备注">
+        <el-table-column :label="t('regent.cnName')" align="center" prop="name_cn" />
+        <el-table-column :label="t('regent.order')" align="center" prop="order" />
+        <el-table-column align="center" :label="t('regent.remark')">
           <template #default="scope">
             <el-popover placement="top-start" :title="scope.row.name_en" trigger="hover" width="300px">
               <template #reference>
@@ -49,10 +49,10 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="t('regent.action')" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-link type="success" :icon="Edit" @click="handleUpdate(scope.row)">修改</el-link>
-            <el-link type="danger" :icon="Delete" @click="handleDelete(scope.row)">删除</el-link>
+            <el-link type="success" :icon="Edit" @click="handleUpdate(scope.row)">{{t("app.edit")}}</el-link>
+            <el-link type="danger" :icon="Delete" @click="handleDelete(scope.row)">{{t("app.delete")}}</el-link>
           </template>
         </el-table-column>
       </el-table>

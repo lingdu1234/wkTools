@@ -5,7 +5,9 @@
     "log_dir": "Log Dir",
     "res_dir": "Resource",
     "download_dir": "Download Dir",
-    "config_dir": "Config Dir"
+    "config_dir": "Config Dir",
+    "edit": "edit",
+    "delete": "delete"
   },
   "route": {
     "home": "Home",
@@ -60,5 +62,17 @@
     "dict": "Dictionary",
     "dict_data": "Dict Data",
     "instrument": "Instrument"
+  },
+  "regent": {
+    "title": "regent",
+    "add": "Add item",
+    "add_relation": "Add association",
+    "manager": "Test management",
+    "compare": "Test comparison",
+    "shortName": "short name",
+    "cnName": "CN Name",
+    "order": "Order",
+    "remark": "Remark",
+    "action": "Action"
   }
 }

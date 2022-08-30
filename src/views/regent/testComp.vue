@@ -21,7 +21,7 @@
 <script setup name="TestComp">
 import { invoke } from '@tauri-apps/api/tauri';
 import { save } from '@tauri-apps/api/dialog';
-import { exportSingleListData2excel } from '@/utils/excelUtils';
+// import { exportSingleListData2excel } from '@/utils/excelUtils';
 import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
 

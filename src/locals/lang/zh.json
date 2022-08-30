@@ -5,7 +5,9 @@
     "log_dir": "日志目录",
     "res_dir": "资源目录",
     "download_dir": "下载目录",
-    "config_dir": "配置目录"
+    "config_dir": "配置目录",
+    "edit": "编辑",
+    "delete": "删除"
   },
   "route": {
     "home": "主页",
@@ -60,5 +62,17 @@
     "dict": "字典",
     "dict_data": "字典数据",
     "instrument": "仪器"
+  },
+  "regent": {
+    "title": "项目",
+    "add": "新增项目",
+    "add_relation": "新增关联",
+    "manager": "项目管理",
+    "compare": "项目对比",
+    "shortName": "简称",
+    "cnName": "中文名称",
+    "order": "排序",
+    "remark": "备注",
+    "action": "操作"
   }
 }
