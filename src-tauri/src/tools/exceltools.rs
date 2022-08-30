@@ -12,7 +12,7 @@ pub fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
 
     match to_dir.contains(&dir) {
         true => {
-            let msg = format!("{}  {}  {} {}", &t!("excel_save_dir"), &t!("is"), &t!("excel_ori_dir"), &t!("subfolder"),);
+            let msg = format!("{}", t!("msg.sve_dir_is_ori_dir_sub_dir", save_dir = &to_dir, ori_dir = &dir));
             add_msg(&msg);
             return;
         }
@@ -40,13 +40,13 @@ pub fn export_excel(dir: String, to_dir: String, is_with_dir: bool) {
     let end_time = chrono::Local::now(); //获取结束时间
     let duration_time = end_time.signed_duration_since(start_time).to_std().unwrap(); //耗时
     let msg = format!(
-        "{} : {:?},{} :{:?},{}:{:?}",
-        t!("task_bengin_time"),
-        start_time.format("%Y-%m-%d %H:%M:%S").to_string(),
-        t!("task_end_time"),
-        end_time.format("%Y-%m-%d %H:%M:%S").to_string(),
-        t!("elapsed_time"),
-        duration_time
+        "{}",
+        t!(
+            "msg.Excel export task,begin time:begin_time,end time:end_time,elapsed time:elapsed_time",
+            begin_time = &start_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+            end_time = &end_time.format("%Y-%m-%d %H:%M:%S").to_string(),
+            elapsed_time = &format!("{:?}", duration_time)
+        )
     );
     add_msg(&msg);
 }

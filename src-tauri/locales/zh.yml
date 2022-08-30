@@ -25,3 +25,6 @@ zh:
   now_size: 现在大小
   is: 是
   subfolder: 子文件夹
+  msg:
+   sve_dir_is_ori_dir_sub_dir: 文件夹<%{save_dir}>是文件夹<%{ori_dir}>的子文件夹或相同！
+   Excel export task,begin time:begin_time,end time:end_time,elapsed time:elapsed_time: Excel导出任务,开始时间:%{begin_time},结束时间:%{end_time},消耗时间:%{elapsed_time}
