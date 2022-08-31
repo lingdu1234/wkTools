@@ -90,6 +90,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 
 import { Plus, Edit, Delete, Close } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from "element-plus"
+import i18n from '@/locals';
 
 
 const { proxy } = getCurrentInstance();
@@ -98,7 +99,6 @@ const { sys_normal_disable, instrumentNames } = proxy.useDict(
   'instrumentNames'
 );
 
-import i18n from '@/locals';
 const { t } = i18n.global;
 
 const dataList = ref([]);

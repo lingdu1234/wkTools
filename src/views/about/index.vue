@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="@/assets/logo2.png" />
     </div>
-    <div class="updater">
+    <div class="updaterClass">
       <el-button type="primary" @click="check_update">{{ t("about.checkUpdate") }}</el-button>
     </div>
   </div>
@@ -67,47 +67,18 @@
       </tbody>
     </table>
   </div>
-  <el-dialog v-model="open" width="500px" :show-close="false">
-    <template #header>
-      <div class="update-header">
-        <div class="up_logo">
-          <img src="@/assets/logo2.png" />
-          <span>程序更新</span>
-        </div>
-      </div>
-      <el-divider style="margin: 5px auto 0;"></el-divider>
-    </template>
-    <el-form ref="updateRef" label-width="80px">
-      <el-form-item label="当前版本">
-        <span>{{ v.appVersion }}</span>
-      </el-form-item>
-      <el-form-item label="更新版本">
-        <span>{{ up_info.version }}</span>
-      </el-form-item>
-      <el-form-item label="更新日期">
-        <span>{{ up_info.date }}</span>
-      </el-form-item>
-      <el-form-item label="更新日志">
-        <span>{{ up_info.body }}</span>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </template>
-  </el-dialog>
+  <Updater :is_show="is_show_dialog" :up_info="up_info" @closeUpdateDialog="closeUpdateDialog" />
 </template>
 
 <script setup>
 import { getName, getTauriVersion, getVersion } from '@tauri-apps/api/app';
-import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
-import { relaunch } from '@tauri-apps/api/process'
-import { configDir, appDir, resourceDir, downloadDir, logDir } from '@tauri-apps/api/path';
+import { checkUpdate } from '@tauri-apps/api/updater'
 
-import i18n from '@/locals';
+import { configDir, appDir, resourceDir, downloadDir, logDir } from '@tauri-apps/api/path';
+import Updater from '@/components/Updater.vue';
 import { ElMessage, ElNotification } from 'element-plus';
+import i18n from '@/locals';
+
 const { t } = i18n.global;
 
 const app_dir = ref(null);
@@ -116,13 +87,16 @@ const config_dir = ref(null);
 const res_dir = ref(null);
 const download_dir = ref(null);
 
-const open = ref(false);
+
+//  可更新的
 
 const up_info = ref({
   version: "",
   date: "",
   body: ""
 })
+
+const is_show_dialog = ref(false);
 
 const v = ref({
   appName: '',
@@ -148,7 +122,7 @@ const check_update = async () => {
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
     if (shouldUpdate) {
-      open.value = true
+      is_show_dialog.value = true
       const { body, date, version } = manifest;
       up_info.value = {
         version: version,
@@ -163,34 +137,16 @@ const check_update = async () => {
   }
 }
 
-const submitForm = async () => {
-  try {
-    ElMessage.info("开始更新并重启")
-    await installUpdate();
-    await relaunch();
-  } catch (err) {
-    ElMessage.error("更新出错:" + err)
-    open.value = false
-  }
+const closeUpdateDialog = () => {
+  is_show_dialog.value = false
 }
-const cancel = async () => {
-  ElNotification.info("你取消了更新")
-  open.value = false
-}
+
 get_base_info();
 get_app_dir();
 </script>
 
 
 <style lang="scss" scoped>
-html.dark {
-  .up_logo {
-    span {
-      color: #FFFFFF;
-    }
-  }
-}
-
 .logo {
   width: 100px;
   height: 100px;
@@ -198,7 +154,7 @@ html.dark {
   display: flex;
 }
 
-.updater {
+.updaterClass {
   width: 100px;
   margin: 10px auto 0px auto;
   display: flex;
@@ -210,43 +166,8 @@ html.dark {
   margin: 0 auto 20px;
 }
 
-.update-header {
-  height: 30px;
-  color: black;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0px;
 
-  .up_logo {
-    display: flex;
-    justify-content: start;
 
-    img {
-      height: 22px;
-      width: 22px;
-    }
-
-    span {
-      margin-left: 10px;
-      font-size: 18px;
-    }
-  }
-}
-
-.el-form {
-  font-weight: bolder;
-
-  span {
-    font-weight: normal;
-    word-break: normal;
-    width: auto;
-    display: block;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: hidden;
-  }
-}
 
 
 table {

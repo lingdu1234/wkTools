@@ -76,11 +76,13 @@
       </div>
     </div>
   </el-config-provider>
+  <Updater :is_show="is_show_dialog" :up_info="up_info" @closeUpdateDialog="closeUpdateDialog" />
 </template>
 
 <script setup>
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
+import { checkUpdate } from '@tauri-apps/api/updater'
 import { resourceDir, appDir, resolveResource } from '@tauri-apps/api/path';
 import SvgIcon from '@/components/SvgIcon.vue';
 import SideBar from "@/components/SideBar"
@@ -111,6 +113,15 @@ const opacity = ref(1000)
 
 //  软件是否已经启动
 const is_started = ref(false)
+
+//  显示更新对话框
+const is_show_dialog = ref(false);
+//  更新信息
+const up_info = ref({
+  version: "",
+  date: "",
+  body: ""
+})
 
 
 const formatTooltip = (val) => {
@@ -221,17 +232,43 @@ async function set_path() {
   await invoke("set_path_js", { v })
 }
 
+const check_update = async () => {
+  try {
+    const { shouldUpdate, manifest } = await checkUpdate()
+    console.log('shouldUpdate :>> ', shouldUpdate);
+    if (shouldUpdate) {
+      is_show_dialog.value = true
+      const { body, date, version } = manifest;
+      up_info.value = {
+        version: version,
+        date: date,
+        body: body
+      }
+    }
+    return;
+  } catch (e) {
+
+  }
+}
+
+// 关闭更新对话框回调函数
+const closeUpdateDialog = () => {
+  is_show_dialog.value = false
+}
+
 // 添加监听函数，监听 DOM 内容加载完成事件
 document.addEventListener('DOMContentLoaded', async () => {
   await set_path();
   is_started.value = true
 
   // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
-  // setTimeout(async () => {
+  
   await invoke('close_splashscreen')
   // is_started.value = true
-  // }, 1000)
-
+ 
+  setTimeout(async () => {
+  await check_update();
+   }, 3000)
 })
 
 const handleMouse = (e) => {
