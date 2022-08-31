@@ -135,10 +135,9 @@ onMounted(() => {
   const v = localStorage.getItem('lang') || "zh";
   invoke('set_lang', { lang: v });
   window.onresize = () => {
-    get_window_height()
+    getWindowResize()
   };
 })
-
 
 const reload = () => {
   is_started.value = false
@@ -166,10 +165,12 @@ async function maximize() {
   if (isMaximize.value) {
     await appWindow.unmaximize();
     isMaximize.value = false;
+    getWindowResize()
 
   } else {
     await appWindow.maximize();
     isMaximize.value = true;
+    getWindowResize()
   }
 }
 // 关闭
