@@ -79,7 +79,7 @@
     </template>
     <el-form ref="updateRef" label-width="80px">
       <el-form-item label="当前版本">
-        <span>{{ appVersion }}</span>
+        <span>{{ v.appVersion }}</span>
       </el-form-item>
       <el-form-item label="更新版本">
         <span>{{ up_info.version }}</span>
