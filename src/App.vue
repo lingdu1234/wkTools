@@ -66,7 +66,7 @@
           <SideBar v-model:route_title="route_title"></SideBar>
           <el-container>
             <el-main>
-              <el-scrollbar :height="window_h">
+              <el-scrollbar :height="window_h - 30">
                 <!-- 路由占位符 -->
                 <router-view />
               </el-scrollbar>
@@ -147,26 +147,28 @@ const reload = () => {
   })
 }
 
-const get_window_height = () => {
-  window_h.value = document.documentElement.clientHeight * 0.9;
+const getWindowResize = () => {
+  nextTick(() => {
+    window_h.value = document.documentElement.clientHeight;
+  })
 }
-
 
 const localeLang = computed(() => (locale.value === 'zh' ? zh : en))
 
 
 //  窗口操作
 // 最小化
-function minimize() {
-  appWindow.minimize();
+async function minimize() {
+  await appWindow.minimize();
 }
 // 最大化
-function maximize() {
+async function maximize() {
   if (isMaximize.value) {
-    appWindow.unmaximize();
+    await appWindow.unmaximize();
     isMaximize.value = false;
+
   } else {
-    appWindow.maximize();
+    await appWindow.maximize();
     isMaximize.value = true;
   }
 }
@@ -234,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 const handleMouse = (e) => {
   // e.preventDefault();
 }
-get_window_height();
+getWindowResize();
 </script>
 
 <style lang="scss" scoped>

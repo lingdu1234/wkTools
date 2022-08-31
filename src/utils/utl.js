@@ -1,14 +1,12 @@
 
-
-
 // 表单重置
 export function resetForm(refName) {
-    if (this.$refs[refName]) {
-      this.$refs[refName].resetFields();
-    }
+  if (this.$refs[refName]) {
+    this.$refs[refName].resetFields();
   }
+}
 
-  // 日期格式化
+// 日期格式化
 export function parseTime(time, pattern) {
   if (arguments.length === 0 || !time) {
     return null
@@ -18,16 +16,16 @@ export function parseTime(time, pattern) {
   if (typeof time === 'object') {
     date = time
   } else {
-    if (typeof time === 'string'){
+    if (typeof time === 'string') {
       time = time.split(".")[0];
       if (/^[0-9]+$/.test(time)) {
         time = parseInt(time)
-      } else{
+      } else {
         time = time.replace(new RegExp(/-/gm), '/').replace('T', ' ').replace(new RegExp(/\.[\d]{3}/gm), '');
       }
     }
 
-    
+
     if ((typeof time === 'number') && (time.toString().length === 10)) {
       time = time * 1000
     }
@@ -58,10 +56,10 @@ export function parseTime(time, pattern) {
  *  转置数组，各个子数组长度必须一致
  *  @List 需要转换的二维数
  */
- export const reverseArray = (List) => {
-  return List[0].map(function(col, i) {
+export const reverseArray = (List) => {
+  return List[0].map(function (col, i) {
 
-    return List.map(function(row) {
+    return List.map(function (row) {
 
       return row[i]
 

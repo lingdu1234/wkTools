@@ -10,21 +10,25 @@
 </template>
 
 <script setup>
+import { onBeforeUnmount } from 'vue';
+
 
 const window_h = ref(null)
 const window_w = ref(null)
 
 onMounted(() => {
-  window.onresize = () => {
-    get_window_height()
-  };
+  getWindowResize()
+  window.addEventListener('resize', getWindowResize)
 })
 
-const get_window_height = () => {
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', getWindowResize)
+})
+
+const getWindowResize = () => {
   window_h.value = document.documentElement.clientHeight - 250;
   window_w.value = document.documentElement.clientWidth - 200;
 }
-get_window_height();
 </script>
 
 
