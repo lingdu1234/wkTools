@@ -235,7 +235,6 @@ async function set_path() {
 const check_update = async () => {
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
-    console.log('shouldUpdate :>> ', shouldUpdate);
     if (shouldUpdate) {
       is_show_dialog.value = true
       const { body, date, version } = manifest;
@@ -268,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  
   setTimeout(async () => {
   await check_update();
-   }, 3000)
+   }, 1500)
 })
 
 const handleMouse = (e) => {

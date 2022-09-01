@@ -8,7 +8,9 @@
 
         </div>
         <el-row :gutter="10" class="mb8" style="height: 35px">
-            <el-button type="success" plain :icon="Download" @click="handleExport">导出表格</el-button>
+            <el-col :span="1.5">
+                <el-button type="success" plain :icon="Download" @click="handleExport">导出表格</el-button>
+            </el-col>
         </el-row>
         <el-table v-loading="loading" :data="tableData" border stripe>
             <el-table-column align="center" label="#" type="index" />
@@ -134,7 +136,13 @@ async function getData() {
 
 /** 导出按钮操作 */
 async function handleExport() {
-    const file_path = await save();
+    const file_path = await save({
+        defaultPath:"项目对比",
+        filters: [{
+            name:"",
+            extensions: ['xlsx', 'xls']
+        }]
+    });
     await invoke("write_array_data_to_excel", { fileName: file_path, excelData: excelData.value })
     ElMessage.success("数据导出完成")
 }

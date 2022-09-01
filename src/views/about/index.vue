@@ -66,6 +66,7 @@
         </tr>
       </tbody>
     </table>
+    <el-divider style="margin-bottom:40px" content-position="left">end</el-divider>
   </div>
   <Updater :is_show="is_show_dialog" :up_info="up_info" @closeUpdateDialog="closeUpdateDialog" />
 </template>
@@ -173,7 +174,7 @@ get_app_dir();
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  margin: 1px;
+  margin-bottom: 20px;
   width: 90%;
 }
 

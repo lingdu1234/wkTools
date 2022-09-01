@@ -122,10 +122,10 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { Plus, Edit, Delete } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from "element-plus"
 import testCompVue from './testComp.vue';
+import i18n from '@/locals';
 
 const { proxy } = getCurrentInstance();
 
-import i18n from '@/locals';
 const { t } = i18n.global;
 
 const { mc_test_group } = proxy.useDict('mc_test_group');

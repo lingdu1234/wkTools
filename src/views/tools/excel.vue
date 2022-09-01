@@ -42,8 +42,9 @@ import { open } from '@tauri-apps/api/dialog';
 import { Refresh, Promotion } from '@element-plus/icons-vue';
 import { invoke } from '@tauri-apps/api/tauri';
 import { getCurrentInstance } from 'vue';
-
 import i18n from '@/locals';
+
+
 const { t } = i18n.global;
 
 

@@ -1,4 +1,6 @@
 <template>
+    <span>统计</span>
+  <el-divider></el-divider>
   <div class="app-container">
     <div>
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
@@ -66,8 +68,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="getList">搜索</el-button>
-          <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          <el-button type="primary" :icon="Search" @click="getList">搜索</el-button>
+          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
       <el-divider content-position="left">数据导出操作区域</el-divider>
@@ -315,7 +317,7 @@
         <el-table-column label="医院名称" align="center" prop="hospital_name" :show-overflow-tooltip="true" width="180" />
         <el-table-column label="条码" align="center" prop="sample_code" :show-overflow-tooltip="true" width="150">
           <template #default="scope">
-            <el-link type="success" @click="goToData(scope.row.id)">{{  scope.row.sample_code  }}
+            <el-link type="success" @click="goToData(scope.row.id)">{{ scope.row.sample_code }}
             </el-link>
           </template>
         </el-table-column>
@@ -328,12 +330,12 @@
         <el-table-column label="样本描述" align="center" prop="desc" :show-overflow-tooltip="true" />
         <el-table-column label="测试时间" align="center" prop="test_time" width="160">
           <template #default="scope">
-            <span>{{  parseTime(scope.row.test_time)  }}</span>
+            <span>{{ parseTime(scope.row.test_time) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="上传时间" align="center" prop="created_at" width="160">
           <template #default="scope">
-            <span>{{  parseTime(scope.row.created_at)  }}</span>
+            <span>{{ parseTime(scope.row.created_at) }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -351,8 +353,8 @@
       <el-form-item label="统计选项:" v-if="positiveRateOption.isShow">
         <el-radio-group v-model="positiveRateOption.optionSelected">
           <el-radio v-for="option in positiveRateOption.options" :key="option.label" :label="option.label">{{
-             option.tagName 
-            }}
+              option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -364,8 +366,8 @@
       <!--        磁片数统计选项-->
       <el-form-item label="统计选项:" v-if="CiPianOptions.isShow">
         <el-radio-group v-model="CiPianOptions.optionSelected">
-          <el-radio v-for="option in CiPianOptions.options" :key="option.label" :label="option.label">{{  option.tagName 
-            }}
+          <el-radio v-for="option in CiPianOptions.options" :key="option.label" :label="option.label">{{ option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -377,8 +379,8 @@
       <!--        本底统计选项-->
       <el-form-item label="统计选项:" v-if="BendiOptions.isShow">
         <el-radio-group v-model="BendiOptions.optionSelected">
-          <el-radio v-for="option in BendiOptions.options" :key="option.label" :label="option.label">{{  option.tagName 
-            }}
+          <el-radio v-for="option in BendiOptions.options" :key="option.label" :label="option.label">{{ option.tagName
+          }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -437,11 +439,11 @@
         <el-tag type="danger">注意选择顺序,影响结果顺序,不确定全取消重选</el-tag>
       </el-form-item>
       <el-form-item label="选项值">
-        <span>{{  resultOptionValue  }}</span>
+        <span>{{ resultOptionValue }}</span>
       </el-form-item>
       <el-form-item label="统计选项">
         <el-checkbox-group v-model="resultOptionValue">
-          <el-checkbox-button v-for="it in resultOption" :label="it.key" :key="it.key">{{  it.Tag  }}
+          <el-checkbox-button v-for="it in resultOption" :label="it.key" :key="it.key">{{ it.Tag }}
           </el-checkbox-button>
         </el-checkbox-group>
       </el-form-item>
@@ -454,13 +456,9 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { save } from '@tauri-apps/api/dialog';
 import { getCurrentInstance, ref, toRefs, reactive } from 'vue';
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
+import { ElMessage } from 'element-plus';
+import { Search,Refresh } from "@element-plus/icons-vue"
 
-// import {
-//   exportSingleListData2excel,
-//   exportSingleListData2csv,
-//   exportSingleJsonData2excel,
-// } from '@/utils/excelUtils';
 import {
   ObjectList_to_2dList,
   ObjectList_to_childList,
@@ -468,7 +466,6 @@ import {
   transfor_sample_result,
 } from '@/utils/dataConvert';
 
-import Instrument from './sample_result.vue';
 
 const { proxy } = getCurrentInstance();
 
@@ -767,11 +764,23 @@ async function getAllOriginData() {
 //  数据导出为excel
 const exportDataExcelOrCsv = async (v, data, file_name) => {
   if (v === "Excel") {
-    const file_path = await save();
+    const file_path = await save({
+      defaultPath: file_name,
+      filters: [{
+        name: "",
+        extensions: ['xlsx']
+      }]
+    });
     await invoke("write_array_data_to_excel", { fileName: file_path, excelData: data })
     ElMessage.success("数据导出完成")
   } else {
-    const file_path = await save();
+    const file_path = await save({
+      defaultPath: file_name,
+      filters: [{
+        name: "",
+        extensions: ['csv']
+      }]
+    });
     await invoke("write_array_data_to_csv", { fileName: file_path, csvData: data })
     ElMessage.success("数据导出完成")
   }
@@ -823,15 +832,19 @@ async function getTestCount() {
     'children'
   );
   exportOutData.value.SampleCountData_A.push(...ddList_A, [], [], ...ddList_B);
-  console.log('exportOutData.value.SampleCountData_A :>> ', exportOutData.value.SampleCountData_A);
-  console.log('res.list :>> ', res.list);
   exportOutData.value.SampleCountData_B = res.list;
 }
 
 const exportSampleCountData = async (v) => {
 
   if (v === 'A') {
-    const file_path = await save();
+    const file_path = await save({
+      defaultPath: "测试统计数据_A",
+      filters: [{
+        name: "",
+        extensions: ['xlsx']
+      }]
+    });
     await invoke("write_array_data_to_excel", { fileName: file_path, excelData: exportOutData.value.SampleCountData_A })
     ElMessage.success("数据导出完成")
   } else {
@@ -850,8 +863,13 @@ const exportSampleCountData = async (v) => {
       '有效',
       '合计',
     ];
-    console.log('B :>> ', exportOutData.value.SampleCountData_B);
-    const file_path = await save();
+    const file_path = await save({
+      defaultPath: "测试统计数据_B",
+      filters: [{
+        name: "",
+        extensions: ['xlsx']
+      }]
+    });
     await invoke("write_array_map_data_to_excel", { fileName: file_path, header: header, excelData: exportOutData.value.SampleCountData_B })
     ElMessage.success("数据导出完成")
   }

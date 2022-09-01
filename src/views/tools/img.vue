@@ -2,7 +2,7 @@
   <div>
     <span>{{ t('img.title') }}</span>
     <el-divider></el-divider>
-    <el-form ref="queryRef" label-width="100px" >
+    <el-form ref="queryRef" label-width="100px">
       <!-- 功能选择 -->
       <el-form-item :label="t('img.function')">
         <el-radio-group v-model="activeTab">
@@ -24,7 +24,8 @@
       </el-form-item>
       <!-- 压缩图片时保存目录 -->
       <el-form-item :label="t('img.log')">
-        <el-input id="textarea_log" v-model="logs" :placeholder="t('img.log_placeholder')" type="textarea" :rows="10" clearable />
+        <el-input id="textarea_log" v-model="logs" :placeholder="t('img.log_placeholder')" type="textarea" :rows="10"
+          clearable />
       </el-form-item>
     </el-form>
   </div>
@@ -35,10 +36,9 @@ import { open } from '@tauri-apps/api/dialog';
 import { Refresh, Promotion } from '@element-plus/icons-vue';
 import { invoke } from '@tauri-apps/api/tauri';
 import { getCurrentInstance } from 'vue';
-
 import i18n from '@/locals';
-const { t } = i18n.global;
 
+const { t } = i18n.global;
 
 const { proxy } = getCurrentInstance();
 
