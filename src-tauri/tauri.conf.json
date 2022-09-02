@@ -1,9 +1,9 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "vite build",
-    "beforeDevCommand": "vite dev",
-    "devPath": "http://localhost:5173",
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "devPath": "../dist",
     "distDir": "../dist",
     "withGlobalTauri": true
   },

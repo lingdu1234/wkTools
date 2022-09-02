@@ -35,10 +35,6 @@ rust-i18n = "0"
 anyhow = "1"
 # 生成id
 scru128 = "2"
-# excel处理
-xlsxwriter = "0"
-# csv
-csv = "1"
 # 
 futures = "0"
 
@@ -55,7 +51,7 @@ default-locale = "en"
 # sea-orm
 [dependencies.sea-orm]
 default-features = false
-features = ["macros", "runtime-tokio-rustls", "with-json","debug-print","with-rust_decimal"]
+features = ["macros", "runtime-tokio-native-tls", "with-json","debug-print","with-rust_decimal"]
 version = "0.9"
 
 [features]
