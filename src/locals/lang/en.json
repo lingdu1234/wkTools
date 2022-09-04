@@ -1,6 +1,13 @@
 {
   "app": {
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "dir": "App Dir",
+    "log_dir": "Log Dir",
+    "res_dir": "Resource",
+    "download_dir": "Download Dir",
+    "config_dir": "Config Dir",
+    "edit": "edit",
+    "delete": "delete"
   },
   "route": {
     "home": "Home",
@@ -9,7 +16,10 @@
     "about": "About",
     "excel": "Excel",
     "regent": "Regent",
-    "dict": "Dict"
+    "dict": "Dict",
+    "hospital": "Hospital",
+    "sample": "Sample",
+    "statistics": "statistics"
   },
   "img": {
     "title": "image processing",
@@ -28,13 +38,17 @@
   "about": {
     "title": "About",
     "checkUpdate": "check update",
-    "p01": "A collection of  tools wirch working for deal wirh some data;",
-    "p02": "language used: rust, js;",
-    "p03": "Technology: tauri, vue3, vue-i18n, vue-router, element-plus, vueuse/core, etc.;",
+    "p01": "A collection of  tools wirch working for deal wirh some data",
+    "p02": "language used: rust, js,SQL",
+    "p03": "Main technology used: main program: tauri; UI interface: vue3, vite3, vue-router, element-plus, vueuse/core, etc., internationalization: vue-i18n, rust-i18n; database: sqlite3; database processing library: SeaOrm; \nAsynchronous runtime: Tokio, image processing: image; excel processing: xlsx",
     "aboutProgram": "about",
     "programName": "Program Name",
     "programVersion": "Program Version",
-    "version": " Version"
+    "version": " Version",
+    "contact": "Email:WY#IU1314.TOP",
+    "desc": "Introduction",
+    "mainFrame": "mainFrame",
+    "edition": "Version"
   },
   "excel": {
     "title": "Excel",
@@ -46,6 +60,7 @@
   },
   "dict": {
     "dict": "Dictionary",
-    "dict_data": "Dict Data"
+    "dict_data": "Dict Data",
+    "instrument": "Instrument"
   }
 }

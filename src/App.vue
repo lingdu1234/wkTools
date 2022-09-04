@@ -1,110 +1,108 @@
 <template>
   <el-config-provider :locale="localeLang">
-    <div @contextmenu="handleMouse" :style="'opacity:' + opacity / 1000 + ';'">
-      <el-header>
-        <el-container @mousedown="dragWindow">
-          <!-- 头部标题 -->
-          <div class="title_logo" @click="gotoAdminHome">
-            <img src="@/assets/logo2.png" />
-            <span>{{ Headertitile }}</span>
-          </div>
-        </el-container>
-        <div class="operatorClass">
-          <div class="operatorClassA">
-            <!-- 最上层切换 -->
-            <div>
-              <el-icon v-if="isDark" @click="set_always_on_top">
-                <SvgIcon :name="is_on_top ? 'pined' : 'pinDark'"></SvgIcon>
-              </el-icon>
-              <el-icon v-else @click="set_always_on_top">
-                <SvgIcon :name="is_on_top ? 'pined' : 'pin'"></SvgIcon>
-              </el-icon>
+    <div v-if="is_started">
+      <div @contextmenu="handleMouse" :style="'opacity:' + appStore.opacity / 1000 + ';'">
+        <el-header>
+          <el-container @mousedown="dragWindow">
+            <!-- 头部标题 -->
+            <div class="title_logo" @click="gotoAdminHome">
+              <img src="@/assets/logo2.png" />
+              <span>{{ t(appStore.routeInfo.title) }}</span>
             </div>
-            <!-- 透明度切换 -->
-            <el-popover>
-              <template #reference>
-                <el-icon>
-                  <SvgIcon :name="isDark ? 'setOpacityDark' : 'setOpacity'"></SvgIcon>
+          </el-container>
+          <div class="operatorClass">
+            <div class="operatorClassA">
+              <!-- 最上层切换 -->
+              <div>
+                <el-icon v-if="isDark" @click="set_always_on_top">
+                  <SvgIcon :name="is_on_top ? 'pined' : 'pinDark'"></SvgIcon>
                 </el-icon>
-              </template>
-              <el-slider v-model="opacity" :format-tooltip="formatTooltip" :min="600" :max="1000" />
-            </el-popover>
-            <!-- 语言切换 -->
-            <div>
-              <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
-                <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
+                <el-icon v-else @click="set_always_on_top">
+                  <SvgIcon :name="is_on_top ? 'pined' : 'pin'"></SvgIcon>
+                </el-icon>
+              </div>
+              <!-- 透明度切换 -->
+              <el-popover>
+                <template #reference>
+                  <el-icon>
+                    <SvgIcon :name="isDark ? 'setOpacityDark' : 'setOpacity'"></SvgIcon>
+                  </el-icon>
+                </template>
+                <el-slider v-model="appStore.opacity" :format-tooltip="formatTooltip" :min="600" :max="1000" />
+              </el-popover>
+              <!-- 语言切换 -->
+              <div>
+                <el-icon v-if="locale === 'zh'" @click="changeLang('en')">
+                  <SvgIcon :name="isDark ? 'enDark' : 'en'"></SvgIcon>
+                </el-icon>
+                <el-icon v-else @click="changeLang('zh')">
+                  <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
+                </el-icon>
+              </div>
+              <!-- 黑暗模式切换 -->
+              <div>
+                <el-icon v-if="isDark" @click="toggleDark()">
+                  <Moon />
+                </el-icon>
+                <el-icon v-else @click="toggleDark()">
+                  <Sunny />
+                </el-icon>
+              </div>
+            </div>
+            <div class="operatorClassB">
+              <el-icon @click="minimize">
+                <Minus />
               </el-icon>
-              <el-icon v-else @click="changeLang('zh')">
-                <SvgIcon :name="isDark ? 'zhDark' : 'zh'"></SvgIcon>
+              <el-icon @click="maximize">
+                <Plus />
+              </el-icon>
+              <el-icon @click="titlebarClose">
+                <CloseBold />
               </el-icon>
             </div>
-            <!-- 黑暗模式切换 -->
-            <div>
-              <el-icon v-if="isDark" @click="toggleDark()">
-                <Moon />
-              </el-icon>
-              <el-icon v-else @click="toggleDark()">
-                <Sunny />
-              </el-icon>
-            </div>
           </div>
-          <div class="operatorClassB">
-            <el-icon @click="minimize">
-              <Minus />
-            </el-icon>
-            <el-icon @click="maximize">
-              <Plus />
-            </el-icon>
-            <el-icon @click="titlebarClose">
-              <CloseBold />
-            </el-icon>
-          </div>
-        </div>
-      </el-header>
-      <el-container>
-        <el-aside>
-          <div class="aside_logo" @click="gotoAdminHome">
-            <img src="@/assets/logo2.png" />
-            <span>WkTools</span>
-          </div>
-          <el-menu active-text-color="#5352ed" :default-active="activePath" unique-opened @select="handleMenuChange">
-            <el-menu-item v-for="menu in menus" :index="menu.path" :key="menu.path"
-              @click="getMenu(menu.path, menu.meta.title)">
-              <el-icon>
-                <SvgIcon :name="menu.meta.icon"></SvgIcon>
-              </el-icon>
-              <span>{{ menu.meta.title }}</span>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
+        </el-header>
         <el-container>
-          <el-main>
-            <el-scrollbar :height="window_h">
-              <!-- 路由占位符 -->
-              <router-view />
-            </el-scrollbar>
-          </el-main>
+          <!-- 侧边栏 -->
+          <!-- @changeTitle="change_title" -->
+          <SideBar></SideBar>
+          <el-container>
+            <el-main>
+              <el-scrollbar :height="window_h - 30">
+                <!-- 路由占位符 -->
+                <div class="main-content">
+                  <router-view />
+                </div>
+              </el-scrollbar>
+            </el-main>
+          </el-container>
         </el-container>
-      </el-container>
+      </div>
     </div>
   </el-config-provider>
+  <Updater :is_show="is_show_dialog" @closeUpdateDialog="closeUpdateDialog" />
 </template>
 
 <script setup>
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
+import { checkUpdate } from '@tauri-apps/api/updater'
+import { resourceDir, appDir, resolveResource } from '@tauri-apps/api/path';
 import SvgIcon from '@/components/SvgIcon.vue';
-import { constantRoutes as menus } from './router';
+import SideBar from "@/components/SideBar"
 import { Minus, Plus, CloseBold, Sunny, Moon } from '@element-plus/icons-vue';
 import { useDark, useToggle } from '@vueuse/core';
+import useAppStore from "@/store/modules/app"
 
 import { useI18n } from 'vue-i18n';
 import i18n from '@/locals'; // 当前语言
-import { onMounted } from 'vue';
-const { locale } = useI18n();
 
 import zh from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
+
+const appStore = useAppStore();
+
+const { locale } = useI18n();
 
 const { t } = i18n.global;
 
@@ -116,73 +114,70 @@ const is_on_top = ref(false);
 
 const toggleDark = useToggle(isDark);
 
-const { proxy } = getCurrentInstance();
 
-// 透明度
-const opacity = ref(1000)
+//  软件是否已经启动
+const is_started = ref(false)
+
+//  显示更新对话框
+const is_show_dialog = ref(false);
+
+//  更新信息
+const up_info = ref({
+  version: "",
+  date: "",
+  body: ""
+})
+
 
 const formatTooltip = (val) => {
-  return val / 1000
+  return Number(val / 1000).toFixed(3)
 }
 
-
-
-// 标题
-const Headertitile = ref(t('app.welcome'));
 
 // 是否最大化
 const isMaximize = ref(false);
 
-// 激活菜单
-const activePath = ref('/index');
 
 const window_h = ref(null)
 
 onMounted(() => {
-  activePath.value = localStorage.getItem("sfsafasfsa") || "/index"
-  Headertitile.value = localStorage.getItem("wfw3t3t32t") || Headertitile.value
-  proxy.$router.push(activePath.value);
-  const v = localStorage.getItem('lang') || "zh";
-  invoke('set_lang', { lang: v });
   window.onresize = () => {
-    get_window_height()
+    getWindowResize()
   };
 })
 
-
-const get_window_height = () => {
-  window_h.value = document.documentElement.clientHeight * 0.9;
+const reload = () => {
+  is_started.value = false
+  nextTick(() => {
+    is_started.value = true
+  })
 }
 
+const getWindowResize = () => {
+  nextTick(() => {
+    window_h.value = document.documentElement.clientHeight;
+  })
+}
 
-const localeLang = computed(() => (locale.value === 'zh' ? zh : en))
+const localeLang = computed(() => (appStore.lang === 'zh' ? zh : en))
 
-function gotoAdminHome() {
-  proxy.$router.push('/index');
-  activePath.value = '/index';
-}
-function handleMenuChange(index, _indexPath) {
-  activePath.value = index;
-  proxy.$router.push(index);
-}
-function getMenu(index, title) {
-  localStorage.setItem('sfsafasfsa', index)
-  localStorage.setItem('wfw3t3t32t', title)
-  Headertitile.value = title;
-}
+
 //  窗口操作
 // 最小化
-function minimize() {
-  appWindow.minimize();
+async function minimize() {
+  await appWindow.minimize();
 }
 // 最大化
-function maximize() {
+async function maximize() {
   if (isMaximize.value) {
-    appWindow.unmaximize();
+    await appWindow.unmaximize();
     isMaximize.value = false;
+    getWindowResize()
+
   } else {
-    appWindow.maximize();
+    await appWindow.maximize();
     isMaximize.value = true;
+    getWindowResize()
   }
 }
 // 关闭
@@ -197,18 +192,93 @@ async function dragWindow(e) {
 // 切换语言
 async function changeLang(v) {
   locale.value = v;
-  await invoke('set_lang', { lang: v });
-  localStorage.setItem('lang', v);
-  window.location.reload();
+  await appStore.setLang(v);
+  reload()
 }
+
 async function set_always_on_top() {
   is_on_top.value = !is_on_top.value
   await appWindow.setAlwaysOnTop(is_on_top.value)
 }
 
-const handleMouse = (e) => {
-  // e.preventDefault();
+// 设置路径
+async function set_path() {
+  const res_path = await resourceDir();
+  const blank_db_path = await resolveResource('__data/database/db_blank.db');
+  const db_sql = await resolveResource('__data/sql');
+  const appDirPath = await appDir();
+  let v = [
+    {
+      key: "RES_PATH",
+      path: res_path
+    },
+    {
+      key: "BLANK_DB_PATH",
+      path: blank_db_path
+    },
+    {
+      key: "DB_SQL",
+      path: db_sql
+    },
+    {
+      key: "APP_PATH",
+      path: appDirPath
+    },
+  ]
+  await invoke("set_path_js", { v })
 }
+
+const check_update = async () => {
+  await appStore.setUpdatable(false)
+  try {
+    const { shouldUpdate, manifest } = await checkUpdate()
+    if (shouldUpdate) {
+      const { body, date, version } = manifest;
+      up_info.value = {
+        version: version,
+        date: date,
+        body: body
+      }
+      await appStore.setUpdatable(true)
+      await appStore.setUpdateInfo(up_info.value)
+      is_show_dialog.value = true
+    }
+  } catch (e) {
+
+  }
+
+}
+
+// 关闭更新对话框回调函数
+const closeUpdateDialog = () => {
+  is_show_dialog.value = false
+}
+
+// 添加监听函数，监听 DOM 内容加载完成事件
+document.addEventListener('DOMContentLoaded', async () => {
+  await set_path();
+  await invoke("init_database");
+  await changeLang(appStore.lang || "zh")
+  await appStore.appInit()
+
+  is_started.value = true
+
+  // DOM 内容加载完成之后，通过 invoke 调用 在 Rust 中已经注册的命令
+  await invoke('close_splashscreen')
+
+
+  setTimeout(async () => {
+    await check_update();
+  }, 1500)
+})
+
+const handleMouse = (e) => {
+  if (process.env.NODE_ENV === "production") {
+    e.preventDefault();
+  }
+
+}
+getWindowResize();
 </script>
 
 <style lang="scss" scoped>
@@ -261,56 +331,15 @@ const handleMouse = (e) => {
   }
 }
 
-.el-aside {
-  width: 130px;
-  background-color: #bbe6d6;
-  color: rgb(8, 7, 7);
-  height: 100vh;
-
-  ul {
-    background-color: #bbe6d6;
-  }
-
-  img {
-    height: 32px;
-    width: 32px;
-    padding-left: 10px;
-  }
-}
 
 .el-main {
   background-color: #d9f1e8;
   color: rgb(14, 13, 13);
   height: 100vh;
-}
-
-.aside_logo {
-  display: flex;
-  height: 60px;
-  align-items: center;
-  cursor: pointer;
-
-  span {
-    font-size: 16px;
-    font-weight: 800;
-    padding-left: 5px;
+  padding: 0;
+  .main-content{
+    padding: 20px;
   }
-}
-
-.el-menu {
-  font-weight: 900;
-  border-style: none;
-}
-
-.el-menu-item {
-  background-color: #bae8d5 !important;
-  font-weight: 800;
-  height: 100%;
-}
-
-.el-menu-item.is-active {
-  background-color: #d9f1e8 !important;
-  border-radius: 30px 0px 0px 30px;
 }
 
 html.dark {
@@ -319,26 +348,9 @@ html.dark {
     color: #d9f1e8;
   }
 
-  .el-aside {
-    background-color: rgb(13, 17, 23);
-    color: rgb(209, 191, 191);
-
-    ul {
-      background-color: rgb(13, 17, 23);
-    }
-  }
-
   .el-main {
     background-color: rgb(1, 4, 9);
     color: rgb(216, 203, 203);
-  }
-
-  .el-menu-item {
-    background-color: rgb(13, 17, 23) !important;
-  }
-
-  .el-menu-item.is-active {
-    background-color: rgb(1, 4, 9) !important;
   }
 }
 </style>

@@ -2,7 +2,5 @@
 
 pub mod prelude;
 
-pub mod regent;
-pub mod regent_group;
 pub mod sys_dict_data;
 pub mod sys_dict_type;

@@ -7,6 +7,9 @@ body,
   overflow: hidden;
   border-radius: 15px 15px 15px 15px;
 }
+// body::-webkit-scrollbar {
+// display: none;
+// }
 // ==============
 
 .el-table {
@@ -19,25 +22,34 @@ body,
 .el-table__body-wrapper {
   border-radius:  0 0 8px 8px;
 }
+.el-divider__text{
+  --el-bg-color:#bbe6d6 !important;
+  border-radius: 5px;
+}
 
 .el-input__wrapper,.el-textarea__inner{
   --el-input-border-radius:5px !important;
-  --el-input-bg-color:#bbe6d6!important;
+  // --el-input-bg-color:#bbe6d6!important;
+}
+.el-form-item__content{
+  width: 210px !important;
+}
+.app-container{
+  margin-right:15px;
 }
 
-.el-popper{
-  --el-bg-color-overlay::#bbe6d6!important;
-}
+// .el-popper{
+//   // --el-bg-color-overlay::#bbe6d6!important;
+// }
 .el-slider__button{
   --el-color-white:#bbe6d6!important;
 }
 
-// ============
-// 
-/**
- * 通用css样式布局处理
- * Copyright (c) 2019 ruoyi
- */
+.el-dialog {
+  --el-dialog-border-radius: 8px !important;
+  // --el-bg-color:#bbe6d6 !important;
+}
+
 
 /** 基础通用 **/
 .pt5 {

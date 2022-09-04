@@ -14,7 +14,7 @@ pub fn add_msg(msg: &str) {
 pub fn get_log() -> String {
     let mut msgs = MSGS.lock().unwrap();
     let mut log = String::new();
-    for msg in msgs.iter().rev() {
+    for msg in msgs.iter() {
         log.push_str(&msg);
         log.push_str("\n");
     }

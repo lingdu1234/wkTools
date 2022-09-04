@@ -1,21 +1,23 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm build",
-    "beforeDevCommand": "pnpm dev",
-    "devPath": "http://localhost:5173",
-    "distDir": "../dist"
+    "beforeBuildCommand": "vite build",
+    "beforeDevCommand": "vite dev",
+    "devPath": "http://localhost:9876",
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "wkTools",
-    "version": "0.1.0"
+    "version": "0.2.5"
   },
   "tauri": {
+    "macOSPrivateApi": true,
     "allowlist": {
       "all": true,
       "fs": {
         "scope": [
-          "**"
+          "*"
         ],
         "all": true,
         "readFile": true,
@@ -57,20 +59,31 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "__data/database/db_blank.db",
+        "__data/sql"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "language": "zh-CN"
+        }
       }
     },
     "security": {
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": [
+        "https://cloud.iu1314.top:58376/_wktools/update/latest.json"
+      ],
+      "dialog": false,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEJFMzQxQTYyODVBNkU1NjEKUldSaDVhYUZZaG8wdnZxbHlSMkZzYkgvT09uWHRiUEhGc1hqTEI5NW9VNEthbjlVRDlpTXV4OGMK"
     },
     "windows": [
       {
@@ -83,9 +96,18 @@
         "minHeight": 600,
         "decorations": false,
         "transparent": true,
-        "center": true
+        "center": true,
+        "visible": false
+      },
+      {
+        "width": 1366,
+        "height": 768,
+        "decorations": false,
+        "transparent": true,
+        "center": true,
+        "url": "splashscreen.html",
+        "label": "splashscreen"
       }
     ]
   }
-  
 }

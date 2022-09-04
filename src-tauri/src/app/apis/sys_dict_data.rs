@@ -5,7 +5,7 @@ use crate::{
         entities::sys_dict_data,
         models::sys_dict_data::{AddReq, EditReq, SearchReq},
     },
-    tools::db::{db_conn, DB},
+    tools::db::get_db,
 };
 
 /// get_list 获取列表
@@ -13,7 +13,7 @@ use crate::{
 /// db 数据库连接 使用db.0
 #[tauri::command]
 pub async fn get_dict_data_list(page_params: PageParams, req: SearchReq) -> (Option<ListData<sys_dict_data::Model>>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::get_sort_list(db, page_params, req).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -24,7 +24,7 @@ pub async fn get_dict_data_list(page_params: PageParams, req: SearchReq) -> (Opt
 /// add 添加
 #[tauri::command]
 pub async fn add_dict_data(req: AddReq) -> (Option<String>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::add(db, req).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -35,7 +35,7 @@ pub async fn add_dict_data(req: AddReq) -> (Option<String>, Option<String>) {
 /// delete 完全删除
 #[tauri::command]
 pub async fn delete_dict_data(ids: Vec<String>) -> (Option<String>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::delete(db, ids).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -46,7 +46,7 @@ pub async fn delete_dict_data(ids: Vec<String>) -> (Option<String>, Option<Strin
 // edit 修改
 #[tauri::command]
 pub async fn edit_dict_data(req: EditReq) -> (Option<String>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::edit(db, req).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -58,7 +58,7 @@ pub async fn edit_dict_data(req: EditReq) -> (Option<String>, Option<String>) {
 /// db 数据库连接 使用db.0
 #[tauri::command]
 pub async fn get_dict_data_by_id(id: String) -> (Option<sys_dict_data::Model>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::get_by_id(db, &id).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -70,7 +70,7 @@ pub async fn get_dict_data_by_id(id: String) -> (Option<sys_dict_data::Model>, O
 /// db 数据库连接 使用db.0
 #[tauri::command]
 pub async fn get_dict_data_by_type(dict_type: String) -> (Option<Vec<sys_dict_data::Model>>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::get_by_type(db, &dict_type).await;
     match res {
         Ok(x) => (Some(x), None),
@@ -82,7 +82,7 @@ pub async fn get_dict_data_by_type(dict_type: String) -> (Option<Vec<sys_dict_da
 /// db 数据库连接 使用db.0
 #[tauri::command]
 pub async fn get_all_dict_data() -> (Option<Vec<sys_dict_data::Model>>, Option<String>) {
-    let db = DB.get_or_init(db_conn).await;
+    let db = get_db().await;
     let res = services::sys_dict_data::get_all(db).await;
     match res {
         Ok(x) => (Some(x), None),

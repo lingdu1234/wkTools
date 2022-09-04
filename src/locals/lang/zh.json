@@ -1,6 +1,13 @@
 {
   "app": {
-    "welcome": "欢迎"
+    "welcome": "欢迎",
+    "dir": "软件目录",
+    "log_dir": "日志目录",
+    "res_dir": "资源目录",
+    "download_dir": "下载目录",
+    "config_dir": "配置目录",
+    "edit": "编辑",
+    "delete": "删除"
   },
   "route": {
     "home": "主页",
@@ -9,7 +16,10 @@
     "about": "关于",
     "excel": "Excel",
     "regent": "项目",
-    "dict": "字典"
+    "dict": "字典",
+    "hospital": "医院",
+    "sample": "样本",
+    "statistics": "统计"
   },
   "img": {
     "title": "图片处理",
@@ -28,13 +38,17 @@
   "about": {
     "title": "关于",
     "checkUpdate": "检查更新",
-    "p01": "一个日常工具合集,用于处理一些日常数据;",
-    "p02": "主要使用语言:rust,js;",
-    "p03": "主要使用技术:tauri,vue3,vue-i18n,vue-router,element-plus,vueuse/core等;",
+    "p01": "一个日常工具合集,用于处理一些日常数据",
+    "p02": "主要使用语言:rust,js,SQL",
+    "p03": "主要使用技术:主程序:tauri;UI界面:vue3,vite3,vue-router,element-plus,vueuse/core等,国际化：vue-i18n，rust-i18n;数据库：sqlite3；数据库处理库：SeaOrm；异步运行时：Tokio,图片处理：image；excel处理：xlsx",
     "aboutProgram": "程序相关",
     "programName": "程序名称",
     "programVersion": "程序版本",
-    "version": "版本"
+    "version": "版本",
+    "contact": "Email:WY#IU1314.TOP",
+    "desc": "简介",
+    "mainFrame": "主框架",
+    "edition": "版本"
   },
   "excel": {
     "title": "Excel",
@@ -46,6 +60,7 @@
   },
   "dict": {
     "dict": "字典",
-    "dict_data": "字典数据"
+    "dict_data": "字典数据",
+    "instrument": "仪器"
   }
 }

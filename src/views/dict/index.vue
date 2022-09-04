@@ -98,11 +98,11 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { Plus, Edit, Delete, Search, Refresh } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from "element-plus"
+import i18n from '@/locals';
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
 
-import i18n from '@/locals';
 const { t } = i18n.global;
 
 
@@ -265,7 +265,6 @@ function handleDelete(row) {
 const goToData = (v) => {
     let to = "/dict_data/" + v
     proxy.$router.push(to);
-    console.log(to)
 }
 
 getList();
